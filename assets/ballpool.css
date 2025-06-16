@@ -1,0 +1,74 @@
+/* ballpool.css */
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(180deg, #1e1e2f, #2a2a40);
+  color: white;
+}
+header {
+  background: #12121c;
+  padding: 15px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+header .logo {
+  font-weight: bold;
+  font-size: 20px;
+  color: #ffc107;
+}
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+}
+nav a {
+  text-decoration: none;
+  color: white;
+}
+nav a.active {
+  color: #ffc107;
+}
+.hero {
+  text-align: center;
+  padding: 40px 20px;
+}
+.package-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  padding: 20px;
+}
+.package-card {
+  background: #292942;
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  width: 220px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+.package-card img {
+  width: 100%;
+  border-radius: 6px;
+}
+.package-card h3 {
+  margin: 10px 0 5px;
+}
+.package-card p {
+  margin: 0 0 10px;
+  font-weight: bold;
+}
+.select-btn {
+  background-color: #00c853;
+  border: none;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.3s ease;
+}
+.select-btn:hover {
+  background-color: #00e676;
+}
