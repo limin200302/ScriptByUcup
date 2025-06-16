@@ -177,7 +177,7 @@ img {
 }
 
 .contact-icons a {
-  margin: 5px 0;
+  margin: 8px 0;
 }
 
 .contact-icons img {
@@ -194,4 +194,18 @@ img {
 #toggle-contact:checked ~ .contact-icons {
   transform: translateY(0);
   opacity: 1;
+}
+.contact-toggle {
+  /* ...yang sebelumnya tetap... */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  color: white;
+  font-weight: bold;
+  text-shadow: 0 0 2px rgba(0,0,0,0.6);
+}
+.contact-toggle span {
+  position: absolute;
+  bottom: 8px;
 }
