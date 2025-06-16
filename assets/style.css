@@ -83,38 +83,60 @@ nav ul li a {
   background-color: #005f73;
 }
 
-#games {
+/* Slider Section */
+#game-slider {
   padding: 50px 20px;
   text-align: center;
 }
 
-#games h2 {
+#game-slider h2 {
   font-size: 36px;
   margin-bottom: 20px;
 }
 
-.game-list {
+.slider-container {
+  overflow: hidden;
+  width: 80%;
+  margin: 0 auto;
+}
+
+.slider {
   display: flex;
-  justify-content: center;
   gap: 20px;
-  flex-wrap: wrap;
+  transition: transform 0.3s ease;
 }
 
 .game-item {
   width: 200px;
   text-align: center;
+  cursor: pointer;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+  padding: 10px;
+  border-radius: 10px;
 }
 
 .game-item img {
   width: 100%;
   border-radius: 10px;
-  transition: transform 0.3s ease-in-out;
 }
 
-.game-item img:hover {
+.game-item p {
+  margin-top: 10px;
+  font-size: 16px;
+}
+
+.game-item:hover {
   transform: scale(1.1);
+  background-color: #e3e3e3;
 }
 
+/* Highlight active item */
+.game-item.active {
+  background-color: #008CBA;
+  color: white;
+}
+
+/* Footer Section */
 footer {
   background-color: #333;
   color: white;
