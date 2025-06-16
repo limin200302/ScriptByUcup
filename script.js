@@ -1,36 +1,34 @@
-// JavaScript to handle game icon selection and slider movement
-document.addEventListener('DOMContentLoaded', () => {
-  const slider = document.getElementById('slider');
-  const gameItems = document.querySelectorAll('.game-item');
-  
-  // Function to highlight the active item
-  gameItems.forEach(item => {
-    item.addEventListener('click', () => {
-      gameItems.forEach(i => i.classList.remove('active'));
-      item.classList.add('active');
-    });
-  });
-
-  // Function for slider navigation (Swipe left/right)
-  let currentIndex = 0;
-  const totalItems = gameItems.length;
-  
-  // Swipe left (move slider left)
-  const swipeLeft = () => {
-    if (currentIndex > 0) {
-      currentIndex--;
-      slider.style.transform = `translateX(-${currentIndex * 220}px)`;
-    }
-  };
-
-  // Swipe right (move slider right)
-  const swipeRight = () => {
-    if (currentIndex < totalItems - 1) {
-      currentIndex++;
-      slider.style.transform = `translateX(-${currentIndex * 220}px)`;
-    }
-  };
-
-  // Add swipe controls (optional, you can replace it with buttons)
-  setInterval(swipeRight, 3000); // Automatically swipe every 3 seconds (for demo purpose)
+// Sticky header on scroll
+window.addEventListener('scroll', function() {
+  const header = document.querySelector('.main-header');
+  if (window.scrollY > 20) {
+    header.classList.add('scrolled');
+  } else {
+    header.classList.remove('scrolled');
+  }
 });
+
+// Optional: Notification popup simulation
+function showNotification(msg) {
+  const notif = document.createElement('div');
+  notif.textContent = msg;
+  notif.style.position = 'fixed';
+  notif.style.bottom = '20px';
+  notif.style.right = '20px';
+  notif.style.background = '#ffcc00';
+  notif.style.color = '#1e1e2f';
+  notif.style.padding = '10px 15px';
+  notif.style.borderRadius = '8px';
+  notif.style.boxShadow = '0 4px 10px rgba(0,0,0,0.3)';
+  notif.style.fontWeight = 'bold';
+  document.body.appendChild(notif);
+
+  setTimeout(() => {
+    notif.remove();
+  }, 3000);
+}
+
+// Contoh pemanggilan otomatis setelah 5 detik
+setTimeout(() => {
+  showNotification('Seseorang baru saja top up 8Ball Pool!');
+}, 5000);
