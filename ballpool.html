@@ -24,25 +24,29 @@
       <p>Cepat, mudah dan terpercaya. Pilih paket dan langsung checkout via WhatsApp.</p>
     </section>
 
-    <section class="package-list">
-      <div class="package-card">
-        <img src="assets/img/sample1.png" alt="Paket 1">
-        <h3>605 Cash</h3>
-        <p>Rp 55.000</p>
-        <button class="select-btn">Pilih</button>
+    <section class="category-section">
+      <p class="subtext">Pilih Nominal Top Up</p>
+      <div class="category-tabs">
+        <button class="tab-btn active" data-category="cash">
+          <img src="assets/img/cash.png" alt="Cash">Cash
+        </button>
+        <button class="tab-btn" data-category="boxlegends">
+          <img src="assets/img/boxlegends.png" alt="Box Legends">Box Legends
+        </button>
+        <button class="tab-btn" data-category="venice">
+          <img src="assets/img/venice.png" alt="Venice">Venice
+        </button>
+        <button class="tab-btn" data-category="poolpass">
+          <img src="assets/img/poolpass.png" alt="Pool Pass">Pool Pass
+        </button>
+        <button class="tab-btn" data-category="goldenshot">
+          <img src="assets/img/goldenshot.png" alt="Golden Shot">Golden Shot
+        </button>
       </div>
-      <div class="package-card">
-        <img src="assets/img/sample2.png" alt="Paket 2">
-        <h3>1210 Cash</h3>
-        <p>Rp 95.000</p>
-        <button class="select-btn">Pilih</button>
-      </div>
-      <div class="package-card">
-        <img src="assets/img/sample3.png" alt="Paket 3">
-        <h3>Pool Pass Elite</h3>
-        <p>Rp 85.000</p>
-        <button class="select-btn">Pilih</button>
-      </div>
+    </section>
+
+    <section id="category-content">
+      <!-- Konten Cash dan Box Legends akan dimuat via ballpool.js -->
     </section>
   </main>
 </body>
