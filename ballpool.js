@@ -247,14 +247,9 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 card.addEventListener("click", () => {
-  // Hilangkan dulu semua highlight
-  document.querySelectorAll(".package-card").forEach(c => {
-    c.classList.remove("selected-card");
-  });
-
-  // Tambahkan highlight ke card yang diklik
-  card.classList.add("selected-card");
+  card.classList.toggle("selected-card");
 });
+
 
 // Default view
 renderCategory("cash");
