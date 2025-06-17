@@ -222,3 +222,29 @@ img {
 nav ul {
   justify-content: center; /* Agar rata tengah */
 }
+.glow-letter {
+  display: inline-block;
+  font-size: 2rem;
+  font-weight: bold;
+  color: #fff;
+  text-shadow:
+    0 0 5px #0ff,
+    0 0 10px #0ff,
+    0 0 20px #0ff;
+  animation: dropIn 0.5s ease forwards;
+  opacity: 0;
+  transform: translateY(-50px);
+}
+
+@keyframes dropIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 600px) {
+  .glow-letter {
+    font-size: 1.5rem;
+  }
+}
