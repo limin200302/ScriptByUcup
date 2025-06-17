@@ -180,16 +180,17 @@ nav a {
 }
 .glow-letter {
   display: inline-block;
-  font-size: 2rem;
+  font-size: 2.5rem;
   font-weight: bold;
-  color: #fff;
-  text-shadow:
-    0 0 5px #0ff,
-    0 0 10px #0ff,
-    0 0 20px #0ff;
-  animation: dropIn 0.5s ease forwards;
+  color: white;
   opacity: 0;
   transform: translateY(-50px);
+  animation: dropIn 0.5s ease forwards;
+  margin: 0 2px; /* jarak antar huruf */
+  text-shadow:
+    0 0 5px black,
+    0 0 10px black,
+    0 0 20px black;
 }
 
 @keyframes dropIn {
@@ -197,6 +198,13 @@ nav a {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+#animated-title {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.3rem; /* jarak antar kata */
 }
 
 @media (max-width: 600px) {
