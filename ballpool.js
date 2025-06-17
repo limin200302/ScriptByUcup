@@ -222,12 +222,28 @@ function renderCategory(category) {
 }
 
 // Tabs
-document.querySelectorAll(".tab-btn").forEach(btn => {
-  btn.addEventListener("click", () => {
-    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
-    btn.classList.add("active");
-    const cat = btn.dataset.category;
-    renderCategory(cat);
+// Variabel untuk melacak kategori aktif
+let currentCategory = null;
+
+// Tabs
+document.querySelectorAll(".tab-btn").forEach(tab => {
+  tab.addEventListener("click", (e) => {
+    const category = tab.getAttribute("data-category");
+
+    if (currentCategory === category) {
+      // Klik ulang = tutup
+      document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.remove("active"));
+      document.getElementById("category-content").innerHTML = "";
+      currentCategory = null;
+    } else {
+      // Klik tab baru
+      document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.remove("active"));
+      tab.classList.add("active");
+      renderCategory(category);
+      currentCategory = category;
+    }
+
+    e.stopPropagation(); // Supaya klik tab tidak ikut nutup dari event luar
   });
 });
 
@@ -242,6 +258,12 @@ document.addEventListener("DOMContentLoaded", function () {
     span.classList.add("glow-letter");
     container.appendChild(span);
   });
+  // Klik di luar tab = tutup semua kategori
+document.addEventListener("click", () => {
+  document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.remove("active"));
+  document.getElementById("category-content").innerHTML = "";
+  currentCategory = null;
+});
 
   // ✅ PENTING: render default tab
   renderCategory("cash");
