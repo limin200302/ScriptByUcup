@@ -154,14 +154,21 @@ function renderCategory(category) {
     grid.className = "package-grid";
 
     vip.prices.forEach(pkg => {
-      const card = document.createElement("div");
-      card.className = "package-card";
-      card.innerHTML = `
-        <h3>${pkg.label.split(" - ")[1]}</h3>
-        <p>${pkg.label.split(" - ")[0]}</p>        
-      `;
-      grid.appendChild(card);
-    });
+  const card = document.createElement("div");
+  card.className = "package-card";
+  card.innerHTML = `
+    <div class="checkmark">&#10004;</div>
+    <h3>${pkg.label.split(" - ")[1]}</h3>
+    <p>${pkg.label.split(" - ")[0]}</p>
+  `;
+
+  card.addEventListener("click", () => {
+    document.querySelectorAll(".package-card").forEach(c => c.classList.remove("selected-card"));
+    card.classList.add("selected-card");
+  });
+
+  grid.appendChild(card);
+});
 
     section.appendChild(grid);
     container.appendChild(section);
