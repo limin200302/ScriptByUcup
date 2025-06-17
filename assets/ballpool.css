@@ -251,3 +251,18 @@ nav a {
 .package-card.selected-card .checkmark {
   display: block;
 }
+.package-card .checkmark-icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 20px;
+  color: green;
+  display: none;
+}
+.package-card.selected-card {
+  background-color: rgba(0, 255, 0, 0.15);
+  border: 2px solid green;
+}
+.package-card.selected-card .checkmark-icon {
+  display: block;
+}
