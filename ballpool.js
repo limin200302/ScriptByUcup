@@ -187,11 +187,12 @@ document.addEventListener("DOMContentLoaded", function () {
   title.split("").forEach((char, index) => {
     const span = document.createElement("span");
     span.textContent = char;
+    span.className = "glow-letter";
     span.style.animationDelay = `${index * 0.1}s`;
-    span.classList.add("glow-letter");
     container.appendChild(span);
   });
 });
+
 
 // Default view
 renderCategory("cash");
