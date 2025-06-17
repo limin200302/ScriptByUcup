@@ -215,7 +215,10 @@ nav a {
   }
 }
 .package-card.selected-card {
-  background-color: #f0f9ff;
-  box-shadow: 0 0 10px rgba(0, 128, 255, 0.5);
-  border: 2px solid #00bfff;
+  background-color: #e0f7ff; /* Warna biru muda blok */
+  border: 2px solid #00bcd4; /* Border biru */
+  box-shadow: 0 0 10px rgba(0, 188, 212, 0.5); /* Glow biru */
+  transform: scale(1.02); /* Sedikit perbesar */
+  transition: all 0.2s ease;
 }
+
