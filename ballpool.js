@@ -180,19 +180,5 @@ document.querySelectorAll(".tab-btn").forEach(btn => {
     renderCategory(cat);
   });
 });
-document.addEventListener("DOMContentLoaded", function () {
-  const title = "8 Ball Pool Menu";
-  const container = document.getElementById("animated-title");
-
-  title.split("").forEach((char, index) => {
-    const span = document.createElement("span");
-    span.textContent = char;
-    span.className = "glow-letter";
-    span.style.animationDelay = `${index * 0.1}s`;
-    container.appendChild(span);
-  });
-});
-
-
 // Default view
 renderCategory("cash");
