@@ -219,9 +219,9 @@ nav a {
 }
 .package-card.selected {
   position: relative;
-  background-color: rgba(0, 255, 0, 0.2); /* hijau muda transparan 20% */
+  background-color: rgba(0, 255, 0, 0.5); /* hijau muda transparan 20% */
   border: 2px solid #00c853;
-  box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+  box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
 }
 .package-card.selected::after {
   content: "✔";
