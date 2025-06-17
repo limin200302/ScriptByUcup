@@ -158,8 +158,7 @@ function renderCategory(category) {
       card.className = "package-card";
       card.innerHTML = `
         <h3>${pkg.label.split(" - ")[1]}</h3>
-        <p>${pkg.label.split(" - ")[0]}</p>
-        <button class="select-btn">Pilih</button>
+        <p>${pkg.label.split(" - ")[0]}</p>        
       `;
       grid.appendChild(card);
     });
@@ -191,6 +190,15 @@ document.addEventListener("DOMContentLoaded", function () {
     span.classList.add("glow-letter");
     container.appendChild(span);
   });
+});
+card.addEventListener("click", () => {
+  // Hilangkan dulu semua highlight
+  document.querySelectorAll(".package-card").forEach(c => {
+    c.classList.remove("selected-card");
+  });
+
+  // Tambahkan highlight ke card yang diklik
+  card.classList.add("selected-card");
 });
 
 // Default view
