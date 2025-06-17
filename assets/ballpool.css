@@ -217,11 +217,21 @@ nav a {
     font-size: 1.5rem;
   }
 }
-.package-card.selected-card {
-  border-color: #4caf50; /* hijau */
-  background-color: #eaf9ea; /* hijau muda */
+.package-card.selected {
+  position: relative;
+  background-color: rgba(0, 255, 0, 0.2); /* hijau muda transparan 20% */
+  border: 2px solid #00c853;
+  box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
 }
-
+.package-card.selected::after {
+  content: "✔";
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  font-size: 18px;
+  color: #00c853;
+  font-weight: bold;
+}
 .package-card .checkmark {
   position: absolute;
   top: 8px;
