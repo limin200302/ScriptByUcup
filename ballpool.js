@@ -163,8 +163,7 @@ function renderCategory(category) {
   `;
 
   card.addEventListener("click", () => {
-    document.querySelectorAll(".package-card").forEach(c => c.classList.remove("selected-card"));
-    card.classList.add("selected-card");
+  card.classList.toggle("selected");
   });
 
   grid.appendChild(card);
