@@ -214,3 +214,8 @@ nav a {
     font-size: 1.5rem;
   }
 }
+.package-card.selected-card {
+  background-color: #f0f9ff;
+  box-shadow: 0 0 10px rgba(0, 128, 255, 0.5);
+  border: 2px solid #00bfff;
+}
