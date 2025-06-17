@@ -214,3 +214,32 @@ nav a {
     font-size: 1.5rem;
   }
 }
+.price-card {
+  position: relative;
+  background: #1c1c1c;
+  border: 2px solid transparent;
+  padding: 1rem 1rem 1rem 3rem;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+  transition: 0.3s ease;
+}
+
+.price-card.selected {
+  border-color: #0ff; /* Warna border saat dipilih */
+  background: rgba(0, 255, 255, 0.1);
+}
+
+.price-icon {
+  position: absolute;
+  top: 0.8rem;
+  left: 0.8rem;
+  width: 32px;
+  height: 32px;
+}
+
+.price-text p {
+  margin: 0.3rem 0;
+  color: #fff;
+  text-align: left; /* ratakan kiri */
+  font-size: 0.95rem;
+}
