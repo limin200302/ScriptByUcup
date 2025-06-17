@@ -136,12 +136,21 @@ const vipDataBox = [
   },
 ];
 
+const categoryIcons = {
+  cash: "assets/img/cash.png",
+  boxlegends: "assets/img/boxlegends.png",
+  goldenshot: "assets/img/goldenshot.png",
+  poolpass: "assets/img/poolpass.png",
+  venice: "assets/img/venice.png"
+};
+
 // Render
 function renderCategory(category) {
   const container = document.getElementById("category-content");
   container.innerHTML = "";
 
-  const data = category === "cash" ? vipDataCash : category === "boxlegends" ? vipDataBox : [];
+  const data = category === "cash" ? vipDataCash :
+               category === "boxlegends" ? vipDataBox : [];
 
   data.forEach(vip => {
     const section = document.createElement("div");
@@ -158,11 +167,26 @@ function renderCategory(category) {
     vip.prices.forEach(pkg => {
       const card = document.createElement("div");
       card.className = "package-card";
+
+      // Tambahkan logo kategori di pojok kiri atas
+      const iconHTML = `
+        <div class="package-icon">
+          <img src="${categoryIcons[category]}" alt="${category}" />
+        </div>
+      `;
+
       card.innerHTML = `
+        ${iconHTML}
         <h3>${pkg.label.split(" - ")[1]}</h3>
         <p>${pkg.label.split(" - ")[0]}</p>
-        <button class="select-btn">Pilih</button>
       `;
+
+      // Efek blok aktif
+      card.addEventListener("click", () => {
+        grid.querySelectorAll(".package-card").forEach(c => c.classList.remove("selected"));
+        card.classList.add("selected");
+      });
+
       grid.appendChild(card);
     });
 
@@ -180,10 +204,12 @@ document.querySelectorAll(".tab-btn").forEach(btn => {
     renderCategory(cat);
   });
 });
+
+// Animasi judul
 document.addEventListener("DOMContentLoaded", function () {
   const title = "8 Ball Pool Menu";
   const container = document.getElementById("animated-title");
-
+  container.innerHTML = ""; // bersihkan isi sebelumnya
   title.split("").forEach((char, index) => {
     const span = document.createElement("span");
     span.textContent = char;
@@ -191,6 +217,7 @@ document.addEventListener("DOMContentLoaded", function () {
     span.classList.add("glow-letter");
     container.appendChild(span);
   });
+
+  // Default view
+  renderCategory("cash");
 });
-// Default view
-renderCategory("cash");
