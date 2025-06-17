@@ -134,12 +134,55 @@ const vipDataBox = [
     ],
   },
 ];
-       
+const vipDataVenice = [
+  {
+    name: "Venice",
+    logo: "assets/img/venice.png",
+    prices: [
+      { label: "7 Hari - Rp 80.000", value: 80000 },
+      { label: "14 Hari - Rp 150.000", value: 150000 },
+      { label: "21 Hari - Rp 225.000", value: 225000 },
+      { label: "28 Hari - Rp 285.000", value: 285000 },
+      { label: "56 Hari - Rp 565.000", value: 565000 },
+      { label: "84 Hari - Rp 850.000", value: 850000 },
+    ],
+  },
+];
+
+const vipDataPoolPass = [
+  {
+    name: "Pool Pass",
+    logo: "assets/img/poolpass.png",
+    prices: [
+      { label: "Pool Pass Biasa - Rp 50.000", value: 50000 },
+      { label: "Pool Pass Elite - Rp 85.000", value: 85000 },
+    ],
+  },
+];
+
+const vipDataGoldenShot = [
+  {
+    name: "Golden Shot",
+    logo: "assets/img/goldenshot.png",
+    prices: [
+      { label: "24 Golden Shot - Rp 45.000", value: 45000 },
+      { label: "48 Golden Shot - Rp 88.000", value: 88000 },
+      { label: "72 Golden Shot - Rp 130.000", value: 130000 },
+      { label: "96 Golden Shot - Rp 170.000", value: 170000 },
+    ],
+  },
+];
+
 function renderCategory(category) {
   const container = document.getElementById("category-content");
   container.innerHTML = "";
 
-  const data = category === "cash" ? vipDataCash : category === "boxlegends" ? vipDataBox : [];
+  let data = [];
+  if (category === "cash") data = vipDataCash;
+  else if (category === "boxlegends") data = vipDataBox;
+  else if (category === "venice") data = vipDataVenice;
+  else if (category === "poolpass") data = vipDataPoolPass;
+  else if (category === "goldenshot") data = vipDataGoldenShot;
 
   data.forEach(vip => {
     const section = document.createElement("div");
@@ -154,20 +197,26 @@ function renderCategory(category) {
     grid.className = "package-grid";
 
     vip.prices.forEach(pkg => {
-  const card = document.createElement("div");
-  card.className = "package-card";
-  card.innerHTML = `
-    <div class="checkmark">&#10004;</div>
-    <h3>${pkg.label.split(" - ")[1]}</h3>
-    <p>${pkg.label.split(" - ")[0]}</p>
-  `;
+      const card = document.createElement("div");
+      card.className = "package-card";
+      card.innerHTML = `
+        <h3>${pkg.label.split(" - ")[0]}</h3>
+        <p>${pkg.label.split(" - ")[1]}</p>
+        <div class="checkmark-icon">&#10003;</div>
+      `;
 
-  card.addEventListener("click", () => {
-  card.classList.toggle("selected");
+      card.addEventListener("click", () => {
+        card.classList.toggle("selected-card");
+      });
+
+      grid.appendChild(card);
+    });
+
+    section.appendChild(grid);
+    container.appendChild(section);
   });
+}
 
-  grid.appendChild(card);
-});
 
     section.appendChild(grid);
     container.appendChild(section);
