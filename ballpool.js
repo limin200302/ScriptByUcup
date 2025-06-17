@@ -205,11 +205,14 @@ function renderCategory(category) {
         <div class="checkmark-icon">&#10003;</div>
       `;
       card.addEventListener("click", () => {
-        document.querySelectorAll(".package-card").forEach(c => {
-          c.classList.remove("selected-card");
-        });
-        card.classList.add("selected-card");
-      });
+  // Jika sudah dipilih, klik lagi = batal
+  if (card.classList.contains("selected-card")) {
+    card.classList.remove("selected-card");
+  } else {
+    // Tambahkan pilihan
+    card.classList.add("selected-card");
+  }
+});
       grid.appendChild(card);
     });
 
