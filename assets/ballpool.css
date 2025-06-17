@@ -147,6 +147,9 @@ nav a {
   box-shadow: 0 0 10px rgba(0,0,0,0.4);
   text-align: center;
   transition: transform 0.2s;
+  position: relative;
+  border: 2px solid transparent;
+  transition: 0.3s ease;
 }
 
 .package-card:hover {
@@ -215,10 +218,19 @@ nav a {
   }
 }
 .package-card.selected-card {
-  background-color: #e0f7ff; /* Warna biru muda blok */
-  border: 2px solid #00bcd4; /* Border biru */
-  box-shadow: 0 0 10px rgba(0, 188, 212, 0.5); /* Glow biru */
-  transform: scale(1.02); /* Sedikit perbesar */
-  transition: all 0.2s ease;
+  border-color: #4caf50; /* hijau */
+  background-color: #eaf9ea; /* hijau muda */
 }
 
+.package-card .checkmark {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  color: #4caf50;
+  font-size: 20px;
+  display: none;
+}
+
+.package-card.selected-card .checkmark {
+  display: block;
+}
