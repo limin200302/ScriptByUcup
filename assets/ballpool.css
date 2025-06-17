@@ -219,19 +219,26 @@ nav a {
 }
 .package-card.selected {
   position: relative;
-  background-color: rgba(0, 255, 0, 0.15); /* warna hijau muda transparan */
   border: 2px solid #00c853;
-  box-shadow: inset 0 0 0 1000px rgba(0, 255, 0, 0.1); /* blok transparan dalam */
 }
+
 .package-card.selected::after {
-  content: "✔";
+  content: "";
   position: absolute;
-  top: 8px;
-  right: 8px;
-  font-size: 18px;
-  color: #00c853;
-  font-weight: bold;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 255, 0, 0.15); /* hijau transparan */
+  z-index: 1;
+  border-radius: 12px;
 }
+
+.package-card.selected * {
+  position: relative;
+  z-index: 2;
+}
+
 .package-card .checkmark {
   position: absolute;
   top: 8px;
