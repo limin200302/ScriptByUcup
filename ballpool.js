@@ -204,19 +204,14 @@ function renderCategory(category) {
         <p>${pkg.label.split(" - ")[1]}</p>
         <div class="checkmark-icon">&#10003;</div>
       `;
-
       card.addEventListener("click", () => {
-        card.classList.toggle("selected-card");
+        document.querySelectorAll(".package-card").forEach(c => {
+          c.classList.remove("selected-card");
+        });
+        card.classList.add("selected-card");
       });
-
       grid.appendChild(card);
     });
-
-    section.appendChild(grid);
-    container.appendChild(section);
-  });
-}
-
 
     section.appendChild(grid);
     container.appendChild(section);
@@ -233,11 +228,10 @@ document.querySelectorAll(".tab-btn").forEach(btn => {
   });
 });
 
-// Title Animation
+// Title Animation & Default Load
 document.addEventListener("DOMContentLoaded", function () {
   const title = "8 Ball Pool Menu";
   const container = document.getElementById("animated-title");
-
   title.split("").forEach((char, index) => {
     const span = document.createElement("span");
     span.textContent = char;
@@ -245,11 +239,7 @@ document.addEventListener("DOMContentLoaded", function () {
     span.classList.add("glow-letter");
     container.appendChild(span);
   });
-});
-card.addEventListener("click", () => {
-  card.classList.toggle("selected-card");
-});
 
-
-// Default view
-renderCategory("cash");
+  // ✅ PENTING: render default tab
+  renderCategory("cash");
+});
