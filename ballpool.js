@@ -238,20 +238,30 @@ function renderCategory(category) {
         <div class="checkmark-icon">&#10003;</div>
       `;
 
-const plusBtn = document.createElement("button");      
-plusBtn.className = "btn-plus";      
-plusBtn.textContent = "+";      
-plusBtn.addEventListener("click", (e) => {        
-  e.stopPropagation();        
-  cartItems.push({          
-    label: pkg.label,          
-    category: category,          
-    name: vip.name        
-  });        
-  localStorage.setItem("cart", JSON.stringify(cartItems));        
-  updateCartBadge();        
-  animateFlyToCart(e.target);      
-});      
+const plusBtn = document.createElement("button");
+plusBtn.className = "btn-plus";
+plusBtn.textContent = "+";
+plusBtn.addEventListener("click", (e) => {
+  e.stopPropagation();
+  
+  // Ambil ulang data terbaru dari localStorage
+  let currentCart = JSON.parse(localStorage.getItem("cart")) || [];
+
+  // Tambahkan item baru
+  currentCart.push({
+    label: pkg.label,
+    category: category,
+    name: vip.name
+  });
+
+  // Simpan kembali ke localStorage
+  localStorage.setItem("cart", JSON.stringify(currentCart));
+
+  // Update badge dan animasi
+  updateCartBadge();
+  animateFlyToCart(e.target);
+});
+      
 // Tombol -      
 const minusBtn = document.createElement("button");      
 minusBtn.className = "btn-minus";      
