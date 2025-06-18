@@ -234,16 +234,17 @@ function renderCategory(category) {
   
   }
 });
-      if (vip.note) {
+    
+      grid.appendChild(card);
+    });
+
+    section.appendChild(grid);
+    if (vip.note) {
   const note = document.createElement("div");
   note.className = "vip-note";
   note.textContent = vip.note;
   section.appendChild(note);
-      grid.appendChild(card);
-      }
-    });
-
-    section.appendChild(grid);
+    }
     container.appendChild(section);
   });
 }
