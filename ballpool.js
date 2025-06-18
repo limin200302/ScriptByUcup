@@ -192,18 +192,20 @@ const vipDataBoxCollector = [
   },
 ];
 
+let cartItems = []; // Menyimpan item yang dipilih
+
 function renderCategory(category) {
   const container = document.getElementById("category-content");
   container.innerHTML = "";
-
   let data = [];
+
   if (category === "cash") data = vipDataCash;
   else if (category === "boxlegends") data = vipDataBox;
   else if (category === "venice") data = vipDataVenice;
   else if (category === "poolpass") data = vipDataPoolPass;
   else if (category === "goldenshot") data = vipDataGoldenShot;
   else if (category === "boxcollector") data = vipDataBoxCollector;
-  
+
   data.forEach(vip => {
     const section = document.createElement("div");
     section.className = "vip-section";
@@ -219,37 +221,53 @@ function renderCategory(category) {
     vip.prices.forEach(pkg => {
       const card = document.createElement("div");
       card.className = "package-card";
+
       card.innerHTML = `
         <h3>${pkg.label.split(" - ")[0]}</h3>
         <p>${pkg.label.split(" - ")[1]}</p>
-        <div class="checkmark-icon">&#10003;</div>
+        <button class="add-to-cart-btn">+</button>
       `;
-      card.addEventListener("click", () => {
-  // Jika sudah dipilih, klik lagi = batal
-  if (card.classList.contains("selected-card")) {
-    card.classList.remove("selected-card");
-  } else {
-    // Tambahkan pilihan
-    card.classList.add("selected-card");
-  
-  }
-});
-    
+
+      card.querySelector(".add-to-cart-btn").addEventListener("click", (e) => {
+        e.stopPropagation();
+
+        const itemLabel = pkg.label;
+        const itemObj = {
+          name: vip.name,
+          label: itemLabel,
+        };
+
+        const existing = cartItems.find(item => item.label === itemLabel && item.name === vip.name);
+        if (!existing) {
+          cartItems.push(itemObj);
+          updateCartBadge();
+        }
+      });
+
       grid.appendChild(card);
     });
 
     section.appendChild(grid);
+
     if (vip.note) {
-  const note = document.createElement("div");
-  note.className = "vip-note";
-  note.textContent = vip.note;
-  section.appendChild(note);
+      const note = document.createElement("div");
+      note.className = "vip-note";
+      note.textContent = vip.note;
+      section.appendChild(note);
     }
+
     container.appendChild(section);
   });
 }
 
-// Tabs
+function updateCartBadge() {
+  const badge = document.getElementById("cart-count");
+  if (badge) {
+    badge.textContent = cartItems.length;
+    badge.style.display = cartItems.length > 0 ? "inline-block" : "none";
+  }
+}
+
 // Variabel untuk melacak kategori aktif
 let currentCategory = null;
 
@@ -257,28 +275,25 @@ let currentCategory = null;
 document.querySelectorAll(".tab-btn").forEach(tab => {
   tab.addEventListener("click", (e) => {
     const category = tab.getAttribute("data-category");
-
     if (currentCategory === category) {
-      // Klik ulang = tutup
       document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.remove("active"));
       document.getElementById("category-content").innerHTML = "";
       currentCategory = null;
     } else {
-      // Klik tab baru
       document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.remove("active"));
       tab.classList.add("active");
       renderCategory(category);
       currentCategory = category;
     }
-
-    e.stopPropagation(); // Supaya klik tab tidak ikut nutup dari event luar
+    e.stopPropagation();
   });
 });
 
-// Title Animation & Default Load
+// Title Animation & Load awal
 document.addEventListener("DOMContentLoaded", function () {
   const title = "8 Ball Pool Menu";
   const container = document.getElementById("animated-title");
+
   title.split("").forEach((char, index) => {
     const span = document.createElement("span");
     span.textContent = char;
@@ -286,6 +301,10 @@ document.addEventListener("DOMContentLoaded", function () {
     span.classList.add("glow-letter");
     container.appendChild(span);
   });
+
+  updateCartBadge(); // Tampilkan badge saat halaman dimuat
+});
+
   // ✅ PENTING: render default tab
   renderCategory("cash");
 });
