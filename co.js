@@ -1,91 +1,91 @@
-const cartItems = JSON.parse(localStorage.getItem("cart")) || [];
+// Ambil dari localStorage
+let cartItems = JSON.parse(localStorage.getItem("cart")) || [];
 let selectedItems = new Set();
 
-const cartContainer = document.getElementById("cart-items");
+const cartList = document.getElementById("cart-list");
 const totalPriceEl = document.getElementById("total-price");
 const checkoutBtn = document.getElementById("checkout-btn");
 const selectAllCheckbox = document.getElementById("select-all");
+const emptyMsg = document.getElementById("empty-msg");
 
-// Bonus Mapping
-const bonusCash = {
+// BONUS MAP
+const bonusMap = {
   55000: "2 Keping Cue Mastermind",
-  70000: "4 Keping Cue Muramasa",
-  95000: "4 Keping Cue Mastermind",
-  135000: "16 Keping Cue Hawar Beku dan 30 Golden Shot",
-  190000: "VIP Points",
-  250000: "16 Hawar Beku + 4 Muramasa + 30 Golden Shot",
-  275000: "VIP Points"
-};
-
-const bonusBox = {
   60000: "2 Keping Cue Mastermind",
-  75000: "4 Keping Cue Muramasa",
+  70000: "4 Keping Cue Murasa",
+  75000: "4 Keping Cue Murasa",
+  95000: "4 Keping Cue Mastermind",
   100000: "4 Keping Cue Mastermind",
-  145000: "16 Hawar Beku dan 30 Golden Shot",
+  135000: "16 Keping Cue Hawar Beku dan 30 Golden Shot",
+  145000: "16 Keping Cue Hawar Beku dan 30 Golden Shot",
+  190000: "VIP Points",
   200000: "VIP Points",
-  265000: "16 Hawar Beku + 4 Muramasa + 30 Golden Shot",
+  250000: "16 Keping Hawar Beku + 4 Keping Muramasa + 30 Golden Shot",
+  265000: "16 Keping Hawar Beku + 4 Keping Muramasa + 30 Golden Shot",
+  275000: "VIP Points",
   295000: "VIP Points"
 };
 
-function parseHarga(label) {
-  const match = label.match(/Rp\s?([\d.]+)/);
-  return match ? parseInt(match[1].replace(/\./g, "")) : 0;
-}
-
-function getBonus(category, harga) {
-  if (category === "cash") return bonusCash[harga] || null;
-  if (category === "boxlegends") return bonusBox[harga] || null;
-  return null;
-}
-
+// Tampilkan isi keranjang
 function renderCart() {
-  cartContainer.innerHTML = "";
-
+  cartList.innerHTML = "";
   if (cartItems.length === 0) {
-    cartContainer.innerHTML = "<p class='empty-msg'>Keranjang kosong.</p>";
+    emptyMsg.style.display = "block";
     return;
   }
 
+  emptyMsg.style.display = "none";
+
   cartItems.forEach((item, index) => {
-    const harga = parseHarga(item.label);
-    const checked = selectedItems.has(index) ? "checked" : "";
-
-    const bonus = getBonus(item.category, harga);
-    const bonusHTML = bonus
-      ? `<div class="bonus">🎁 Bonus: ${bonus}</div>`
-      : "";
-
     const div = document.createElement("div");
     div.className = "cart-item";
+
+    const bonus = getBonus(item);
+
     div.innerHTML = `
-      <input type="checkbox" class="item-check" data-index="${index}" ${checked}>
+      <input type="checkbox" class="item-check" data-index="${index}">
       <div class="item-info">
-        <div class="item-name">${item.name}</div>
-        <div class="item-label">${item.label}</div>
-        ${checked && bonus ? bonusHTML : ""}
+        <strong>${item.name}</strong><br>
+        ${item.label}<br>
+        <em>Kategori: ${item.category}</em><br>
+        ${bonus ? `<span class="bonus">🎁 Bonus: ${bonus}</span>` : ""}
       </div>
-      <button class="delete-btn" data-index="${index}">Hapus</button>
+      <button class="remove-btn" data-index="${index}">Hapus</button>
     `;
-    cartContainer.appendChild(div);
+
+    cartList.appendChild(div);
   });
 
   updateTotal();
 }
 
-function updateTotal() {
-  let total = 0;
-  selectedItems.forEach(index => {
-    const item = cartItems[index];
-    const harga = parseHarga(item.label);
-    total += harga;
-  });
-
-  totalPriceEl.textContent = "Rp " + total.toLocaleString("id-ID");
-  checkoutBtn.textContent = `Checkout (${selectedItems.size})`;
+// Cek bonus berdasarkan item
+function getBonus(item) {
+  const nominal = parseInt(item.label.replace("Rp", "").split("-")[0].replace(/\D/g, ""));
+  if (item.category === "cash" || item.category === "boxlegends") {
+    return bonusMap[nominal] || "";
+  }
+  return "";
 }
 
-// Checkbox item
-cartContainer.addEventListener("change", function (e) {
+// Update total harga
+function updateTotal() {
+  let total = 0;
+  let count = 0;
+
+  selectedItems.forEach(i => {
+    const item = cartItems[i];
+    const nominal = parseInt(item.label.replace("Rp", "").split("-")[0].replace(/\D/g, ""));
+    total += nominal;
+    count++;
+  });
+
+  totalPriceEl.textContent = "Rp" + total.toLocaleString("id-ID");
+  checkoutBtn.textContent = `Checkout (${count})`;
+}
+
+// Event listener item checkbox
+cartList.addEventListener("change", (e) => {
   if (e.target.classList.contains("item-check")) {
     const index = parseInt(e.target.getAttribute("data-index"));
     if (e.target.checked) {
@@ -93,39 +93,51 @@ cartContainer.addEventListener("change", function (e) {
     } else {
       selectedItems.delete(index);
     }
+    updateTotal();
     checkSelectAllStatus();
-    renderCart();
   }
 });
 
-// Checkbox Semua
+// Pilih semua checkbox
 selectAllCheckbox.addEventListener("change", () => {
   selectedItems.clear();
-  if (selectAllCheckbox.checked) {
-    cartItems.forEach((_, i) => selectedItems.add(i));
-  }
-  renderCart();
+  document.querySelectorAll(".item-check").forEach((cb, i) => {
+    cb.checked = selectAllCheckbox.checked;
+    if (selectAllCheckbox.checked) selectedItems.add(i);
+  });
+  updateTotal();
 });
 
-// Cek status "semua"
+// Cek apakah semua dicentang
 function checkSelectAllStatus() {
-  const allCheck = document.querySelectorAll(".item-check");
-  const checkedCheck = document.querySelectorAll(".item-check:checked");
-  selectAllCheckbox.checked = allCheck.length === checkedCheck.length;
+  const all = document.querySelectorAll(".item-check").length;
+  const checked = document.querySelectorAll(".item-check:checked").length;
+  selectAllCheckbox.checked = all === checked;
 }
 
 // Hapus item
-cartContainer.addEventListener("click", (e) => {
-  if (e.target.classList.contains("delete-btn")) {
+cartList.addEventListener("click", (e) => {
+  if (e.target.classList.contains("remove-btn")) {
     const index = parseInt(e.target.getAttribute("data-index"));
     cartItems.splice(index, 1);
     localStorage.setItem("cart", JSON.stringify(cartItems));
     selectedItems.delete(index);
     renderCart();
+    updateCartBadge(); // sinkron badge
   }
 });
 
-// Init
+// Sinkron badge di icon
+function updateCartBadge() {
+  const badge = document.getElementById("cart-count");
+  if (badge) {
+    badge.textContent = cartItems.length;
+    badge.style.display = cartItems.length > 0 ? "inline-block" : "none";
+  }
+}
+
+// Saat halaman siap
 document.addEventListener("DOMContentLoaded", () => {
   renderCart();
+  updateCartBadge();
 });
