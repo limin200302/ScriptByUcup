@@ -14,19 +14,16 @@
     <div class="header-right"><a href="index.html">🏠</a></div>
   </header>
 
-  <main id="cart-container">
-    <div id="cart-list"></div>
-    <p id="empty-msg" style="text-align:center; margin-top:20px;">Keranjang masih kosong 😢</p>
-  </main>
+  <main id="cart-items"></main>
 
-  <footer class="checkout-bar">
-    <label class="select-all"><input type="checkbox" id="select-all" /> <strong>Semua</strong></label>
+<footer class="checkout-bar">
+  <label class="select-all"><input type="checkbox" id="select-all" /> <strong>Semua</strong></label>
+  <div class="checkout-summary">
+    <button id="checkout-btn">Checkout (0)</button>
+    <div class="total-label">Total: <span id="total-price">Rp 0</span></div>
+  </div>
+</footer>
 
-    <div class="checkout-summary">
-      <button id="checkout-btn">Checkout (0)</button>
-      <div class="total-label">Total: <span id="total-price">Rp0</span></div>
-    </div>
-  </footer>
 
 </body>
 </html>
