@@ -346,6 +346,13 @@ document.addEventListener("DOMContentLoaded", function () {
   renderCategory("cash");
   document.querySelector('[data-category="cash"]')?.classList.add("active");
 });
+// ✅ Update badge saat balik ke halaman tanpa reload (setelah hapus item dari keranjang)
+document.addEventListener("visibilitychange", function () {
+  if (document.visibilityState === "visible") {
+    cartItems = JSON.parse(localStorage.getItem("cart")) || [];
+    updateCartBadge();
+  }
+});
 
 // ---------------------------
 // Animasi terbang ke keranjang
