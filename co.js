@@ -1,43 +1,82 @@
-// Ambil dari localStorage dengan key yang benar
 let cartItems = JSON.parse(localStorage.getItem("cart")) || [];
 let selectedItems = new Set();
 
-const cartContainer = document.getElementById("cart-container");
+const cartList = document.getElementById("cart-list");
+const emptyMsg = document.getElementById("empty-msg");
 const totalPriceEl = document.getElementById("total-price");
 const checkoutBtn = document.getElementById("checkout-btn");
 const selectAllCheckbox = document.getElementById("select-all");
 
 function renderCart() {
-  cartContainer.innerHTML = "";
+  cartList.innerHTML = "";
+
+  if (cartItems.length === 0) {
+    emptyMsg.style.display = "block";
+    selectAllCheckbox.disabled = true;
+    checkoutBtn.disabled = true;
+    totalPriceEl.textContent = "Rp0";
+    checkoutBtn.textContent = "Checkout (0)";
+    return;
+  }
+
+  emptyMsg.style.display = "none";
+  selectAllCheckbox.disabled = false;
+  checkoutBtn.disabled = false;
 
   cartItems.forEach((item, index) => {
-    const div = document.createElement("div");
-    div.className = "cart-item";
-
-    div.innerHTML = `
+    const itemDiv = document.createElement("div");
+    itemDiv.className = "cart-item";
+    itemDiv.innerHTML = `
       <input type="checkbox" class="item-check" data-index="${index}">
       <div class="item-info">
-        <div class="item-name">${item.name}</div>
-        <div class="item-label">${item.label}</div>
+        <p><strong>${item.name}</strong></p>
+        <p>${item.label}</p>
+        <p style="font-size: 12px; color: #888;">Kategori: ${item.category}</p>
       </div>
-      <button class="delete-btn" data-index="${index}">Hapus</button>
+      <button class="remove-btn" data-index="${index}">Hapus</button>
     `;
-
-    cartContainer.appendChild(div);
+    cartList.appendChild(itemDiv);
   });
 
+  attachEventListeners();
   updateTotal();
+}
+
+function attachEventListeners() {
+  document.querySelectorAll(".item-check").forEach(cb => {
+    cb.addEventListener("change", () => {
+      const index = parseInt(cb.getAttribute("data-index"));
+      if (cb.checked) {
+        selectedItems.add(index);
+      } else {
+        selectedItems.delete(index);
+      }
+      updateTotal();
+      checkSelectAllStatus();
+    });
+  });
+
+  document.querySelectorAll(".remove-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const index = parseInt(btn.getAttribute("data-index"));
+      cartItems.splice(index, 1);
+      localStorage.setItem("cart", JSON.stringify(cartItems));
+      selectedItems.clear();
+      renderCart();
+    });
+  });
 }
 
 function updateTotal() {
   let total = 0;
   let count = 0;
 
-  selectedItems.forEach(i => {
-    const item = cartItems[i];
-    const priceText = item.label.split(" - ")[1];
-    const price = parseInt(priceText.replace("Rp", "").replace(/\D/g, ""));
-    total += price;
+  selectedItems.forEach(index => {
+    const item = cartItems[index];
+    if (!item) return;
+    const priceText = item.label.split(" - ")[1] || "0";
+    const number = parseInt(priceText.replace(/[^0-9]/g, ""));
+    total += number;
     count++;
   });
 
@@ -45,21 +84,12 @@ function updateTotal() {
   checkoutBtn.textContent = `Checkout (${count})`;
 }
 
-// Checkbox per item
-cartContainer.addEventListener("change", function (e) {
-  if (e.target.classList.contains("item-check")) {
-    const index = parseInt(e.target.getAttribute("data-index"));
-    if (e.target.checked) {
-      selectedItems.add(index);
-    } else {
-      selectedItems.delete(index);
-    }
-    updateTotal();
-    checkSelectAllStatus();
-  }
-});
+function checkSelectAllStatus() {
+  const totalCheckbox = document.querySelectorAll(".item-check").length;
+  const checkedCount = document.querySelectorAll(".item-check:checked").length;
+  selectAllCheckbox.checked = totalCheckbox === checkedCount;
+}
 
-// Checkbox "Semua"
 selectAllCheckbox.addEventListener("change", () => {
   selectedItems.clear();
   document.querySelectorAll(".item-check").forEach((cb, i) => {
@@ -69,24 +99,4 @@ selectAllCheckbox.addEventListener("change", () => {
   updateTotal();
 });
 
-// Cek jika semua dicentang
-function checkSelectAllStatus() {
-  const totalCheckbox = document.querySelectorAll(".item-check").length;
-  const checkedCount = document.querySelectorAll(".item-check:checked").length;
-  selectAllCheckbox.checked = totalCheckbox === checkedCount;
-}
-
-// Hapus item
-cartContainer.addEventListener("click", (e) => {
-  if (e.target.classList.contains("delete-btn")) {
-    const index = parseInt(e.target.getAttribute("data-index"));
-    cartItems.splice(index, 1);
-    localStorage.setItem("cartItems", JSON.stringify(cartItems)); // simpan ulang
-    selectedItems.delete(index);
-    renderCart();
-  }
-});
-
-document.addEventListener("DOMContentLoaded", () => {
-  renderCart();
-});
+document.addEventListener("DOMContentLoaded", renderCart);
