@@ -196,6 +196,9 @@ const vipDataBoxCollector = [
 let cartItems = [];
 
 function updateCartBadge() {
+  // Ambil ulang dari localStorage setiap kali dipanggil
+  cartItems = JSON.parse(localStorage.getItem("cart")) || [];
+
   const badge = document.getElementById("cart-count");
   if (badge) {
     badge.textContent = cartItems.length;
