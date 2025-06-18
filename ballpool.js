@@ -241,58 +241,30 @@ function renderCategory(category) {
         <div class="checkmark-icon">&#10003;</div>
       `;
 
-const plusBtn = document.createElement("button");
-plusBtn.className = "btn-plus";
-plusBtn.textContent = "+";
-plusBtn.addEventListener("click", (e) => {
-  e.stopPropagation();
-  
-  // Ambil ulang data terbaru dari localStorage
-  let currentCart = JSON.parse(localStorage.getItem("cart")) || [];
+const plusBtn = document.createElement("button");      
+plusBtn.className = "btn-plus";      
+plusBtn.textContent = "+";      
+plusBtn.addEventListener("click", (e) => { 
+  e.stopPropagation(); 
+  cartItems.push({ label: pkg.label, category: category, name: vip.name }); 
+  localStorage.setItem("cart", JSON.stringify(cartItems)); 
+  updateCartBadge(); 
+  animateFlyToCart(e.target); 
+}); 
 
-  // Tambahkan item baru
-  currentCart.push({
-    label: pkg.label,
-    category: category,
-    name: vip.name
-  });
-
-  // Simpan kembali ke localStorage
-  localStorage.setItem("cart", JSON.stringify(currentCart));
-
-  // ✅ Update cartItems global agar badge tetap sinkron
-  cartItems = currentCart;
-
-  // Update badge dan animasi
-  updateCartBadge();
-  animateFlyToCart(e.target);
-});
-
-      
-// Tombol -      
 const minusBtn = document.createElement("button");      
 minusBtn.className = "btn-minus";      
 minusBtn.textContent = "−";      
-minusBtn.addEventListener("click", (e) => {        
-  e.stopPropagation();        
-  const index = cartItems.findIndex(item =>          
-    item.label === pkg.label && item.category === category        
-  );        
-  if (index !== -1) {
-  cartItems.splice(index, 1);
-  updateCartBadge();
-  localStorage.setItem("cart", JSON.stringify(cartItems));
-}
+minusBtn.addEventListener("click", (e) => { 
+  e.stopPropagation(); 
+  const index = cartItems.findIndex(item => item.label === pkg.label && item.category === category); 
+  if (index !== -1) { cartItems.splice(index, 1); updateCartBadge(); localStorage.setItem("cart", JSON.stringify(cartItems)); }
 });
-
 const controlWrap = document.createElement("div");
 controlWrap.className = "btn-control";
 controlWrap.appendChild(minusBtn);
 controlWrap.appendChild(plusBtn);
 card.appendChild(controlWrap);
-grid.appendChild(card);
-      card.appendChild(controlWrap);
-      grid.appendChild(card);
     });
 
     section.appendChild(grid);
