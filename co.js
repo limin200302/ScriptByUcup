@@ -2,24 +2,24 @@
 let cartItems = JSON.parse(localStorage.getItem("cart")) || [];
 let selectedItems = new Set();
 
-// Bonus data berdasarkan kategori dan harga
+// Bonus berdasarkan kategori dan harga
 const bonusData = {
   cash: {
     55000: "Bonus: 2 Keping Cue Mastermind",
     70000: "Bonus: 4 Keping Cue Murasa",
     95000: "Bonus: 4 Keping Cue Mastermind",
-    135000: "Bonus: 16 Keping Cue Hawar Beku + 30 Golden Shot",
+    135000: "Bonus: 16 Cue Hawar Beku + 30 Golden Shot",
     190000: "Bonus: VIP Points",
-    250000: "Bonus: 16 Keping Hawar Beku + 4 Keping Muramasa + 30 Golden Shot",
+    250000: "Bonus: 16 Hawar Beku + 4 Muramasa + 30 Golden Shot",
     275000: "Bonus: VIP Points"
   },
   boxlegends: {
     60000: "Bonus: 2 Keping Cue Mastermind",
     75000: "Bonus: 4 Keping Cue Murasa",
     100000: "Bonus: 4 Keping Cue Mastermind",
-    145000: "Bonus: 16 Keping Cue Hawar Beku + 30 Golden Shot",
+    145000: "Bonus: 16 Cue Hawar Beku + 30 Golden Shot",
     200000: "Bonus: VIP Points",
-    265000: "Bonus: 16 Keping Hawar Beku + 4 Keping Muramasa + 30 Golden Shot",
+    265000: "Bonus: 16 Hawar Beku + 4 Muramasa + 30 Golden Shot",
     295000: "Bonus: VIP Points"
   }
 };
@@ -31,9 +31,9 @@ const selectAllCheckbox = document.getElementById("select-all");
 const emptyMsg = document.getElementById("empty-msg");
 
 function getPriceFromLabel(label) {
-  if (!label.includes("Rp")) return 0;
-  const parts = label.split("Rp")[1];
-  return parseInt(parts.replace(/\D/g, "")) || 0;
+  const match = label.match(/Rp\s?([\d.]+)/i);
+  if (!match) return 0;
+  return parseInt(match[1].replace(/\./g, ""));
 }
 
 function getBonus(category, price) {
@@ -47,6 +47,7 @@ function renderCart() {
     emptyMsg.style.display = "block";
     return;
   }
+
   emptyMsg.style.display = "none";
 
   cartItems.forEach((item, index) => {
@@ -83,11 +84,10 @@ function updateTotal() {
     count++;
   });
 
-  totalPriceEl.textContent = "Rp" + total.toLocaleString("id-ID");
+  totalPriceEl.textContent = "Rp " + total.toLocaleString("id-ID");
   checkoutBtn.textContent = `Checkout (${count})`;
 }
 
-// Checkbox tiap item
 cartContainer.addEventListener("change", function (e) {
   if (e.target.classList.contains("item-check")) {
     const index = parseInt(e.target.getAttribute("data-index"));
@@ -101,7 +101,6 @@ cartContainer.addEventListener("change", function (e) {
   }
 });
 
-// Checkbox Semua
 selectAllCheckbox.addEventListener("change", () => {
   selectedItems.clear();
   document.querySelectorAll(".item-check").forEach((cb, i) => {
@@ -111,14 +110,12 @@ selectAllCheckbox.addEventListener("change", () => {
   updateTotal();
 });
 
-// Cek jika semua item dicentang
 function checkSelectAllStatus() {
-  const all = document.querySelectorAll(".item-check").length;
-  const checked = document.querySelectorAll(".item-check:checked").length;
-  selectAllCheckbox.checked = all > 0 && all === checked;
+  const totalCheckbox = document.querySelectorAll(".item-check").length;
+  const checkedCount = document.querySelectorAll(".item-check:checked").length;
+  selectAllCheckbox.checked = totalCheckbox === checkedCount && totalCheckbox > 0;
 }
 
-// Hapus item
 cartContainer.addEventListener("click", (e) => {
   if (e.target.classList.contains("delete-btn")) {
     const index = parseInt(e.target.getAttribute("data-index"));
@@ -129,7 +126,6 @@ cartContainer.addEventListener("click", (e) => {
   }
 });
 
-// Inisialisasi saat halaman dibuka
 document.addEventListener("DOMContentLoaded", () => {
   renderCart();
 });
