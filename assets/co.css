@@ -1,150 +1,139 @@
-
+/* Reset & body */
 body {
   margin: 0;
-  font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(to bottom, #fff8f0, #fff);
+  font-family: "Segoe UI", sans-serif;
+  background: linear-gradient(to bottom right, #fff, #ffe0b2);
   color: #333;
-  transition: background 0.3s ease;
 }
 
-/* Header blok orange */
+/* Header Shopee-style */
 .cart-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   background: orange;
-  padding: 12px 18px;
+  padding: 12px 16px;
   color: white;
   font-weight: bold;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  position: sticky;
-  top: 0;
-  z-index: 100;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
-.cart-header .header-left a,
-.cart-header .header-right a {
+
+.cart-header a {
   color: white;
   text-decoration: none;
   font-size: 16px;
-  transition: transform 0.2s;
-}
-.cart-header .header-left a:hover,
-.cart-header .header-right a:hover {
-  transform: scale(1.05);
 }
 
-/* Konten utama */
-main {
+/* Cart item list */
+#cart-list {
   padding: 15px;
-  padding-bottom: 90px; /* Supaya tidak ketutup footer */
 }
+
 .cart-item {
   display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
   background: #fff;
-  border: 1px solid #eee;
-  border-radius: 8px;
-  padding: 12px;
+  border-radius: 10px;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.08);
+  padding: 10px;
   margin-bottom: 12px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-  animation: fadeIn 0.3s ease;
+  animation: fadeIn 0.4s ease-in-out;
 }
-.cart-item input[type="checkbox"] {
-  margin-right: 10px;
-  transform: scale(1.2);
-  margin-top: 5px;
-}
+
 .item-info {
   flex-grow: 1;
 }
+
 .item-name {
   font-weight: bold;
   font-size: 16px;
 }
+
 .item-label {
   font-size: 14px;
-  color: #666;
+  color: #777;
 }
+
 .item-bonus {
-  font-size: 12px;
+  font-size: 13px;
   color: green;
   font-style: italic;
   margin-top: 4px;
 }
 
 .delete-btn {
-  background: #ff4d4f;
+  background: #ff5252;
   color: white;
   border: none;
-  padding: 6px 10px;
+  padding: 6px 12px;
   border-radius: 6px;
   cursor: pointer;
-  transition: background 0.2s ease, transform 0.2s;
-}
-.delete-btn:hover {
-  background: #e04345;
-  transform: scale(1.05);
+  transition: background 0.3s;
 }
 
-/* Footer checkout */
+.delete-btn:hover {
+  background: #e53935;
+}
+
+/* Empty message */
+#empty-msg {
+  text-align: center;
+  font-size: 18px;
+  padding: 2rem;
+  color: #777;
+}
+
+/* Checkout bar */
 .checkout-bar {
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
-  background: #fff;
+  background: white;
   border-top: 1px solid #ccc;
-  padding: 10px 15px;
-  box-shadow: 0 -3px 10px rgba(0, 0, 0, 0.08);
-  z-index: 99;
+  padding: 10px 16px;
+  box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.06);
 }
+
 .select-all {
   display: flex;
   align-items: center;
   font-weight: bold;
-  margin-bottom: 6px;
-}
-.select-all input {
-  margin-right: 8px;
-  transform: scale(1.2);
+  gap: 6px;
 }
 
 .checkout-summary {
+  margin-top: 10px;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
+  flex-direction: column;
+  align-items: flex-start;
 }
+
 #checkout-btn {
-  background: #ff5722;
+  background: orange;
   color: white;
   font-size: 16px;
-  padding: 10px 16px;
+  padding: 10px;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
-  transition: background 0.2s ease, transform 0.2s;
+  width: 100%;
+  transition: background 0.3s;
 }
+
 #checkout-btn:hover {
-  background: #e64a19;
-  transform: scale(1.05);
+  background: #f57c00;
 }
+
 .total-label {
-  font-size: 16px;
+  font-size: 15px;
+  margin-top: 6px;
   font-weight: bold;
-  color: #333;
+  color: #444;
 }
 
-/* Kosong */
-#empty-msg {
-  text-align: center;
-  color: #999;
-  margin-top: 40px;
-  font-size: 16px;
-}
-
-/* Animasi */
+/* Fade in animasi */
 @keyframes fadeIn {
   from {
     opacity: 0;
