@@ -258,13 +258,6 @@ document.addEventListener("DOMContentLoaded", function () {
     span.classList.add("glow-letter");
     container.appendChild(span);
   });
-  // Klik di luar tab = tutup semua kategori
-document.addEventListener("click", () => {
-  document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.remove("active"));
-  document.getElementById("category-content").innerHTML = "";
-  currentCategory = null;
-});
-
   // ✅ PENTING: render default tab
   renderCategory("cash");
 });
