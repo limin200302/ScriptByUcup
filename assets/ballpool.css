@@ -312,25 +312,27 @@ nav a {
 .btn-control {
   display: flex;
   justify-content: center;
-  gap: 8px;
-  margin-top: 10px;
+  gap: 12px; /* Renggangin antar tombol */
+  margin-top: 6px;
 }
 
 .btn-plus, .btn-minus {
-  font-size: 16px;
-  font-weight: bold;
-  width: 32px;
-  height: 32px;
+  font-size: 14px;
+  width: 24px;
+  height: 24px;
+  line-height: 24px;
+  text-align: center;
   border-radius: 50%;
   border: none;
   cursor: pointer;
   color: white;
+  padding: 0;
 }
 
 .btn-plus {
-  background-color: #facc15; /* kuning */
+  background-color: #facc15; /* Kuning */
 }
 
 .btn-minus {
-  background-color: #ef4444; /* merah */
+  background-color: #ef4444; /* Merah */
 }
