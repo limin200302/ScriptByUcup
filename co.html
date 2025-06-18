@@ -1,34 +1,40 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Keranjang Saya - Mamet Store</title>
-  <link rel="stylesheet" href="assets/co.css" />
-  <script src="co.js" defer></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Keranjang Saya - Mamet Store</title>
+  <link rel="stylesheet" href="assets/co.css" />
+  <script src="co.js" defer></script>
 </head>
 <body>
-  <header class="cart-header">
-    <div class="header-left"><a href="javascript:history.back()">← Kembali</a></div>
-    <div class="header-right"><a href="index.html">🏠</a></div>
-  </header>
+  <!-- Header -->
+  <header class="cart-header">
+    <div class="header-left">
+      <a href="javascript:history.back()">← Kembali</a>
+    </div>
+    <div class="header-right">
+      <a href="index.html">🏠</a>
+    </div>
+  </header>
 
-  <!-- Ganti id ke cart-list agar cocok dengan co.js -->
-  <main id="cart-list"></main>
+  <!-- List Item -->
+  <main id="cart-list"></main>
 
-  <!-- Pesan jika keranjang kosong -->
-  <div id="empty-msg" style="text-align: center; padding: 1rem; display: none;">
-    Keranjang kamu masih kosong 🛒
-  </div>
+  <!-- Pesan Kosong -->
+  <div id="empty-msg" style="text-align: center; padding: 1rem; display: none;">
+    Keranjang kamu masih kosong 🛒
+  </div>
 
-  <footer class="checkout-bar">
-    <label class="select-all">
-      <input type="checkbox" id="select-all" /> <strong>Semua</strong>
-    </label>
-    <div class="checkout-summary">
-      <button id="checkout-btn">Checkout (0)</button>
-      <div class="total-label">Total: <span id="total-price">Rp 0</span></div>
-    </div>
-  </footer>
+  <!-- Footer Checkout -->
+  <footer class="checkout-bar">
+    <label class="select-all">
+      <input type="checkbox" id="select-all" /> <strong>Semua</strong>
+    </label>
+    <div class="checkout-summary">
+      <button id="checkout-btn">Checkout (0)</button>
+      <div class="total-label">Total: <span id="total-price">Rp 0</span></div>
+    </div>
+  </footer>
 </body>
 </html>
