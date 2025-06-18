@@ -2,51 +2,48 @@ let cartItems = JSON.parse(localStorage.getItem("cart")) || [];
 let selectedItems = new Set();
 
 const cartList = document.getElementById("cart-list");
-const emptyMsg = document.getElementById("empty-msg");
 const totalPriceEl = document.getElementById("total-price");
 const checkoutBtn = document.getElementById("checkout-btn");
 const selectAllCheckbox = document.getElementById("select-all");
+const emptyMsg = document.getElementById("empty-msg");
 
 function renderCart() {
   cartList.innerHTML = "";
 
   if (cartItems.length === 0) {
     emptyMsg.style.display = "block";
-    selectAllCheckbox.disabled = true;
-    checkoutBtn.disabled = true;
-    totalPriceEl.textContent = "Rp0";
-    checkoutBtn.textContent = "Checkout (0)";
     return;
+  } else {
+    emptyMsg.style.display = "none";
   }
 
-  emptyMsg.style.display = "none";
-  selectAllCheckbox.disabled = false;
-  checkoutBtn.disabled = false;
-
   cartItems.forEach((item, index) => {
-    const itemDiv = document.createElement("div");
-    itemDiv.className = "cart-item";
-    itemDiv.innerHTML = `
+    const div = document.createElement("div");
+    div.className = "cart-item";
+
+    div.innerHTML = `
       <input type="checkbox" class="item-check" data-index="${index}">
       <div class="item-info">
         <p><strong>${item.name}</strong></p>
         <p>${item.label}</p>
-        <p style="font-size: 12px; color: #888;">Kategori: ${item.category}</p>
+        <p><em>Kategori: ${item.category}</em></p>
       </div>
       <button class="remove-btn" data-index="${index}">Hapus</button>
     `;
-    cartList.appendChild(itemDiv);
+
+    cartList.appendChild(div);
   });
 
-  attachEventListeners();
+  addEventListeners();
   updateTotal();
 }
 
-function attachEventListeners() {
+function addEventListeners() {
+  // Checkbox item
   document.querySelectorAll(".item-check").forEach(cb => {
-    cb.addEventListener("change", () => {
-      const index = parseInt(cb.getAttribute("data-index"));
-      if (cb.checked) {
+    cb.addEventListener("change", function () {
+      const index = parseInt(this.getAttribute("data-index"));
+      if (this.checked) {
         selectedItems.add(index);
       } else {
         selectedItems.delete(index);
@@ -56,12 +53,13 @@ function attachEventListeners() {
     });
   });
 
+  // Tombol hapus
   document.querySelectorAll(".remove-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const index = parseInt(btn.getAttribute("data-index"));
+    btn.addEventListener("click", (e) => {
+      const index = parseInt(e.target.getAttribute("data-index"));
       cartItems.splice(index, 1);
       localStorage.setItem("cart", JSON.stringify(cartItems));
-      selectedItems.clear();
+      selectedItems.delete(index);
       renderCart();
     });
   });
@@ -73,21 +71,16 @@ function updateTotal() {
 
   selectedItems.forEach(index => {
     const item = cartItems[index];
-    if (!item) return;
-    const priceText = item.label.split(" - ")[1] || "0";
-    const number = parseInt(priceText.replace(/[^0-9]/g, ""));
-    total += number;
+    const priceMatch = item.label.match(/Rp\s?([\d.]+)/);
+    if (priceMatch) {
+      const price = parseInt(priceMatch[1].replace(/\./g, ""));
+      total += price;
+    }
     count++;
   });
 
   totalPriceEl.textContent = "Rp" + total.toLocaleString("id-ID");
   checkoutBtn.textContent = `Checkout (${count})`;
-}
-
-function checkSelectAllStatus() {
-  const totalCheckbox = document.querySelectorAll(".item-check").length;
-  const checkedCount = document.querySelectorAll(".item-check:checked").length;
-  selectAllCheckbox.checked = totalCheckbox === checkedCount;
 }
 
 selectAllCheckbox.addEventListener("change", () => {
@@ -99,4 +92,12 @@ selectAllCheckbox.addEventListener("change", () => {
   updateTotal();
 });
 
-document.addEventListener("DOMContentLoaded", renderCart);
+function checkSelectAllStatus() {
+  const totalCheckbox = document.querySelectorAll(".item-check").length;
+  const checkedCount = document.querySelectorAll(".item-check:checked").length;
+  selectAllCheckbox.checked = totalCheckbox === checkedCount;
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  renderCart();
+});
