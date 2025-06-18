@@ -232,43 +232,79 @@ function renderCategory(category) {
     const grid = document.createElement("div");
     grid.className = "package-grid";
 
-    vip.prices.forEach(pkg => {
-      const card = document.createElement("div");
-      card.className = "package-card";
-      card.innerHTML = `
-        <h3>${pkg.label.split(" - ")[0]}</h3>
-        <p>${pkg.label.split(" - ")[1]}</p>
-        <div class="checkmark-icon">&#10003;</div>
-      `;
+    vip.prices.forEach((pkg) => {
+  const card = document.createElement("div");
+  card.className = "package-card";
 
-const plusBtn = document.createElement("button");      
-plusBtn.className = "btn-plus";      
-plusBtn.textContent = "+";      
-plusBtn.addEventListener("click", (e) => { 
-  e.stopPropagation(); 
-  cartItems.push({ label: pkg.label, category: category, name: vip.name }); 
-  localStorage.setItem("cart", JSON.stringify(cartItems)); 
-  updateCartBadge(); 
-  animateFlyToCart(e.target); 
-}); 
+  card.innerHTML = `
+    <h3>${pkg.label.split(" - ")[0]}</h3>
+    <p>${pkg.label.split(" - ")[1]}</p>
+    <div class="checkmark-icon">&#10003;</div>
+  `;
 
-const minusBtn = document.createElement("button");      
-minusBtn.className = "btn-minus";      
-minusBtn.textContent = "−";      
-minusBtn.addEventListener("click", (e) => { 
-  e.stopPropagation(); 
-  const index = cartItems.findIndex(item => item.label === pkg.label && item.category === category); 
-  if (index !== -1) { cartItems.splice(index, 1); updateCartBadge(); localStorage.setItem("cart", JSON.stringify(cartItems)); }
-});
-const controlWrap = document.createElement("div");
-controlWrap.className = "btn-control";
-controlWrap.appendChild(minusBtn);
-controlWrap.appendChild(plusBtn);
-card.appendChild(controlWrap);
+  // Inisialisasi jumlah
+  let quantity = 0;
+
+  const quantityDisplay = document.createElement("span");
+  quantityDisplay.className = "quantity-display";
+  quantityDisplay.textContent = quantity;
+
+  // Tombol + (Tambah)
+  const plusBtn = document.createElement("button");
+  plusBtn.className = "btn-plus";
+  plusBtn.textContent = "+";
+  plusBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    quantity++;
+    quantityDisplay.textContent = quantity;
+
+    // Tambahkan ke cart
+    cartItems.push({
+      label: pkg.label,
+      category: category,
+      name: vip.name,
+    });
+
+    localStorage.setItem("cart", JSON.stringify(cartItems));
+    updateCartBadge();
+    animateFlyToCart(e.target);
+  });
+
+  // Tombol − (Kurang)
+  const minusBtn = document.createElement("button");
+  minusBtn.className = "btn-minus";
+  minusBtn.textContent = "−";
+  minusBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    if (quantity > 0) {
+      quantity--;
+      quantityDisplay.textContent = quantity;
+
+      // Hapus satu item dari cart yang cocok
+      const index = cartItems.findIndex(
+        (item) =>
+          item.label === pkg.label &&
+          item.category === category &&
+          item.name === vip.name
+      );
+      if (index !== -1) {
+        cartItems.splice(index, 1);
+        localStorage.setItem("cart", JSON.stringify(cartItems));
+        updateCartBadge();
+      }
+    }
+  });
+
+  // Gabungkan kontrol jumlah
+  const controlWrap = document.createElement("div");
+  controlWrap.className = "btn-control";
+  controlWrap.appendChild(minusBtn);
+  controlWrap.appendChild(quantityDisplay);
+  controlWrap.appendChild(plusBtn);
+
   card.appendChild(controlWrap);
   grid.appendChild(card);
 });
-    });
 
     section.appendChild(grid);
 
