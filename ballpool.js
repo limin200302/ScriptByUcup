@@ -192,13 +192,25 @@ const vipDataBoxCollector = [
   },
 ];
 
-let cartItems = []; // Menyimpan item yang dipilih
+// ---------------------------
+// Data Cart
+let cartItems = [];
 
+function updateCartBadge() {
+  const badge = document.getElementById("cart-count");
+  if (badge) {
+    badge.textContent = cartItems.length;
+    badge.style.display = cartItems.length > 0 ? "inline-block" : "none";
+  }
+}
+
+// ---------------------------
+// Render Kategori
 function renderCategory(category) {
   const container = document.getElementById("category-content");
   container.innerHTML = "";
-  let data = [];
 
+  let data = [];
   if (category === "cash") data = vipDataCash;
   else if (category === "boxlegends") data = vipDataBox;
   else if (category === "venice") data = vipDataVenice;
@@ -225,25 +237,25 @@ function renderCategory(category) {
       card.innerHTML = `
         <h3>${pkg.label.split(" - ")[0]}</h3>
         <p>${pkg.label.split(" - ")[1]}</p>
-        <button class="add-to-cart-btn">+</button>
+        <div class="checkmark-icon">&#10003;</div>
       `;
 
-      card.querySelector(".add-to-cart-btn").addEventListener("click", (e) => {
+      // Tombol +
+      const addBtn = document.createElement("button");
+      addBtn.className = "add-to-cart-btn";
+      addBtn.textContent = "+";
+
+      addBtn.addEventListener("click", (e) => {
         e.stopPropagation();
-
-        const itemLabel = pkg.label;
-        const itemObj = {
-          name: vip.name,
-          label: itemLabel,
-        };
-
-        const existing = cartItems.find(item => item.label === itemLabel && item.name === vip.name);
-        if (!existing) {
-          cartItems.push(itemObj);
-          updateCartBadge();
-        }
+        cartItems.push({
+          label: pkg.label,
+          category: category,
+          name: vip.name
+        });
+        updateCartBadge();
       });
 
+      card.appendChild(addBtn);
       grid.appendChild(card);
     });
 
@@ -260,21 +272,14 @@ function renderCategory(category) {
   });
 }
 
-function updateCartBadge() {
-  const badge = document.getElementById("cart-count");
-  if (badge) {
-    badge.textContent = cartItems.length;
-    badge.style.display = cartItems.length > 0 ? "inline-block" : "none";
-  }
-}
-
-// Variabel untuk melacak kategori aktif
+// ---------------------------
+// Tabs
 let currentCategory = null;
 
-// Tabs
 document.querySelectorAll(".tab-btn").forEach(tab => {
   tab.addEventListener("click", (e) => {
     const category = tab.getAttribute("data-category");
+
     if (currentCategory === category) {
       document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.remove("active"));
       document.getElementById("category-content").innerHTML = "";
@@ -285,11 +290,13 @@ document.querySelectorAll(".tab-btn").forEach(tab => {
       renderCategory(category);
       currentCategory = category;
     }
+
     e.stopPropagation();
   });
 });
 
-// Title Animation & Load awal
+// ---------------------------
+// Title Animation
 document.addEventListener("DOMContentLoaded", function () {
   const title = "8 Ball Pool Menu";
   const container = document.getElementById("animated-title");
@@ -302,7 +309,7 @@ document.addEventListener("DOMContentLoaded", function () {
     container.appendChild(span);
   });
 
-  updateCartBadge(); // Tampilkan badge saat halaman dimuat
+  updateCartBadge(); // update badge saat awal load
 });
 
   // ✅ PENTING: render default tab
