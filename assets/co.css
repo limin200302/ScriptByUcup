@@ -72,8 +72,7 @@ body {
 
 .item-bonus {
   font-size: 15px;
-  color: red;
-  font-style: italic;
+  color: red;  
   margin-top: 5px;
    font-family: 'CabalBold', sans-serif;
 }
