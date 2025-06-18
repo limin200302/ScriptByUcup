@@ -231,15 +231,16 @@ function renderCategory(category) {
   } else {
     // Tambahkan pilihan
     card.classList.add("selected-card");
-    if (vip.note) {
+  
+  }
+});
+      if (vip.note) {
   const note = document.createElement("div");
   note.className = "vip-note";
   note.textContent = vip.note;
   section.appendChild(note);
-  }
-});
-      
       grid.appendChild(card);
+      }
     });
 
     section.appendChild(grid);
