@@ -2,12 +2,12 @@
 let cartItems = JSON.parse(localStorage.getItem("cart")) || [];
 let selectedItems = new Set();
 
-// Bonus map berdasarkan harga
-const bonusMap = {
+// Bonus data berdasarkan kategori dan harga
+const bonusData = {
   cash: {
     55000: "Bonus: 2 Keping Cue Mastermind",
     70000: "Bonus: 4 Keping Cue Murasa",
-    95000: "Bonus: 4 keping Cue Mastermind",
+    95000: "Bonus: 4 Keping Cue Mastermind",
     135000: "Bonus: 16 Keping Cue Hawar Beku + 30 Golden Shot",
     190000: "Bonus: VIP Points",
     250000: "Bonus: 16 Keping Hawar Beku + 4 Keping Muramasa + 30 Golden Shot",
@@ -16,7 +16,7 @@ const bonusMap = {
   boxlegends: {
     60000: "Bonus: 2 Keping Cue Mastermind",
     75000: "Bonus: 4 Keping Cue Murasa",
-    100000: "Bonus: 4 keping Cue Mastermind",
+    100000: "Bonus: 4 Keping Cue Mastermind",
     145000: "Bonus: 16 Keping Cue Hawar Beku + 30 Golden Shot",
     200000: "Bonus: VIP Points",
     265000: "Bonus: 16 Keping Hawar Beku + 4 Keping Muramasa + 30 Golden Shot",
@@ -30,7 +30,16 @@ const checkoutBtn = document.getElementById("checkout-btn");
 const selectAllCheckbox = document.getElementById("select-all");
 const emptyMsg = document.getElementById("empty-msg");
 
-// Tampilkan item keranjang
+function getPriceFromLabel(label) {
+  if (!label.includes("Rp")) return 0;
+  const parts = label.split("Rp")[1];
+  return parseInt(parts.replace(/\D/g, "")) || 0;
+}
+
+function getBonus(category, price) {
+  return bonusData[category]?.[price] || "";
+}
+
 function renderCart() {
   cartContainer.innerHTML = "";
 
@@ -41,14 +50,11 @@ function renderCart() {
   emptyMsg.style.display = "none";
 
   cartItems.forEach((item, index) => {
+    const price = getPriceFromLabel(item.label);
+    const bonus = getBonus(item.category, price);
+
     const div = document.createElement("div");
     div.className = "cart-item";
-
-    const label = item.label || "";
-    const priceText = label.split(" - ")[1] || "";
-    const price = parseInt(priceText.replace("Rp", "").replace(/\D/g, ""));
-    const bonus = bonusMap[item.category]?.[price] || "";
-
     div.innerHTML = `
       <input type="checkbox" class="item-check" data-index="${index}">
       <div class="item-info">
@@ -66,15 +72,13 @@ function renderCart() {
   checkSelectAllStatus();
 }
 
-// Hitung total harga dan jumlah item
 function updateTotal() {
   let total = 0;
   let count = 0;
 
   selectedItems.forEach(i => {
     const item = cartItems[i];
-    const priceText = item.label?.split(" - ")[1] || "";
-    const price = parseInt(priceText.replace("Rp", "").replace(/\D/g, "")) || 0;
+    const price = getPriceFromLabel(item.label);
     total += price;
     count++;
   });
@@ -83,7 +87,7 @@ function updateTotal() {
   checkoutBtn.textContent = `Checkout (${count})`;
 }
 
-// Checkbox per item
+// Checkbox tiap item
 cartContainer.addEventListener("change", function (e) {
   if (e.target.classList.contains("item-check")) {
     const index = parseInt(e.target.getAttribute("data-index"));
@@ -107,14 +111,14 @@ selectAllCheckbox.addEventListener("change", () => {
   updateTotal();
 });
 
-// Cek status "Semua"
+// Cek jika semua item dicentang
 function checkSelectAllStatus() {
-  const total = document.querySelectorAll(".item-check").length;
+  const all = document.querySelectorAll(".item-check").length;
   const checked = document.querySelectorAll(".item-check:checked").length;
-  selectAllCheckbox.checked = total > 0 && total === checked;
+  selectAllCheckbox.checked = all > 0 && all === checked;
 }
 
-// Tombol hapus
+// Hapus item
 cartContainer.addEventListener("click", (e) => {
   if (e.target.classList.contains("delete-btn")) {
     const index = parseInt(e.target.getAttribute("data-index"));
@@ -125,7 +129,7 @@ cartContainer.addEventListener("click", (e) => {
   }
 });
 
-// Jalankan saat halaman dibuka
+// Inisialisasi saat halaman dibuka
 document.addEventListener("DOMContentLoaded", () => {
   renderCart();
 });
