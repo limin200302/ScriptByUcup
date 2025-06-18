@@ -1,146 +1,137 @@
-/* Reset & body */
 body {
-  margin: 0;
-  font-family: "Segoe UI", sans-serif;
-  background: linear-gradient(to bottom right, #fff, #ffe0b2);
-  color: #333;
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(to bottom, #fff, #f7f7f7);
+  color: #333;
+  animation: fadein 0.5s ease;
 }
 
-/* Header Shopee-style */
+@keyframes fadein {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 .cart-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: orange;
-  padding: 12px 16px;
-  color: white;
-  font-weight: bold;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: orange;
+  padding: 10px 15px;
+  color: white;
+  font-weight: bold;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
 .cart-header a {
-  color: white;
-  text-decoration: none;
-  font-size: 16px;
+  color: white;
+  text-decoration: none;
+  font-size: 16px;
 }
 
-/* Cart item list */
 #cart-list {
-  padding: 15px;
+  padding: 15px;
 }
 
 .cart-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background: #fff;
-  border-radius: 10px;
-  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.08);
-  padding: 10px;
-  margin-bottom: 12px;
-  animation: fadeIn 0.4s ease-in-out;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  border-bottom: 1px solid #ddd;
+  padding: 12px 0;
+  animation: slidein 0.3s ease;
+}
+
+@keyframes slidein {
+  from { opacity: 0; transform: translateX(-10px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.cart-item input[type="checkbox"] {
+  margin-right: 10px;
+  margin-top: 5px;
 }
 
 .item-info {
-  flex-grow: 1;
+  flex-grow: 1;
 }
 
 .item-name {
-  font-weight: bold;
-  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 4px;
 }
 
 .item-label {
-  font-size: 14px;
-  color: #777;
+  font-size: 14px;
+  color: #555;
 }
 
 .item-bonus {
-  font-size: 13px;
-  color: green;
-  font-style: italic;
-  margin-top: 4px;
+  font-size: 12px;
+  color: green;
+  font-style: italic;
+  margin-top: 4px;
 }
 
 .delete-btn {
-  background: #ff5252;
-  color: white;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background 0.3s;
+  background: #ff4444;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
-.delete-btn:hover {
-  background: #e53935;
-}
-
-/* Empty message */
-#empty-msg {
-  text-align: center;
-  font-size: 18px;
-  padding: 2rem;
-  color: #777;
-}
-
-/* Checkout bar */
 .checkout-bar {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: white;
-  border-top: 1px solid #ccc;
-  padding: 10px 16px;
-  box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.06);
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: white;
+  border-top: 1px solid #ccc;
+  padding: 10px 15px;
+  box-shadow: 0 -2px 5px rgba(0,0,0,0.05);
+  z-index: 10;
 }
 
 .select-all {
-  display: flex;
-  align-items: center;
-  font-weight: bold;
-  gap: 6px;
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  margin-bottom: 10px;
 }
 
 .checkout-summary {
-  margin-top: 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 #checkout-btn {
-  background: orange;
-  color: white;
-  font-size: 16px;
-  padding: 10px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  width: 100%;
-  transition: background 0.3s;
+  background: #ff9800;
+  color: white;
+  font-size: 18px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom: 8px;
+  transition: background 0.3s ease;
 }
 
 #checkout-btn:hover {
-  background: #f57c00;
+  background: #e38800;
 }
 
 .total-label {
-  font-size: 15px;
-  margin-top: 6px;
-  font-weight: bold;
-  color: #444;
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
 }
 
-/* Fade in animasi */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.empty-msg {
+  text-align: center;
+  padding: 2rem;
+  font-size: 16px;
+  display: none;
 }
