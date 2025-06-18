@@ -8,10 +8,10 @@
   <script src="co.js" defer></script>
 </head>
 <body>
+
   <header class="cart-header">
-    <button class="back-btn" onclick="history.back()">←</button>
-    <h1>Keranjang Saya</h1>
-    <a href="index.html" class="home-btn">🏠</a>
+    <div class="header-left"><a href="javascript:history.back()">← Kembali</a></div>
+    <div class="header-right"><a href="index.html">🏠</a></div>
   </header>
 
   <main id="cart-container">
@@ -20,13 +20,13 @@
   </main>
 
   <footer class="checkout-bar">
-    <label class="select-all">
-      <input type="checkbox" id="select-all" /> Semua
-    </label>
+    <label class="select-all"><input type="checkbox" id="select-all" /> <strong>Semua</strong></label>
+
     <div class="checkout-summary">
-      <div class="total-label">Total: <span id="total-price">Rp0</span></div>
       <button id="checkout-btn">Checkout (0)</button>
+      <div class="total-label">Total: <span id="total-price">Rp0</span></div>
     </div>
   </footer>
+
 </body>
 </html>
