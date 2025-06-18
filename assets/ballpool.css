@@ -266,3 +266,9 @@ nav a {
 .package-card.selected-card .checkmark-icon {
   display: block;
 }
+.vip-note {
+  margin-top: 6px;
+  font-size: 0.85em;
+  color: #ffcc00;
+  font-style: italic;
+}
