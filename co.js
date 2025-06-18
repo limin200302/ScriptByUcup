@@ -1,93 +1,90 @@
-// Ambil data dari localStorage
-let cartItems = JSON.parse(localStorage.getItem("cart")) || [];
+const cartItems = JSON.parse(localStorage.getItem("cart")) || [];
 let selectedItems = new Set();
 
-// Bonus berdasarkan kategori dan harga
-const bonusData = {
-  cash: {
-    55000: "Bonus: 2 Keping Cue Mastermind",
-    70000: "Bonus: 4 Keping Cue Murasa",
-    95000: "Bonus: 4 Keping Cue Mastermind",
-    135000: "Bonus: 16 Cue Hawar Beku + 30 Golden Shot",
-    190000: "Bonus: VIP Points",
-    250000: "Bonus: 16 Hawar Beku + 4 Muramasa + 30 Golden Shot",
-    275000: "Bonus: VIP Points"
-  },
-  boxlegends: {
-    60000: "Bonus: 2 Keping Cue Mastermind",
-    75000: "Bonus: 4 Keping Cue Murasa",
-    100000: "Bonus: 4 Keping Cue Mastermind",
-    145000: "Bonus: 16 Cue Hawar Beku + 30 Golden Shot",
-    200000: "Bonus: VIP Points",
-    265000: "Bonus: 16 Hawar Beku + 4 Muramasa + 30 Golden Shot",
-    295000: "Bonus: VIP Points"
-  }
-};
-
-const cartContainer = document.getElementById("cart-list");
+const cartContainer = document.getElementById("cart-items");
 const totalPriceEl = document.getElementById("total-price");
 const checkoutBtn = document.getElementById("checkout-btn");
 const selectAllCheckbox = document.getElementById("select-all");
-const emptyMsg = document.getElementById("empty-msg");
 
-function getPriceFromLabel(label) {
-  const match = label.match(/Rp\s?([\d.]+)/i);
-  if (!match) return 0;
-  return parseInt(match[1].replace(/\./g, ""));
+// Bonus Mapping
+const bonusCash = {
+  55000: "2 Keping Cue Mastermind",
+  70000: "4 Keping Cue Muramasa",
+  95000: "4 Keping Cue Mastermind",
+  135000: "16 Keping Cue Hawar Beku dan 30 Golden Shot",
+  190000: "VIP Points",
+  250000: "16 Hawar Beku + 4 Muramasa + 30 Golden Shot",
+  275000: "VIP Points"
+};
+
+const bonusBox = {
+  60000: "2 Keping Cue Mastermind",
+  75000: "4 Keping Cue Muramasa",
+  100000: "4 Keping Cue Mastermind",
+  145000: "16 Hawar Beku dan 30 Golden Shot",
+  200000: "VIP Points",
+  265000: "16 Hawar Beku + 4 Muramasa + 30 Golden Shot",
+  295000: "VIP Points"
+};
+
+function parseHarga(label) {
+  const match = label.match(/Rp\s?([\d.]+)/);
+  return match ? parseInt(match[1].replace(/\./g, "")) : 0;
 }
 
-function getBonus(category, price) {
-  return bonusData[category]?.[price] || "";
+function getBonus(category, harga) {
+  if (category === "cash") return bonusCash[harga] || null;
+  if (category === "boxlegends") return bonusBox[harga] || null;
+  return null;
 }
 
 function renderCart() {
   cartContainer.innerHTML = "";
 
   if (cartItems.length === 0) {
-    emptyMsg.style.display = "block";
+    cartContainer.innerHTML = "<p class='empty-msg'>Keranjang kosong.</p>";
     return;
   }
 
-  emptyMsg.style.display = "none";
-
   cartItems.forEach((item, index) => {
-    const price = getPriceFromLabel(item.label);
-    const bonus = getBonus(item.category, price);
+    const harga = parseHarga(item.label);
+    const checked = selectedItems.has(index) ? "checked" : "";
+
+    const bonus = getBonus(item.category, harga);
+    const bonusHTML = bonus
+      ? `<div class="bonus">🎁 Bonus: ${bonus}</div>`
+      : "";
 
     const div = document.createElement("div");
     div.className = "cart-item";
     div.innerHTML = `
-      <input type="checkbox" class="item-check" data-index="${index}">
+      <input type="checkbox" class="item-check" data-index="${index}" ${checked}>
       <div class="item-info">
         <div class="item-name">${item.name}</div>
         <div class="item-label">${item.label}</div>
-        ${bonus ? `<div class="item-bonus">${bonus}</div>` : ""}
+        ${checked && bonus ? bonusHTML : ""}
       </div>
       <button class="delete-btn" data-index="${index}">Hapus</button>
     `;
-
     cartContainer.appendChild(div);
   });
 
   updateTotal();
-  checkSelectAllStatus();
 }
 
 function updateTotal() {
   let total = 0;
-  let count = 0;
-
-  selectedItems.forEach(i => {
-    const item = cartItems[i];
-    const price = getPriceFromLabel(item.label);
-    total += price;
-    count++;
+  selectedItems.forEach(index => {
+    const item = cartItems[index];
+    const harga = parseHarga(item.label);
+    total += harga;
   });
 
   totalPriceEl.textContent = "Rp " + total.toLocaleString("id-ID");
-  checkoutBtn.textContent = `Checkout (${count})`;
+  checkoutBtn.textContent = `Checkout (${selectedItems.size})`;
 }
 
+// Checkbox item
 cartContainer.addEventListener("change", function (e) {
   if (e.target.classList.contains("item-check")) {
     const index = parseInt(e.target.getAttribute("data-index"));
@@ -96,26 +93,28 @@ cartContainer.addEventListener("change", function (e) {
     } else {
       selectedItems.delete(index);
     }
-    updateTotal();
     checkSelectAllStatus();
+    renderCart();
   }
 });
 
+// Checkbox Semua
 selectAllCheckbox.addEventListener("change", () => {
   selectedItems.clear();
-  document.querySelectorAll(".item-check").forEach((cb, i) => {
-    cb.checked = selectAllCheckbox.checked;
-    if (selectAllCheckbox.checked) selectedItems.add(i);
-  });
-  updateTotal();
+  if (selectAllCheckbox.checked) {
+    cartItems.forEach((_, i) => selectedItems.add(i));
+  }
+  renderCart();
 });
 
+// Cek status "semua"
 function checkSelectAllStatus() {
-  const totalCheckbox = document.querySelectorAll(".item-check").length;
-  const checkedCount = document.querySelectorAll(".item-check:checked").length;
-  selectAllCheckbox.checked = totalCheckbox === checkedCount && totalCheckbox > 0;
+  const allCheck = document.querySelectorAll(".item-check");
+  const checkedCheck = document.querySelectorAll(".item-check:checked");
+  selectAllCheckbox.checked = allCheck.length === checkedCheck.length;
 }
 
+// Hapus item
 cartContainer.addEventListener("click", (e) => {
   if (e.target.classList.contains("delete-btn")) {
     const index = parseInt(e.target.getAttribute("data-index"));
@@ -126,6 +125,7 @@ cartContainer.addEventListener("click", (e) => {
   }
 });
 
+// Init
 document.addEventListener("DOMContentLoaded", () => {
   renderCart();
 });
