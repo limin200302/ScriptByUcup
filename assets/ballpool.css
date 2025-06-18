@@ -8,8 +8,8 @@ body {
 }
 
 header {
-  background-color: #222;
-  padding: 1rem;
+  background-color: #f5f5f5;
+  padding: 10px 16px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -17,17 +17,21 @@ header {
 
 .logo {
   font-weight: bold;
-  font-size: 1.4rem;
+  font-size: 22px;
 }
 
 nav ul {
+  display: flex;
   list-style: none;
   display: flex;
   gap: 1rem;
   padding: 0;
   margin: 0;
 }
-
+nav li {
+  display: flex;
+  align-items: center;
+}
 nav a {
   color: #fff;
   text-decoration: none;
@@ -271,6 +275,10 @@ nav a {
   font-size: 0.85em;
   color: #ffcc00;
   font-style: italic;
+}
+.cart-icon img {
+  width: 30px; /* Ukuran logo keranjang lebih besar */
+  height: auto;
 }
 .keranjang-li {
   position: relative;
