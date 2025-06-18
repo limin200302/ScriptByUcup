@@ -249,6 +249,7 @@ function renderCategory(category) {
           category: category,
           name: vip.name
         });
+        localStorage.setItem("cart", JSON.stringify(cartItems));
         updateCartBadge();
         animateFlyToCart(e.target);
       });
