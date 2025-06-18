@@ -272,3 +272,32 @@ nav a {
   color: #ffcc00;
   font-style: italic;
 }
+.nav-menu {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  list-style: none;
+}
+
+.nav-menu li a {
+  text-decoration: none;
+  color: white; /* atau sesuaikan tema */
+}
+
+.keranjang-nav {
+  position: relative;
+  font-size: 24px;
+  cursor: pointer;
+  color: white;
+}
+
+.cart-badge {
+  position: absolute;
+  top: -8px;
+  right: -10px;
+  background-color: red;
+  color: white;
+  font-size: 12px;
+  padding: 2px 6px;
+  border-radius: 50%;
+}
