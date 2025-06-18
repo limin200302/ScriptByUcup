@@ -192,7 +192,6 @@ const vipDataBoxCollector = [
   },
 ];
 
-// ---------------------------
 // Data Cart
 let cartItems = [];
 
@@ -233,7 +232,6 @@ function renderCategory(category) {
     vip.prices.forEach(pkg => {
       const card = document.createElement("div");
       card.className = "package-card";
-
       card.innerHTML = `
         <h3>${pkg.label.split(" - ")[0]}</h3>
         <p>${pkg.label.split(" - ")[1]}</p>
@@ -241,11 +239,10 @@ function renderCategory(category) {
       `;
 
       // Tombol +
-      const addBtn = document.createElement("button");
-      addBtn.className = "add-to-cart-btn";
-      addBtn.textContent = "+";
-
-      addBtn.addEventListener("click", (e) => {
+      const plusBtn = document.createElement("button");
+      plusBtn.className = "btn-plus";
+      plusBtn.textContent = "+";
+      plusBtn.addEventListener("click", (e) => {
         e.stopPropagation();
         cartItems.push({
           label: pkg.label,
@@ -253,9 +250,31 @@ function renderCategory(category) {
           name: vip.name
         });
         updateCartBadge();
+        animateFlyToCart(e.target);
       });
 
-      card.appendChild(addBtn);
+      // Tombol -
+      const minusBtn = document.createElement("button");
+      minusBtn.className = "btn-minus";
+      minusBtn.textContent = "−";
+      minusBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const index = cartItems.findIndex(item =>
+          item.label === pkg.label && item.category === category
+        );
+        if (index !== -1) {
+          cartItems.splice(index, 1);
+          updateCartBadge();
+        }
+      });
+
+      // Masukkan tombol ke dalam card
+      const controlWrap = document.createElement("div");
+      controlWrap.className = "btn-control";
+      controlWrap.appendChild(minusBtn);
+      controlWrap.appendChild(plusBtn);
+
+      card.appendChild(controlWrap);
       grid.appendChild(card);
     });
 
@@ -275,11 +294,9 @@ function renderCategory(category) {
 // ---------------------------
 // Tabs
 let currentCategory = null;
-
 document.querySelectorAll(".tab-btn").forEach(tab => {
   tab.addEventListener("click", (e) => {
     const category = tab.getAttribute("data-category");
-
     if (currentCategory === category) {
       document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.remove("active"));
       document.getElementById("category-content").innerHTML = "";
@@ -290,13 +307,12 @@ document.querySelectorAll(".tab-btn").forEach(tab => {
       renderCategory(category);
       currentCategory = category;
     }
-
     e.stopPropagation();
   });
 });
 
 // ---------------------------
-// Title Animation & Default Load
+// Animasi Judul & Default Load
 document.addEventListener("DOMContentLoaded", function () {
   const title = "8 Ball Pool Menu";
   const container = document.getElementById("animated-title");
@@ -309,7 +325,38 @@ document.addEventListener("DOMContentLoaded", function () {
     container.appendChild(span);
   });
 
-  updateCartBadge();          // Munculkan badge jika ada item
-  renderCategory("cash");     // ✅ Pindahkan ke sini supaya DOM sudah siap
-  document.querySelector('[data-category="cash"]')?.classList.add("active"); // Aktifkan tab default
+  updateCartBadge();
+  renderCategory("cash");
+  document.querySelector('[data-category="cash"]')?.classList.add("active");
 });
+
+// ---------------------------
+// Animasi terbang ke keranjang
+function animateFlyToCart(sourceElement) {
+  const cartIcon = document.querySelector(".cart-icon img");
+  if (!cartIcon) return;
+
+  const clone = sourceElement.cloneNode(true);
+  const rect = sourceElement.getBoundingClientRect();
+  clone.style.position = "fixed";
+  clone.style.left = rect.left + "px";
+  clone.style.top = rect.top + "px";
+  clone.style.zIndex = 9999;
+  clone.style.background = "gold";
+  clone.style.borderRadius = "50%";
+  clone.style.transition = "all 0.8s ease-in-out";
+
+  document.body.appendChild(clone);
+
+  const targetRect = cartIcon.getBoundingClientRect();
+  setTimeout(() => {
+    clone.style.left = targetRect.left + "px";
+    clone.style.top = targetRect.top + "px";
+    clone.style.opacity = "0";
+    clone.style.transform = "scale(0.2)";
+  }, 10);
+
+  setTimeout(() => {
+    clone.remove();
+  }, 900);
+}
