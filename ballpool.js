@@ -257,10 +257,14 @@ plusBtn.addEventListener("click", (e) => {
   // Simpan kembali ke localStorage
   localStorage.setItem("cart", JSON.stringify(currentCart));
 
+  // ✅ Update cartItems global agar badge tetap sinkron
+  cartItems = currentCart;
+
   // Update badge dan animasi
   updateCartBadge();
   animateFlyToCart(e.target);
 });
+
       
 // Tombol -      
 const minusBtn = document.createElement("button");      
