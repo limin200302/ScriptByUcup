@@ -1,4 +1,3 @@
-co.js
 // Ambil data dari localStorage
 let cartItems = JSON.parse(localStorage.getItem("cart")) || [];
 let selectedItems = new Set();
