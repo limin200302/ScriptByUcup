@@ -172,6 +172,25 @@ const vipDataGoldenShot = [
     ],
   },
 ];
+const vipDataBoxCollector = [
+  {
+    name: "Box Collector",
+    logo: "assets/img/boxcol.png",
+    prices: [
+      { label: "1 Box - Rp 30.000", value: 30000 },
+      { label: "2 Box - Rp 60.000", value: 60000 },
+      { label: "3 Box - Rp 90.000", value: 90000 },
+      { label: "4 Box - Rp 125.000", value: 125000 },
+      { label: "5 Box - Rp 150.000", value: 150000 },
+      { label: "6 Box - Rp 180.000", value: 180000 },
+      { label: "7 Box - Rp 200.000", value: 200000 },
+      { label: "8 Box - Rp 230.000", value: 230000 },
+      { label: "9 Box - Rp 255.000", value: 255000 },
+      { label: "10 Box - Rp 280.000", value: 280000 },
+    ],
+    note: "• Max 26 kepingan cue promo random untuk 1 Box",
+  },
+];
 
 function renderCategory(category) {
   const container = document.getElementById("category-content");
@@ -183,7 +202,8 @@ function renderCategory(category) {
   else if (category === "venice") data = vipDataVenice;
   else if (category === "poolpass") data = vipDataPoolPass;
   else if (category === "goldenshot") data = vipDataGoldenShot;
-
+  else if (category === "boxcollector") data = vipDataBoxCollector;
+  
   data.forEach(vip => {
     const section = document.createElement("div");
     section.className = "vip-section";
@@ -211,8 +231,14 @@ function renderCategory(category) {
   } else {
     // Tambahkan pilihan
     card.classList.add("selected-card");
+    if (vip.note) {
+  const note = document.createElement("div");
+  note.className = "vip-note";
+  note.textContent = vip.note;
+  section.appendChild(note);
   }
 });
+      
       grid.appendChild(card);
     });
 
