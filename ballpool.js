@@ -238,39 +238,41 @@ function renderCategory(category) {
         <div class="checkmark-icon">&#10003;</div>
       `;
 
-      // Tombol +
-      const plusBtn.addEventListener("click", (e) => {
+      // Tombol minus
+const minusBtn = document.createElement("button");
+minusBtn.className = "btn-minus";
+minusBtn.textContent = "−";
+minusBtn.addEventListener("click", e => {
   e.stopPropagation();
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+  const index = cart.findIndex(item =>
+    item.label === pkg.label && item.category === category && item.name === vip.name
+  );
+  if (index !== -1) {
+    cart.splice(index, 1);
+    localStorage.setItem("cart", JSON.stringify(cart));
+    cartItems = cart;
+    updateCartBadge();
+  }
+});
 
-  // Ambil ulang cart dari localStorage
-  let cart = JSON.parse(localStorage.getItem("cart")) || [];
-
+// Tombol plus
+const plusBtn = document.createElement("button");
+plusBtn.className = "btn-plus";
+plusBtn.textContent = "+";
+plusBtn.addEventListener("click", e => {
+  e.stopPropagation();
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
   cart.push({
     label: pkg.label,
-    category: category,
+    category,
     name: vip.name
   });
-
   localStorage.setItem("cart", JSON.stringify(cart));
-  cartItems = cart; // update variabel global
+  cartItems = cart;
   updateCartBadge();
   animateFlyToCart(e.target);
 });
-      // Tombol -
-      const minusBtn = document.createElement("button");
-      minusBtn.className = "btn-minus";
-      minusBtn.textContent = "−";
-      minusBtn.addEventListener("click", (e) => {
-        e.stopPropagation();
-        const index = cartItems.findIndex(item =>
-          item.label === pkg.label && item.category === category
-        );
-        if (index !== -1) {
-          cartItems.splice(index, 1);
-          updateCartBadge();
-        }
-      });
-
       // Masukkan tombol ke dalam card
       const controlWrap = document.createElement("div");
       controlWrap.className = "btn-control";
