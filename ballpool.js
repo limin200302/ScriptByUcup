@@ -296,7 +296,7 @@ document.querySelectorAll(".tab-btn").forEach(tab => {
 });
 
 // ---------------------------
-// Title Animation
+// Title Animation & Default Load
 document.addEventListener("DOMContentLoaded", function () {
   const title = "8 Ball Pool Menu";
   const container = document.getElementById("animated-title");
@@ -309,9 +309,7 @@ document.addEventListener("DOMContentLoaded", function () {
     container.appendChild(span);
   });
 
-  updateCartBadge(); // update badge saat awal load
-});
-
-  // ✅ PENTING: render default tab
-  renderCategory("cash");
+  updateCartBadge();          // Munculkan badge jika ada item
+  renderCategory("cash");     // ✅ Pindahkan ke sini supaya DOM sudah siap
+  document.querySelector('[data-category="cash"]')?.classList.add("active"); // Aktifkan tab default
 });
