@@ -239,21 +239,23 @@ function renderCategory(category) {
       `;
 
       // Tombol +
-      const plusBtn = document.createElement("button");
-      plusBtn.className = "btn-plus";
-      plusBtn.textContent = "+";
-      plusBtn.addEventListener("click", (e) => {
-        e.stopPropagation();
-        cartItems.push({
-          label: pkg.label,
-          category: category,
-          name: vip.name
-        });
-        localStorage.setItem("cart", JSON.stringify(cartItems));
-        updateCartBadge();
-        animateFlyToCart(e.target);
-      });
+      const plusBtn.addEventListener("click", (e) => {
+  e.stopPropagation();
 
+  // Ambil ulang cart dari localStorage
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+  cart.push({
+    label: pkg.label,
+    category: category,
+    name: vip.name
+  });
+
+  localStorage.setItem("cart", JSON.stringify(cart));
+  cartItems = cart; // update variabel global
+  updateCartBadge();
+  animateFlyToCart(e.target);
+});
       // Tombol -
       const minusBtn = document.createElement("button");
       minusBtn.className = "btn-minus";
@@ -267,7 +269,7 @@ function renderCategory(category) {
           cartItems.splice(index, 1);
           updateCartBadge();
         }
-      });
+      })
 
       // Masukkan tombol ke dalam card
       const controlWrap = document.createElement("div");
