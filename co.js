@@ -1,34 +1,49 @@
-// Ambil dari localStorage
+co.js
+// Ambil data dari localStorage
 let cartItems = JSON.parse(localStorage.getItem("cart")) || [];
 let selectedItems = new Set();
 
-const cartList = document.getElementById("cart-list");
+// Bonus berdasarkan kategori dan harga
+const bonusData = {
+  cash: {
+    55000: "Bonus: 2 Keping Cue Mastermind",
+    70000: "Bonus: 4 Keping Cue Murasa",
+    95000: "Bonus: 4 Keping Cue Mastermind",
+    135000: "Bonus: 16 Cue Hawar Beku + 30 Golden Shot",
+    190000: "Bonus: VIP Points",
+    250000: "Bonus: 16 Hawar Beku + 4 Muramasa + 30 Golden Shot",
+    275000: "Bonus: VIP Points"
+  },
+  boxlegends: {
+    60000: "Bonus: 2 Keping Cue Mastermind",
+    75000: "Bonus: 4 Keping Cue Murasa",
+    100000: "Bonus: 4 Keping Cue Mastermind",
+    145000: "Bonus: 16 Cue Hawar Beku + 30 Golden Shot",
+    200000: "Bonus: VIP Points",
+    265000: "Bonus: 16 Hawar Beku + 4 Muramasa + 30 Golden Shot",
+    295000: "Bonus: VIP Points"
+  }
+};
+
+const cartContainer = document.getElementById("cart-list");
 const totalPriceEl = document.getElementById("total-price");
 const checkoutBtn = document.getElementById("checkout-btn");
 const selectAllCheckbox = document.getElementById("select-all");
 const emptyMsg = document.getElementById("empty-msg");
 
-// BONUS MAP
-const bonusMap = {
-  55000: "2 Keping Cue Mastermind",
-  60000: "2 Keping Cue Mastermind",
-  70000: "4 Keping Cue Murasa",
-  75000: "4 Keping Cue Murasa",
-  95000: "4 Keping Cue Mastermind",
-  100000: "4 Keping Cue Mastermind",
-  135000: "16 Keping Cue Hawar Beku dan 30 Golden Shot",
-  145000: "16 Keping Cue Hawar Beku dan 30 Golden Shot",
-  190000: "VIP Points",
-  200000: "VIP Points",
-  250000: "16 Keping Hawar Beku + 4 Keping Muramasa + 30 Golden Shot",
-  265000: "16 Keping Hawar Beku + 4 Keping Muramasa + 30 Golden Shot",
-  275000: "VIP Points",
-  295000: "VIP Points"
-};
+function getPriceFromLabel(label) {
+  const match = label.match(/Rp\s?([\d.]+)/i);
+  if (!match) return 0;
+  return parseInt(match[1].replace(/\./g, ""));
+}
 
-// Tampilkan isi keranjang
+function getBonus(category, price) {
+  return bonusData[category]?.[price] || "";
+}
+
 function renderCart() {
-  cartList.innerHTML = "";
+  cartContainer.innerHTML = "";
+
   if (cartItems.length === 0) {
     emptyMsg.style.display = "block";
     return;
@@ -37,55 +52,44 @@ function renderCart() {
   emptyMsg.style.display = "none";
 
   cartItems.forEach((item, index) => {
+    const price = getPriceFromLabel(item.label);
+    const bonus = getBonus(item.category, price);
+
     const div = document.createElement("div");
     div.className = "cart-item";
-
-    const bonus = getBonus(item);
-
     div.innerHTML = `
       <input type="checkbox" class="item-check" data-index="${index}">
       <div class="item-info">
-        <strong>${item.name}</strong><br>
-        ${item.label}<br>
-        <em>Kategori: ${item.category}</em><br>
-        ${bonus ? `<span class="bonus">🎁 Bonus: ${bonus}</span>` : ""}
+        <div class="item-name">${item.name}</div>
+        <div class="item-label">${item.label}</div>
+        ${bonus ? `<div class="item-bonus">${bonus}</div>` : ""}
       </div>
-      <button class="remove-btn" data-index="${index}">Hapus</button>
+      <button class="delete-btn" data-index="${index}">Hapus</button>
     `;
 
-    cartList.appendChild(div);
+    cartContainer.appendChild(div);
   });
 
   updateTotal();
+  checkSelectAllStatus();
 }
 
-// Cek bonus berdasarkan item
-function getBonus(item) {
-  const nominal = parseInt(item.label.replace("Rp", "").split("-")[0].replace(/\D/g, ""));
-  if (item.category === "cash" || item.category === "boxlegends") {
-    return bonusMap[nominal] || "";
-  }
-  return "";
-}
-
-// Update total harga
 function updateTotal() {
   let total = 0;
   let count = 0;
 
   selectedItems.forEach(i => {
     const item = cartItems[i];
-    const nominal = parseInt(item.label.replace("Rp", "").split("-")[0].replace(/\D/g, ""));
-    total += nominal;
+    const price = getPriceFromLabel(item.label);
+    total += price;
     count++;
   });
 
-  totalPriceEl.textContent = "Rp" + total.toLocaleString("id-ID");
+  totalPriceEl.textContent = "Rp " + total.toLocaleString("id-ID");
   checkoutBtn.textContent = `Checkout (${count})`;
 }
 
-// Event listener item checkbox
-cartList.addEventListener("change", (e) => {
+cartContainer.addEventListener("change", function (e) {
   if (e.target.classList.contains("item-check")) {
     const index = parseInt(e.target.getAttribute("data-index"));
     if (e.target.checked) {
@@ -98,7 +102,6 @@ cartList.addEventListener("change", (e) => {
   }
 });
 
-// Pilih semua checkbox
 selectAllCheckbox.addEventListener("change", () => {
   selectedItems.clear();
   document.querySelectorAll(".item-check").forEach((cb, i) => {
@@ -108,36 +111,22 @@ selectAllCheckbox.addEventListener("change", () => {
   updateTotal();
 });
 
-// Cek apakah semua dicentang
 function checkSelectAllStatus() {
-  const all = document.querySelectorAll(".item-check").length;
-  const checked = document.querySelectorAll(".item-check:checked").length;
-  selectAllCheckbox.checked = all === checked;
+  const totalCheckbox = document.querySelectorAll(".item-check").length;
+  const checkedCount = document.querySelectorAll(".item-check:checked").length;
+  selectAllCheckbox.checked = totalCheckbox === checkedCount && totalCheckbox > 0;
 }
 
-// Hapus item
-cartList.addEventListener("click", (e) => {
-  if (e.target.classList.contains("remove-btn")) {
+cartContainer.addEventListener("click", (e) => {
+  if (e.target.classList.contains("delete-btn")) {
     const index = parseInt(e.target.getAttribute("data-index"));
     cartItems.splice(index, 1);
     localStorage.setItem("cart", JSON.stringify(cartItems));
     selectedItems.delete(index);
     renderCart();
-    updateCartBadge(); // sinkron badge
   }
 });
 
-// Sinkron badge di icon
-function updateCartBadge() {
-  const badge = document.getElementById("cart-count");
-  if (badge) {
-    badge.textContent = cartItems.length;
-    badge.style.display = cartItems.length > 0 ? "inline-block" : "none";
-  }
-}
-
-// Saat halaman siap
 document.addEventListener("DOMContentLoaded", () => {
   renderCart();
-  updateCartBadge();
 });
