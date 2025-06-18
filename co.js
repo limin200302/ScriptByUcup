@@ -1,8 +1,8 @@
-// Ambil dari localStorage
-let cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+// Ambil dari localStorage dengan key yang benar
+let cartItems = JSON.parse(localStorage.getItem("cart")) || [];
 let selectedItems = new Set();
 
-const cartContainer = document.getElementById("cart-items");
+const cartContainer = document.getElementById("cart-container");
 const totalPriceEl = document.getElementById("total-price");
 const checkoutBtn = document.getElementById("checkout-btn");
 const selectAllCheckbox = document.getElementById("select-all");
@@ -29,7 +29,6 @@ function renderCart() {
   updateTotal();
 }
 
-// Update total dan tombol checkout
 function updateTotal() {
   let total = 0;
   let count = 0;
@@ -46,7 +45,7 @@ function updateTotal() {
   checkoutBtn.textContent = `Checkout (${count})`;
 }
 
-// Checkbox tiap item
+// Checkbox per item
 cartContainer.addEventListener("change", function (e) {
   if (e.target.classList.contains("item-check")) {
     const index = parseInt(e.target.getAttribute("data-index"));
@@ -82,13 +81,12 @@ cartContainer.addEventListener("click", (e) => {
   if (e.target.classList.contains("delete-btn")) {
     const index = parseInt(e.target.getAttribute("data-index"));
     cartItems.splice(index, 1);
-    localStorage.setItem("cartItems", JSON.stringify(cartItems));
+    localStorage.setItem("cartItems", JSON.stringify(cartItems)); // simpan ulang
     selectedItems.delete(index);
     renderCart();
   }
 });
 
-// Inisialisasi saat halaman dibuka
 document.addEventListener("DOMContentLoaded", () => {
   renderCart();
 });
