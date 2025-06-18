@@ -269,7 +269,7 @@ function renderCategory(category) {
           cartItems.splice(index, 1);
           updateCartBadge();
         }
-      })
+      });
 
       // Masukkan tombol ke dalam card
       const controlWrap = document.createElement("div");
