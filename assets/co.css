@@ -95,3 +95,8 @@ body {
   font-weight: bold;
   color: #333;
 }
+.item-bonus {
+  font-size: 12px;
+  color: green;
+  margin-top: 2px;
+}
