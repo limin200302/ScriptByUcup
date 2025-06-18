@@ -1,36 +1,33 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Keranjang Saya - Mamet Store</title>
-  <link rel="stylesheet" href="assets/co.css">
-  <script src="co.js" defer></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Keranjang Saya - Mamet Store</title>
+  <link rel="stylesheet" href="assets/co.css">
+  <script src="co.js" defer></script>
 </head>
 <body>
-  <header class="cart-header">
-    <button class="back-btn" onclick="history.back()">←</button>
-    <h1>Keranjang Saya</h1>
-    <a href="index.html" class="home-btn">🏠</a>
-  </header>
+  <header class="cart-header">
+    <button class="back-btn" onclick="history.back()">←</button>
+    <h1>Keranjang Saya</h1>
+    <a href="index.html" class="home-btn">🏠</a>
+  </header>
 
-  <main id="cart-container">
-    <!-- Diisi dinamis dari co.js -->
-  </main>
+  <main id="cart-items">
+    <!-- Diisi dinamis dari co.js -->
+  </main>
 
-  <footer class="checkout-bar">
-    <label>
-      <input type="checkbox" id="select-all"> Semua
-    </label>
-    <div class="checkout-footer">
-  <label class="select-all">
-    <input type="checkbox" id="select-all"> Semua
-  </label>
-  <div class="checkout-summary">
-    <div class="total-label">Total: <span id="total-price">Rp0</span></div>
-    <button id="checkout-btn">Checkout (0)</button>
-  </div>
-</div>
-
+  <footer class="checkout-bar">
+    <div class="checkout-footer">
+      <label class="select-all">
+        <input type="checkbox" id="select-all"> Semua
+      </label>
+      <div class="checkout-summary">
+        <div class="total-label">Total: <span id="total-price">Rp0</span></div>
+        <button id="checkout-btn">Checkout (0)</button>
+      </div>
+    </div>
+  </footer>
 </body>
 </html>
