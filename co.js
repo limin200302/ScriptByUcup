@@ -129,3 +129,7 @@ cartContainer.addEventListener("click", (e) => {
 document.addEventListener("DOMContentLoaded", () => {
   renderCart();
 });
+window.addEventListener("beforeunload", () => {
+  // Pastikan badge ikut update saat kembali ke halaman utama
+  localStorage.setItem("cart", JSON.stringify(cartItems));
+});
