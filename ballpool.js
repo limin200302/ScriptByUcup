@@ -265,6 +265,9 @@ controlWrap.className = "btn-control";
 controlWrap.appendChild(minusBtn);
 controlWrap.appendChild(plusBtn);
 card.appendChild(controlWrap);
+  card.appendChild(controlWrap);
+  grid.appendChild(card);
+});
     });
 
     section.appendChild(grid);
