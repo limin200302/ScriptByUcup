@@ -2,7 +2,7 @@
 let cartItems = JSON.parse(localStorage.getItem("cart")) || [];
 let selectedItems = new Set();
 
-// Bonus berdasarkan harga dan kategori
+// Bonus map berdasarkan harga
 const bonusMap = {
   cash: {
     55000: "Bonus: 2 Keping Cue Mastermind",
@@ -30,7 +30,7 @@ const checkoutBtn = document.getElementById("checkout-btn");
 const selectAllCheckbox = document.getElementById("select-all");
 const emptyMsg = document.getElementById("empty-msg");
 
-// Render isi keranjang
+// Tampilkan item keranjang
 function renderCart() {
   cartContainer.innerHTML = "";
 
@@ -66,15 +66,15 @@ function renderCart() {
   checkSelectAllStatus();
 }
 
-// Update total harga dan tombol checkout
+// Hitung total harga dan jumlah item
 function updateTotal() {
   let total = 0;
   let count = 0;
 
   selectedItems.forEach(i => {
     const item = cartItems[i];
-    const priceText = item.label.split(" - ")[1];
-    const price = parseInt(priceText.replace("Rp", "").replace(/\D/g, ""));
+    const priceText = item.label?.split(" - ")[1] || "";
+    const price = parseInt(priceText.replace("Rp", "").replace(/\D/g, "")) || 0;
     total += price;
     count++;
   });
@@ -83,7 +83,7 @@ function updateTotal() {
   checkoutBtn.textContent = `Checkout (${count})`;
 }
 
-// Event: Ceklis per item
+// Checkbox per item
 cartContainer.addEventListener("change", function (e) {
   if (e.target.classList.contains("item-check")) {
     const index = parseInt(e.target.getAttribute("data-index"));
@@ -97,7 +97,7 @@ cartContainer.addEventListener("change", function (e) {
   }
 });
 
-// Event: Ceklis "Semua"
+// Checkbox Semua
 selectAllCheckbox.addEventListener("change", () => {
   selectedItems.clear();
   document.querySelectorAll(".item-check").forEach((cb, i) => {
@@ -107,14 +107,14 @@ selectAllCheckbox.addEventListener("change", () => {
   updateTotal();
 });
 
-// Cek jika semua item sudah dicentang
+// Cek status "Semua"
 function checkSelectAllStatus() {
   const total = document.querySelectorAll(".item-check").length;
   const checked = document.querySelectorAll(".item-check:checked").length;
   selectAllCheckbox.checked = total > 0 && total === checked;
 }
 
-// Event: Tombol hapus
+// Tombol hapus
 cartContainer.addEventListener("click", (e) => {
   if (e.target.classList.contains("delete-btn")) {
     const index = parseInt(e.target.getAttribute("data-index"));
@@ -125,7 +125,7 @@ cartContainer.addEventListener("click", (e) => {
   }
 });
 
-// Inisialisasi
+// Jalankan saat halaman dibuka
 document.addEventListener("DOMContentLoaded", () => {
   renderCart();
 });
