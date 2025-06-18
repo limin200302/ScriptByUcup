@@ -261,16 +261,19 @@ minusBtn.addEventListener("click", (e) => {       
   const index = cartItems.findIndex(item =>          
     item.label === pkg.label && item.category === category        
   );        
-  if (index !== -1) {          
-    cartItems.splice(index, 1);          
-    updateCartBadge();        
-    
-      // Masukkan tombol ke dalam card
-      const controlWrap = document.createElement("div");
-      controlWrap.className = "btn-control";
-      controlWrap.appendChild(minusBtn);
-      controlWrap.appendChild(plusBtn);
+  if (index !== -1) {
+  cartItems.splice(index, 1);
+  updateCartBadge();
+  localStorage.setItem("cart", JSON.stringify(cartItems));
+}
+});
 
+const controlWrap = document.createElement("div");
+controlWrap.className = "btn-control";
+controlWrap.appendChild(minusBtn);
+controlWrap.appendChild(plusBtn);
+card.appendChild(controlWrap);
+grid.appendChild(card);
       card.appendChild(controlWrap);
       grid.appendChild(card);
     });
