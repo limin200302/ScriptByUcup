@@ -8,22 +8,27 @@
   <script src="co.js" defer></script>
 </head>
 <body>
-
   <header class="cart-header">
     <div class="header-left"><a href="javascript:history.back()">← Kembali</a></div>
     <div class="header-right"><a href="index.html">🏠</a></div>
   </header>
 
-  <main id="cart-items"></main>
+  <!-- Ganti id ke cart-list agar cocok dengan co.js -->
+  <main id="cart-list"></main>
 
-<footer class="checkout-bar">
-  <label class="select-all"><input type="checkbox" id="select-all" /> <strong>Semua</strong></label>
-  <div class="checkout-summary">
-    <button id="checkout-btn">Checkout (0)</button>
-    <div class="total-label">Total: <span id="total-price">Rp 0</span></div>
+  <!-- Pesan jika keranjang kosong -->
+  <div id="empty-msg" style="text-align: center; padding: 1rem; display: none;">
+    Keranjang kamu masih kosong 🛒
   </div>
-</footer>
 
-
+  <footer class="checkout-bar">
+    <label class="select-all">
+      <input type="checkbox" id="select-all" /> <strong>Semua</strong>
+    </label>
+    <div class="checkout-summary">
+      <button id="checkout-btn">Checkout (0)</button>
+      <div class="total-label">Total: <span id="total-price">Rp 0</span></div>
+    </div>
+  </footer>
 </body>
 </html>
