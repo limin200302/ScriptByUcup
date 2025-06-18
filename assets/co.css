@@ -98,5 +98,6 @@ body {
 .item-bonus {
   font-size: 12px;
   color: green;
-  margin-top: 2px;
+  font-style: italic;
+  margin-top: 4px;
 }
