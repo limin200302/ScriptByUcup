@@ -32,7 +32,7 @@ img {
 }
 
 .main-header .logo {
-  font-size: 1.8rem;
+  font-size: 1.4rem;
   font-weight: bold;
   color: #ffcc00;
 }
@@ -65,7 +65,7 @@ img {
 .hero-slider {
   position: relative;
   width: 100%;
-  height: 200px;
+  height: 300px;
 }
 
 .bg-slide {
