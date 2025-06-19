@@ -102,6 +102,14 @@ main#cart-list {
   padding: 10px 15px;
   box-shadow: 0 -2px 5px rgba(0,0,0,0.05);
   z-index: 10;
+  display: flex;
+  flex-direction: colum;
+  gap: 10px;
+}
+.checkout-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .select-all {
@@ -159,21 +167,15 @@ main#cart-list {
   min-height: 100%;
   }
 .toggle-checkout-btn {
-  display: block;
-  width: 100%;
-  padding: 10px;
-  background-color: #ff9800;
-  color: white;
+  background-color: transparent;
   border: none;
+  color: #ff9800;
+  font-size: 14px;
   font-weight: bold;
-  font-size: 16px;
   cursor: pointer;
-  position: sticky;
-  bottom: 60px;
-  z-index: 9;
-  border-radius: 6px;
+  text-align: center;
+  padding: 5px;
 }
-
 .checkout-bar.hidden {
   display: none;
 }
