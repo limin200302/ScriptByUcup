@@ -106,11 +106,6 @@ main#cart-list {
   flex-direction: colum;
   gap: 10px;
 }
-.checkout-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
 
 .select-all {
   display: flex;
@@ -166,18 +161,3 @@ main#cart-list {
   height: auto;
   min-height: 100%;
   }
-.toggle-checkout-btn {
-  background-color: orange;
-  border: none;
-  color: white;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-  text-align: center;
-  width: 100%;
-  padding: 8px;
-  border-radius: 6px;
-}
-.checkout-bar.hidden {
-  display: none;
-}
