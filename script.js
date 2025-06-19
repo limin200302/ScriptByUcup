@@ -12,3 +12,40 @@ window.addEventListener('scroll', () => {
 document.addEventListener('DOMContentLoaded', () => {
   console.log("Website Mamet Store siap digunakan 🚀");
 });
+document.addEventListener('DOMContentLoaded', () => {
+  console.log("Website Mamet Store siap digunakan 🚀");
+
+  let slides = document.querySelectorAll('.slide');
+  let currentIndex = 0;
+  let interval = setInterval(showNextSlide, 3000); // Ganti tiap 3 detik
+
+  function showSlide(index) {
+    slides.forEach(slide => slide.classList.remove('active'));
+    slides[index].classList.add('active');
+  }
+
+  function showNextSlide() {
+    currentIndex = (currentIndex + 1) % slides.length;
+    showSlide(currentIndex);
+  }
+
+  function showPrevSlide() {
+    currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+    showSlide(currentIndex);
+  }
+
+  document.querySelector('.next').addEventListener('click', () => {
+    showNextSlide();
+    resetInterval();
+  });
+
+  document.querySelector('.prev').addEventListener('click', () => {
+    showPrevSlide();
+    resetInterval();
+  });
+
+  function resetInterval() {
+    clearInterval(interval);
+    interval = setInterval(showNextSlide, 3000);
+  }
+});
