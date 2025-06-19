@@ -145,12 +145,13 @@ window.addEventListener("beforeunload", () => {
   // Pastikan badge ikut update saat kembali ke halaman utama
   localStorage.setItem("cart", JSON.stringify(cartItems));
 });
-const checkoutBar = document.querySelector(".checkout-bar");
 const toggleBtn = document.getElementById("toggle-checkout");
-
 toggleBtn.addEventListener("click", () => {
-  const isHidden = checkoutBar.classList.toggle("hidden");
-  toggleBtn.textContent = isHidden
-    ? "Lanjutkan Checkout di Sini ⬇️"
+  const checkoutBar = document.querySelector(".checkout-bar");
+
+  checkoutBar.classList.toggle("hidden");
+
+  toggleBtn.textContent = checkoutBar.classList.contains("hidden")
+    ? "Lanjutkan Checkout ⬇️"
     : "Tutup Checkout ⬆️";
 });
