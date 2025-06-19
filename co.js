@@ -26,9 +26,10 @@ const bonusData = {
 const categoryThumbnails = {
   cash: "assets/img/cash.png",
   boxlegends: "assets/img/boxlegends.png",
-  boxcol: "assets/img/boxcol.png",
+  venice: "assets/img/venice.png",
+  poolpass: "assets/img/poolpass.png",
   goldenshot: "assets/img/goldenshot.png",
-  "pool pass": "assets/img/poolpass.png"
+  boxcollector: "assets/img/boxcollector.png"
 };
 const cartContainer = document.getElementById("cart-list");
 const totalPriceEl = document.getElementById("total-price");
