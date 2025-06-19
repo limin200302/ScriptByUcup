@@ -9,6 +9,7 @@ body {
 }
 main#cart-list {
   padding: 15px;
+}
 @font-face {
   font-family: 'CabalBold';
   src: url('../assets/fonts/CabalBold.ttf') format('truetype');
