@@ -4,18 +4,15 @@ body {
   background: linear-gradient(to bottom, #fff, #f7f7f7);
   color: #333;
   animation: fadein 0.5s ease;
-  padding-botom: 100px;
-  overflow-y: auto;
 }
-main#cart-list {
-  padding: 15px;
-}
+
 @font-face {
   font-family: 'CabalBold';
   src: url('../assets/fonts/CabalBold.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
+
 @keyframes fadein {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
@@ -49,7 +46,6 @@ main#cart-list {
   border-bottom: 1px solid #ddd;
   padding: 12px 0;
   animation: slidein 0.3s ease;
-  gap: 10x;
 }
 
 @keyframes slidein {
@@ -78,9 +74,9 @@ main#cart-list {
 
 .item-bonus {
   font-size: 15px;
-  color: red;  
+  color: red;
   margin-top: 5px;
-   font-family: 'CabalBold', sans-serif;
+  font-family: 'CabalBold', sans-serif;
 }
 
 .delete-btn {
@@ -99,38 +95,35 @@ main#cart-list {
   right: 0;
   background: white;
   border-top: 1px solid #ccc;
-  padding: 8px 12px;
-  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.08);
+  padding: 10px 15px;
+  box-shadow: 0 -2px 5px rgba(0,0,0,0.05);
   z-index: 10;
-  font-size: 14px; /* kecilin font */
 }
 
 .select-all {
   display: flex;
   align-items: center;
-  font-weight: normal;
-  margin-bottom: 6px;
-  gap: 5px; /* jarak antara checkbox dan teks */
+  font-weight: bold;
+  margin-bottom: 10px;
 }
 
 .checkout-summary {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 8px;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 #checkout-btn {
   background: #ff9800;
   color: white;
-  font-size: 14px;
-  padding: 8px 16px;
+  font-size: 18px;
+  padding: 10px 20px;
   border: none;
   border-radius: 6px;
   cursor: pointer;
+  width: 100%;
+  margin-bottom: 8px;
   transition: background 0.3s ease;
-  flex: 1;
 }
 
 #checkout-btn:hover {
@@ -141,7 +134,6 @@ main#cart-list {
   font-size: 16px;
   font-weight: bold;
   color: #333;
-  white-space: nowrap;
 }
 
 .empty-msg {
@@ -150,6 +142,7 @@ main#cart-list {
   font-size: 16px;
   display: none;
 }
+
 .item-thumb {
   width: 60px;
   height: 60px;
