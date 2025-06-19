@@ -158,3 +158,22 @@ main#cart-list {
   height: auto;
   min-height: 100%;
   }
+.toggle-checkout-btn {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  background-color: #ff9800;
+  color: white;
+  border: none;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+  position: sticky;
+  bottom: 60px;
+  z-index: 9;
+  border-radius: 6px;
+}
+
+.checkout-bar.hidden {
+  display: none;
+}
