@@ -8,33 +8,12 @@ window.addEventListener('scroll', () => {
   }
 });
 
-// 🟡 Tambahan di paling bawah (versi final)
-document.addEventListener('DOMContentLoaded', () => {
-  console.log("Website Mamet Store siap digunakan 🚀");
-});
-document.addEventListener('DOMContentLoaded', () => {
-  console.log("Website Mamet Store siap digunakan 🚀");
-
-  document.addEventListener('DOMContentLoaded', () => {
-  console.log("Website Mamet Store siap digunakan 🚀");
-
-  const bgSlides = document.querySelectorAll('.bg-slide');
-  let currentSlide = 0;
-
-  function showSlide(index) {
-    bgSlides.forEach(slide => slide.classList.remove('active'));
-    bgSlides[index].classList.add('active');
-  }
-
-  setInterval(() => {
-    currentSlide = (currentSlide + 1) % bgSlides.length;
-    showSlide(currentSlide);
-  }, 3000); // Ganti tiap 3 detik
-});
+// === FINAL: Background Hero Slider (auto + swipe)
 document.addEventListener('DOMContentLoaded', () => {
   console.log("Website Mamet Store siap digunakan 🚀");
 
   const bgSlides = document.querySelectorAll('.bg-slide');
+  const sliderContainer = document.querySelector('.hero-slider');
   let currentSlide = 0;
   let interval = setInterval(nextSlide, 3000);
 
@@ -53,11 +32,14 @@ document.addEventListener('DOMContentLoaded', () => {
     showSlide(currentSlide);
   }
 
-  // === Manual swipe/drag ===
+  function resetInterval() {
+    clearInterval(interval);
+    interval = setInterval(nextSlide, 3000);
+  }
+
+  // === Swipe / Drag support
   let startX = 0;
   let isDragging = false;
-
-  const sliderContainer = document.querySelector('.hero-slider');
 
   // Touch (HP)
   sliderContainer.addEventListener('touchstart', (e) => {
@@ -65,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   sliderContainer.addEventListener('touchend', (e) => {
-    let endX = e.changedTouches[0].clientX;
+    const endX = e.changedTouches[0].clientX;
     handleSwipe(endX - startX);
   });
 
@@ -78,12 +60,12 @@ document.addEventListener('DOMContentLoaded', () => {
   sliderContainer.addEventListener('mouseup', (e) => {
     if (!isDragging) return;
     isDragging = false;
-    let endX = e.clientX;
+    const endX = e.clientX;
     handleSwipe(endX - startX);
   });
 
   function handleSwipe(deltaX) {
-    if (Math.abs(deltaX) > 50) { // threshold
+    if (Math.abs(deltaX) > 50) {
       if (deltaX > 0) {
         prevSlide();
       } else {
@@ -93,9 +75,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  function resetInterval() {
-    clearInterval(interval);
-    interval = setInterval(nextSlide, 3000);
-  }
+  // Tampilkan slide pertama
+  showSlide(currentSlide);
 });
-  
