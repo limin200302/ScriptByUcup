@@ -23,7 +23,13 @@ const bonusData = {
     295000: "Bonus🎁: VIP Points"
   }
 };
-
+const categoryThumbnails = {
+  cash: "assets/img/cash.png",
+  boxlegends: "assets/img/boxlegends.png",
+  boxcol: "assets/img/boxcol.png",
+  goldenshot: "assets/img/goldenshot.png",
+  "pool pass": "assets/img/poolpass.png"
+};
 const cartContainer = document.getElementById("cart-list");
 const totalPriceEl = document.getElementById("total-price");
 const checkoutBtn = document.getElementById("checkout-btn");
@@ -55,18 +61,23 @@ function renderCart() {
     const bonus = getBonus(item.category, price);
 
     const div = document.createElement("div");
-    div.className = "cart-item";
-    div.innerHTML = `
-      <input type="checkbox" class="item-check" data-index="${index}">
-      <div class="item-info">
-        <div class="item-name">${item.name}</div>
-        <div class="item-label">${item.label}</div>
-        ${bonus ? `<div class="item-bonus">${bonus}</div>` : ""}
-      </div>
-      <button class="delete-btn" data-index="${index}">Hapus</button>
-    `;
+div.className = "cart-item";
 
-    cartContainer.appendChild(div);
+// Tambahkan bagian ini:
+const imgSrc = categoryThumbnails[item.category.toLowerCase()] || "assets/img/default-thumb.png";
+
+div.innerHTML = `
+  <input type="checkbox" class="item-check" data-index="${index}">
+  <img src="${imgSrc}" class="item-thumb" alt="${item.category}">
+  <div class="item-info">
+    <div class="item-name">${item.name}</div>
+    <div class="item-label">${item.label}</div>
+    ${bonus ? `<div class="item-bonus">${bonus}</div>` : ""}
+  </div>
+  <button class="delete-btn" data-index="${index}">Hapus</button>
+`;
+cartContainer.appendChild(div);
+
   });
 
   updateTotal();
