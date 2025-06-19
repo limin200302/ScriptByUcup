@@ -6,7 +6,7 @@ let selectedItems = new Set();
 const bonusData = {
   cash: {
     55000: "Bonus🎁: 2 Keping Cue Mastermind",
-    70000: "Bonus🎁: 4 Keping Cue Murasa",
+    70000: "Bonus🎁: 4 Keping Cue Muramasa",
     95000: "Bonus🎁: 4 Keping Cue Mastermind",
     135000: "Bonus🎁: 16 Cue Hawar Beku + 30 Golden Shot",
     190000: "Bonus🎁: VIP Points",
@@ -15,7 +15,7 @@ const bonusData = {
   },
   boxlegends: {
     60000: "Bonus🎁: 2 Keping Cue Mastermind",
-    75000: "Bonus🎁: 4 Keping Cue Murasa",
+    75000: "Bonus🎁: 4 Keping Cue Muramasa",
     100000: "Bonus🎁: 4 Keping Cue Mastermind",
     145000: "Bonus🎁: 16 Cue Hawar Beku + 30 Golden Shot",
     200000: "Bonus🎁: VIP Points",
