@@ -145,3 +145,32 @@ window.addEventListener("beforeunload", () => {
   // Pastikan badge ikut update saat kembali ke halaman utama
   localStorage.setItem("cart", JSON.stringify(cartItems));
 });
+document.getElementById("checkout-btn").addEventListener("click", () => {
+  document.getElementById("confirm-popup").classList.remove("hidden");
+});
+
+document.getElementById("wa-cancel").addEventListener("click", () => {
+  document.getElementById("confirm-popup").classList.add("hidden");
+});
+
+document.getElementById("wa-confirm").addEventListener("click", () => {
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+  const selected = document.querySelectorAll(".cart-item input[type='checkbox']:checked");
+
+  let items = [];
+  selected.forEach((checkbox) => {
+    const itemIndex = checkbox.dataset.index;
+    const item = cart[itemIndex];
+    if (item) items.push(item);
+  });
+
+  if (items.length === 0) return;
+
+  let message = "Halo, saya ingin memesan item berikut:\n";
+  items.forEach((item) => {
+    message += `- ${item.name} (${item.category}) seharga ${item.label}\n`;
+  });
+
+  const encoded = encodeURIComponent(message);
+  window.open(`https://wa.me/6285713056205?text=${encoded}`, "_blank");
+});
