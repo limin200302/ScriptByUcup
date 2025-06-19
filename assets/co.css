@@ -4,7 +4,11 @@ body {
   background: linear-gradient(to bottom, #fff, #f7f7f7);
   color: #333;
   animation: fadein 0.5s ease;
+  padding-botom: 100px;
+  overflow-y: auto;
 }
+main#cart-list {
+  padding: 15px;
 @font-face {
   font-family: 'CabalBold';
   src: url('../assets/fonts/CabalBold.ttf') format('truetype');
@@ -44,6 +48,7 @@ body {
   border-bottom: 1px solid #ddd;
   padding: 12px 0;
   animation: slidein 0.3s ease;
+  gap: 10x;
 }
 
 @keyframes slidein {
@@ -140,3 +145,15 @@ body {
   font-size: 16px;
   display: none;
 }
+.item-thumb {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+  border-radius: 8px;
+  margin-right: 10px;
+  flex-shrink: 0;
+}
+  html, body {
+  height: auto;
+  min-height: 100%;
+  }
