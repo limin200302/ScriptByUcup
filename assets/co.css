@@ -174,7 +174,9 @@ main#cart-list {
   font-weight: bold;
   cursor: pointer;
   text-align: center;
-  padding: 5px;
+  width: 100%;
+  padding: 8px;
+  border-radius: 6px;
 }
 .checkout-bar.hidden {
   display: none;
