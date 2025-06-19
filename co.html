@@ -14,21 +14,22 @@
   </header>
 
   <main id="cart-list"></main>
-  // tambahan baru //
-  <button id="toggle-checkout" class="toggle-checkout-btn">
-  Lanjutkan Checkout di Sini ⬇️
-  </button>
-// sampai sini //
+  
   <div id="empty-msg" class="empty-msg">Keranjang kamu masih kosong 🛒</div>
 
-  <footer class="checkout-bar">
+<footer class="checkout-bar">
+  <div class="checkout-top">
     <label class="select-all">
       <input type="checkbox" id="select-all" /> <strong>Semua</strong>
     </label>
-    <div class="checkout-summary">
-      <button id="checkout-btn">Checkout (0)</button>
-      <div class="total-label">Total: <span id="total-price">Rp 0</span></div>
-    </div>
-  </footer>
+    <div class="total-label">Total: <span id="total-price">Rp 0</span></div>
+  </div>
+
+  <button id="checkout-btn">Checkout (0)</button>
+
+  <button id="toggle-checkout" class="toggle-checkout-btn">
+    Tutup Checkout ⬆️
+  </button>
+</footer>
 </body>
 </html>
