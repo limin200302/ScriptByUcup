@@ -29,7 +29,7 @@ const categoryThumbnails = {
   venice: "assets/img/venice.png",
   poolpass: "assets/img/poolpass.png",
   goldenshot: "assets/img/goldenshot.png",
-  boxcollector: "assets/img/boxcollector.png"
+  boxcollector: "assets/img/boxcol.png"
 };
 const cartContainer = document.getElementById("cart-list");
 const totalPriceEl = document.getElementById("total-price");
