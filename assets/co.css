@@ -99,38 +99,38 @@ main#cart-list {
   right: 0;
   background: white;
   border-top: 1px solid #ccc;
-  padding: 10px 15px;
-  box-shadow: 0 -2px 5px rgba(0,0,0,0.05);
+  padding: 8px 12px;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.08);
   z-index: 10;
-  display: flex;
-  flex-direction: colum;
-  gap: 10px;
+  font-size: 14px; /* kecilin font */
 }
 
 .select-all {
   display: flex;
   align-items: center;
-  font-weight: bold;
-  margin-bottom: 10px;
+  font-weight: normal;
+  margin-bottom: 6px;
+  gap: 5px; /* jarak antara checkbox dan teks */
 }
 
 .checkout-summary {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 #checkout-btn {
   background: #ff9800;
   color: white;
-  font-size: 18px;
-  padding: 10px 20px;
+  font-size: 14px;
+  padding: 8px 16px;
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  width: 100%;
-  margin-bottom: 8px;
   transition: background 0.3s ease;
+  flex: 1;
 }
 
 #checkout-btn:hover {
@@ -141,6 +141,7 @@ main#cart-list {
   font-size: 16px;
   font-weight: bold;
   color: #333;
+  white-space: nowrap;
 }
 
 .empty-msg {
