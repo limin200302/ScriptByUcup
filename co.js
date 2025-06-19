@@ -172,5 +172,5 @@ document.getElementById("wa-confirm").addEventListener("click", () => {
   });
 
   const encoded = encodeURIComponent(message);
-  window.open(`https://wa.me/6285713056205?text=${encoded}`, "_blank");
+  window.open(`https://wa.me/6285713056206?text=${encoded}`, "_blank");
 });
