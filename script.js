@@ -15,37 +15,19 @@ document.addEventListener('DOMContentLoaded', () => {
 document.addEventListener('DOMContentLoaded', () => {
   console.log("Website Mamet Store siap digunakan 🚀");
 
-  let slides = document.querySelectorAll('.slide');
-  let currentIndex = 0;
-  let interval = setInterval(showNextSlide, 3000); // Ganti tiap 3 detik
+  document.addEventListener('DOMContentLoaded', () => {
+  console.log("Website Mamet Store siap digunakan 🚀");
+
+  const bgSlides = document.querySelectorAll('.bg-slide');
+  let currentSlide = 0;
 
   function showSlide(index) {
-    slides.forEach(slide => slide.classList.remove('active'));
-    slides[index].classList.add('active');
+    bgSlides.forEach(slide => slide.classList.remove('active'));
+    bgSlides[index].classList.add('active');
   }
 
-  function showNextSlide() {
-    currentIndex = (currentIndex + 1) % slides.length;
-    showSlide(currentIndex);
-  }
-
-  function showPrevSlide() {
-    currentIndex = (currentIndex - 1 + slides.length) % slides.length;
-    showSlide(currentIndex);
-  }
-
-  document.querySelector('.next').addEventListener('click', () => {
-    showNextSlide();
-    resetInterval();
-  });
-
-  document.querySelector('.prev').addEventListener('click', () => {
-    showPrevSlide();
-    resetInterval();
-  });
-
-  function resetInterval() {
-    clearInterval(interval);
-    interval = setInterval(showNextSlide, 3000);
-  }
+  setInterval(() => {
+    currentSlide = (currentSlide + 1) % bgSlides.length;
+    showSlide(currentSlide);
+  }, 3000); // Ganti tiap 3 detik
 });
