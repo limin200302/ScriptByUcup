@@ -87,21 +87,29 @@
   <!-- EmailJS Script -->
 <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
 <script>
-  // Inisialisasi EmailJS
+<script>
   emailjs.init("nAUL1b5lv7jJmOcaY");
 
-  // Handle saat form dikirim
-  document.getElementById("account-form").addEventListener("submit", function (e) {
+  const form = document.getElementById("account-form");
+  let isSending = false;
+
+  form.addEventListener("submit", function (e) {
     e.preventDefault();
+
+    if (isSending) return; // cegah double submit
+    isSending = true;
 
     emailjs.sendForm('service_ucup', 'template_1shj4dt', this)
       .then(function () {
         alert("✅ Order berhasil dikirim ke email!");
-        closePopup(); // tutup pop-up
+        closePopup();
+        isSending = false;
       }, function (error) {
         alert("❌ Gagal kirim order: " + error.text);
+        isSending = false;
       });
   });
 </script>
+  
 </body>
 </html>
