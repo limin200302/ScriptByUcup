@@ -7,29 +7,35 @@ const orderInput = document.getElementById("order_items");
 const totalHarga = document.getElementById("total-harga");
 
 function renderCart() {
-  cartList.innerHTML = "";
-  if (cart.length === 0) {
-    emptyMsg.style.display = "block";
-    totalHarga.textContent = "Rp 0";
-    return;
-  }
-  emptyMsg.style.display = "none";
-  cart.forEach((item, index) => {
-    const div = document.createElement("div");
-    div.className = "cart-item";
-    const cleanName = item.name.replace(/\((.*?)\)/g, '').trim(); // Hapus (kategori)
-    div.innerHTML = \`
-      <label>
-        <input type="checkbox" class="item-checkbox" data-index="\${index}" checked />
-        \${cleanName} - \${item.label}
-      </label>
-      <button class="delete-btn" data-index="\${index}">❌</button>
-    \`;
-    cartList.appendChild(div);
-  });
-  updateSummary();
-}
+  function renderCart() {
+  const cart = JSON.parse(localStorage.getItem("cart") || "[]"); // Muat ulang cart dari localStorage
+  cartList.innerHTML = "";
 
+  if (cart.length === 0) {
+    emptyMsg.style.display = "block";
+    totalHarga.textContent = "Rp 0";
+    return;
+  }
+
+  emptyMsg.style.display = "none";
+
+  cart.forEach((item, index) => {
+    const div = document.createElement("div");
+    div.className = "cart-item";
+    const cleanName = item.name.replace(/\((.*?)\)/g, '').trim(); // Hapus teks dalam tanda kurung
+    div.innerHTML = `
+      <label>
+        <input type="checkbox" class="item-checkbox" data-index="${index}" checked />
+        ${cleanName} - ${item.label}
+      </label>
+      <button class="delete-btn" data-index="${index}">❌</button>
+    `;
+    cartList.appendChild(div);
+  });
+
+  updateSummary();
+  }
+  
 // ========== Update Total & Order Items ==========
 function updateSummary() {
   const checkboxes = document.querySelectorAll(".item-checkbox:checked");
