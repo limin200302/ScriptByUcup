@@ -8,11 +8,10 @@ import {
   getFirestore,
   doc,
   setDoc,
-  getDoc,
+  getDocs,
   collection,
   query,
-  where,
-  getDocs
+  where
 } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -31,23 +30,35 @@ const db = getFirestore(app);
 
 const form = document.getElementById("registerForm");
 const usernameInput = document.getElementById("username");
-const suggestionText = document.getElementById("usernameSuggestion");
+const emailInput = document.getElementById("email");
+const passwordInput = document.getElementById("password");
+const confirmInput = document.getElementById("confirmPassword");
 const errorMsg = document.getElementById("errorMsg");
+const suggestionText = document.getElementById("usernameSuggestion");
 
-// Cek login
+// Cek apakah sudah login
 onAuthStateChanged(auth, (user) => {
-  if (user) window.location.href = "index.html";
+  if (user) {
+    window.location.href = "index.html";
+  }
 });
 
-// Saran username otomatis
-usernameInput.addEventListener("input", async () => {
-  const inputName = usernameInput.value.trim().toLowerCase();
-  if (inputName.length < 3) return suggestionText.textContent = "";
+// Toggle password
+document.querySelectorAll(".toggle-password").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const input = btn.previousElementSibling;
+    input.type = input.type === "password" ? "text" : "password";
+    btn.textContent = input.type === "password" ? "👁" : "🙈";
+  });
+});
 
-  const exists = await checkUsernameExists(inputName);
+// Cek username exist
+usernameInput.addEventListener("input", async () => {
+  const val = usernameInput.value.trim().toLowerCase();
+  if (val.length < 3) return suggestionText.textContent = "";
+  const exists = await checkUsernameExists(val);
   if (exists) {
-    const suggestion = inputName + Math.floor(Math.random() * 1000);
-    suggestionText.textContent = `Nama sudah dipakai. Coba: ${suggestion}`;
+    suggestionText.textContent = `Nama sudah dipakai. Coba: ${val}${Math.floor(Math.random() * 999)}`;
   } else {
     suggestionText.textContent = "";
   }
@@ -59,38 +70,33 @@ async function checkUsernameExists(username) {
   return !snapshot.empty;
 }
 
-// Toggle show/hide password
-document.querySelectorAll(".toggle-password").forEach((btn) => {
-  btn.addEventListener("click", () => {
-    const input = btn.previousElementSibling;
-    input.type = input.type === "password" ? "text" : "password";
-    btn.textContent = input.type === "password" ? "👁" : "🙈";
-  });
-});
-
 // Handle register
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
-  const username = usernameInput.value.trim().toLowerCase();
-  const email = form.email.value;
-  const password = form.password.value;
-  const confirmPassword = form.confirmPassword.value;
+  errorMsg.textContent = "";
 
-  if (password !== confirmPassword) {
-    errorMsg.textContent = "Password tidak cocok.";
-    return;
+  const username = usernameInput.value.trim().toLowerCase();
+  const email = emailInput.value.trim();
+  const password = passwordInput.value;
+  const confirmPassword = confirmInput.value;
+
+  if (!username || !email || !password || !confirmPassword) {
+    return errorMsg.textContent = "Semua kolom wajib diisi!";
   }
 
-  if (await checkUsernameExists(username)) {
-    errorMsg.textContent = "Username sudah digunakan. Coba yang lain.";
-    return;
+  if (password !== confirmPassword) {
+    return errorMsg.textContent = "Password tidak cocok!";
+  }
+
+  const usernameTaken = await checkUsernameExists(username);
+  if (usernameTaken) {
+    return errorMsg.textContent = "Username sudah digunakan!";
   }
 
   try {
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    const uid = userCredential.user.uid;
+    const userCred = await createUserWithEmailAndPassword(auth, email, password);
+    const uid = userCred.user.uid;
 
-    // Simpan ke Firestore
     await setDoc(doc(db, "users", uid), {
       uid,
       username,
@@ -98,8 +104,12 @@ form.addEventListener("submit", async (e) => {
       createdAt: new Date()
     });
 
+    alert("Berhasil daftar! Kamu akan diarahkan...");
     window.location.href = "index.html";
+
   } catch (err) {
-    errorMsg.textContent = "Gagal daftar: " + err.message;
+    errorMsg.textContent = err.message.includes("email-already") ?
+      "Email sudah digunakan!" :
+      "Terjadi kesalahan: " + err.message;
   }
 });
