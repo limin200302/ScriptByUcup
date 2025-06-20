@@ -296,11 +296,20 @@ img {
   margin-bottom: 1rem;
 }
 .mobile-menu a {
-  color: white;
+  display: block;
+  padding: 12px 16px;
+  background-color: #2a2a3a;
+  border-radius: 10px;
+  color: #ffffff;
   text-decoration: none;
-  font-size: 1.1rem;
+  font-size: 1.05rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  transition: background 0.3s, transform 0.2s;
 }
-
+.mobile-menu a:hover {
+  background-color: #3e3e55;
+  transform: scale(1.03);
+}
 /* === Overlay Background === */
 .menu-overlay {
   position: fixed;
