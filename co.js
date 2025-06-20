@@ -1,83 +1,117 @@
-emailjs.init("nAUL1b5lv7jJmOcaY");
-
-// Ambil data cart
-let cartItems = JSON.parse(localStorage.getItem("cart")) || [];
+// ========== Render Keranjang ==========
+const cart = JSON.parse(localStorage.getItem("cart") || "[]");
 const cartList = document.getElementById("cart-list");
-const selectAll = document.getElementById("select-all");
-const totalHarga = document.getElementById("total-harga");
 const emptyMsg = document.getElementById("empty-msg");
-let selected = new Set();
-
-function getPrice(label) {
-  const match = label.match(/Rp\s?([\d.]+)/);
-  return match ? parseInt(match[1].replace(/\./g, "")) : 0;
-}
-
-function updateTotal() {
-  let total = 0;
-  selected.forEach(i => total += getPrice(cartItems[i].label));
-  totalHarga.textContent = "Rp " + total.toLocaleString("id-ID");
-  document.getElementById("order_items").value = [...selected].map(i => {
-    const it = cartItems[i];
-    return `- ${it.name} (${it.category}) - ${it.label}`;
-  }).join("\n");
-}
+const selectAll = document.getElementById("select-all");
+const orderInput = document.getElementById("order_items");
+const totalHarga = document.getElementById("total-harga");
 
 function renderCart() {
   cartList.innerHTML = "";
-  if (cartItems.length === 0) {
+
+  if (cart.length === 0) {
     emptyMsg.style.display = "block";
+    totalHarga.textContent = "Rp 0";
     return;
   }
+
   emptyMsg.style.display = "none";
 
-  cartItems.forEach((item, i) => {
+  cart.forEach((item, index) => {
     const div = document.createElement("div");
     div.className = "cart-item";
     div.innerHTML = `
-      <label><input type="checkbox" data-index="${i}" class="item-check"> ${item.name} - ${item.label}</label>
-      <button onclick="removeItem(${i})">Hapus</button>
+      <label><input type="checkbox" class="item-checkbox" data-index="${index}" checked />
+        ${item.name} (${item.category}) - ${item.label}
+      </label>
+      <button class="delete-btn" data-index="${index}">❌</button>
     `;
     cartList.appendChild(div);
   });
+
+  updateSummary();
 }
 
-function removeItem(i) {
-  cartItems.splice(i, 1);
-  localStorage.setItem("cart", JSON.stringify(cartItems));
-  renderCart();
-  selected.clear();
-  updateTotal();
+// ========== Update Total & Order Items ==========
+function updateSummary() {
+  const checkboxes = document.querySelectorAll(".item-checkbox:checked");
+  const selectedItems = [...checkboxes].map(cb => cart[cb.dataset.index]);
+
+  // Total harga dari label
+  let total = 0;
+  selectedItems.forEach(item => {
+    const match = item.label.match(/Rp\s?([\d.,]+)/);
+    if (match) {
+      const angka = parseInt(match[1].replace(/[.,]/g, ""));
+      total += angka;
+    }
+  });
+
+  // Tambah biaya admin
+  const metode = document.querySelector("input[name='metode']:checked");
+  if (metode) {
+    const val = metode.value.toLowerCase();
+    if (val === "qris" || val === "shopeepay" || val === "ovo" || val === "gopay") {
+      total += 1500;
+    }
+  }
+
+  totalHarga.textContent = "Rp " + total.toLocaleString("id-ID");
+
+  // Simpan ke input hidden
+  const orderText = selectedItems
+    .map(i => `- ${i.name} (${i.category}) - ${i.label}`)
+    .join("\n");
+  orderInput.value = orderText;
 }
 
-cartList.addEventListener("change", e => {
-  if (e.target.classList.contains("item-check")) {
-    const i = parseInt(e.target.dataset.index);
-    if (e.target.checked) selected.add(i);
-    else selected.delete(i);
-    updateTotal();
+// ========== Event Listeners ==========
+cartList.addEventListener("change", (e) => {
+  if (e.target.classList.contains("item-checkbox")) {
+    updateSummary();
+  }
+});
+
+cartList.addEventListener("click", (e) => {
+  if (e.target.classList.contains("delete-btn")) {
+    const index = e.target.dataset.index;
+    cart.splice(index, 1);
+    localStorage.setItem("cart", JSON.stringify(cart));
+    renderCart();
   }
 });
 
 selectAll.addEventListener("change", () => {
-  selected.clear();
-  document.querySelectorAll(".item-check").forEach((cb, i) => {
+  document.querySelectorAll(".item-checkbox").forEach(cb => {
     cb.checked = selectAll.checked;
-    if (selectAll.checked) selected.add(i);
   });
-  updateTotal();
+  updateSummary();
 });
 
-document.getElementById("account-form").addEventListener("submit", function(e) {
+document.querySelectorAll("input[name='metode']").forEach(radio => {
+  radio.addEventListener("change", updateSummary);
+});
+
+// ========== EmailJS ==========
+emailjs.init("nAUL1b5lv7jJmOcaY");
+document.getElementById("account-form").addEventListener("submit", function (e) {
   e.preventDefault();
-  if (selected.size === 0) return alert("Pilih minimal 1 item dari keranjang!");
+
+  if (orderInput.value.trim() === "") {
+    alert("❌ Pilih minimal 1 item dari keranjang!");
+    return;
+  }
+
   emailjs.sendForm("service_ucup", "template_1shj4dt", this)
     .then(() => {
       alert("✅ Order berhasil dikirim ke email!");
       localStorage.removeItem("cart");
-      window.location.reload();
+      window.location.href = "index.html";
     })
-    .catch(err => alert("❌ Gagal kirim: " + err.text));
+    .catch(err => {
+      alert("❌ Gagal mengirim order: " + err.text);
+    });
 });
 
+// ========== Inisialisasi ==========
 renderCart();
