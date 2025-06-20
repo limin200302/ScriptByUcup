@@ -184,13 +184,19 @@ function closePopup() {
 // === EMAILJS ===
 emailjs.init("nAUL1b5lv7jJmOcaY");
 
-document.getElementById("account-form").addEventListener("submit", function (e) {
+const form = document.getElementById("account-form");
+form.addEventListener("submit", handleFormSubmit);
+function handleFormSubmit(e) {
   e.preventDefault();
-  emailjs.sendForm('service_ucup', 'template_1shj4dt', this)
+
+  // Hindari submit ganda
+  form.removeEventListener("submit", handleFormSubmit);
+
+  emailjs.sendForm('service_ucup', 'template_1shj4dt', form)
     .then(function () {
       alert("✅ Order berhasil dikirim ke email!");
       closePopup();
     }, function (error) {
       alert("❌ Gagal kirim order: " + error.text);
     });
-});
+}
