@@ -21,13 +21,24 @@ function renderCart() {
     const div = document.createElement("div");
     div.className = "cart-item";
     const cleanName = item.name.replace(/\((.*?)\)/g, '').trim();
+
+// Ambil nominal harga
+const match = item.label.match(/Rp\s?([\d.,]+)/);
+const price = match ? parseInt(match[1].replace(/[.,]/g, "")) : 0;
+
+// Cek bonus berdasarkan kategori dan harga
+let bonusText = "";
+if (bonusData[item.category] && bonusData[item.category][price]) {
+  bonusText = `<div class="item-bonus">${bonusData[item.category][price]}</div>`;
+}
     div.innerHTML = `
-      <label>
-        <input type="checkbox" class="item-checkbox" data-index="${index}" checked />
-        ${cleanName} - ${item.label}
-      </label>
-      <button class="delete-btn" data-index="${index}">❌</button>
-    `;
+  <label>
+    <input type="checkbox" class="item-checkbox" data-index="${index}" checked />
+    ${cleanName} - ${item.label}
+    ${bonusText}
+  </label>
+  <button class="delete-btn" data-index="${index}">❌</button>
+`;
     cartList.appendChild(div);
   });
 
