@@ -144,7 +144,7 @@ body {
 .payment-inner-card.selected {
   background: #ffc107;
   color: #000;
-
+}
 .payment-option-card label {
   display: flex;
   align-items: center;
@@ -178,56 +178,57 @@ input[type="radio"]:checked + .payment-label {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(15, 0, 30, 0.4);
-  backdrop-filter: blur(6px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
   z-index: 9999;
-}
-
-.popup-content {
-  background: linear-gradient(135deg, #320052, #1c0035);
-  padding: 20px;
-  border-radius: 15px;
-  width: 90%;
-  max-width: 400px;
-  color: #fff;
-  box-shadow: 0 0 20px rgba(255,255,255,0.1);
-  animation: popin 0.3s ease;
-}
-
-@keyframes popin {
-  from { opacity: 0; transform: scale(0.95); }
-  to { opacity: 1; transform: scale(1); }
-}
-
-.popup-actions {
+  background: rgba(0, 0, 0, 0.4); /* semi gelap */
+  backdrop-filter: blur(5px);
   display: flex;
-  justify-content: space-between;
-  margin-top: 20px;
-}
-
-.popup-actions button {
-  flex: 1;
-  margin: 0 5px;
-  padding: 10px;
-  font-weight: bold;
-  border-radius: 8px;
-  border: none;
-  color: white;
-  cursor: pointer;
-}
-
-#confirm-payment {
-  background-color: #28a745;
-}
-
-#cancel-payment {
-  background-color: #dc3545;
+  justify-content: center;
+  align-items: center;
 }
 
 .payment-popup.hidden {
   display: none;
+}
+
+.popup-content {
+  background: linear-gradient(145deg, #3b0a65, #280846);
+  padding: 20px;
+  border-radius: 15px;
+  color: white;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.3);
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.popup-actions {
+  margin-top: 15px;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.popup-actions button {
+  flex: 1;
+  padding: 10px;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+#confirm-payment {
+  background: #4CAF50;
+  color: white;
+}
+
+#cancel-payment {
+  background: #e53935;
+  color: white;
 }
   
