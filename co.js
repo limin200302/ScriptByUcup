@@ -1,128 +1,83 @@
-// === Inisialisasi EmailJS ===
 emailjs.init("nAUL1b5lv7jJmOcaY");
 
-// === Ambil data dari localStorage ===
+// Ambil data cart
 let cartItems = JSON.parse(localStorage.getItem("cart")) || [];
-let selectedItems = new Set();
-
-// DOM elements
-const cartContainer = document.getElementById("cart-list");
-const totalHargaEl = document.getElementById("total-harga");
-const selectAllCheckbox = document.getElementById("select-all");
+const cartList = document.getElementById("cart-list");
+const selectAll = document.getElementById("select-all");
+const totalHarga = document.getElementById("total-harga");
 const emptyMsg = document.getElementById("empty-msg");
+let selected = new Set();
 
-// Ambil harga dari label "Rp 55.000 - xxx"
-function getPriceFromLabel(label) {
-  const match = label.match(/Rp\s?([\d.]+)/i);
-  if (!match) return 0;
-  return parseInt(match[1].replace(/\./g, ""));
+function getPrice(label) {
+  const match = label.match(/Rp\s?([\d.]+)/);
+  return match ? parseInt(match[1].replace(/\./g, "")) : 0;
 }
 
-// Tampilkan keranjang
+function updateTotal() {
+  let total = 0;
+  selected.forEach(i => total += getPrice(cartItems[i].label));
+  totalHarga.textContent = "Rp " + total.toLocaleString("id-ID");
+  document.getElementById("order_items").value = [...selected].map(i => {
+    const it = cartItems[i];
+    return `- ${it.name} (${it.category}) - ${it.label}`;
+  }).join("\n");
+}
+
 function renderCart() {
-  cartContainer.innerHTML = "";
+  cartList.innerHTML = "";
   if (cartItems.length === 0) {
     emptyMsg.style.display = "block";
     return;
   }
   emptyMsg.style.display = "none";
 
-  cartItems.forEach((item, index) => {
+  cartItems.forEach((item, i) => {
     const div = document.createElement("div");
     div.className = "cart-item";
     div.innerHTML = `
-      <input type="checkbox" class="item-check" data-index="${index}" checked>
-      <div class="info">
-        <div><strong>${item.name}</strong></div>
-        <div>${item.label}</div>
-        <div><em>${item.category}</em></div>
-      </div>
-      <button class="delete-btn" data-index="${index}">Hapus</button>
+      <label><input type="checkbox" data-index="${i}" class="item-check"> ${item.name} - ${item.label}</label>
+      <button onclick="removeItem(${i})">Hapus</button>
     `;
-    cartContainer.appendChild(div);
-    selectedItems.add(index);
+    cartList.appendChild(div);
   });
+}
+
+function removeItem(i) {
+  cartItems.splice(i, 1);
+  localStorage.setItem("cart", JSON.stringify(cartItems));
+  renderCart();
+  selected.clear();
   updateTotal();
 }
 
-// Update total harga
-function updateTotal() {
-  let total = 0;
-  selectedItems.forEach(i => {
-    const item = cartItems[i];
-    const price = getPriceFromLabel(item.label);
-    total += price;
-  });
-  totalHargaEl.textContent = "Rp " + total.toLocaleString("id-ID");
-}
-
-// Checkbox masing-masing item
-cartContainer.addEventListener("change", function (e) {
+cartList.addEventListener("change", e => {
   if (e.target.classList.contains("item-check")) {
-    const index = parseInt(e.target.getAttribute("data-index"));
-    if (e.target.checked) {
-      selectedItems.add(index);
-    } else {
-      selectedItems.delete(index);
-    }
+    const i = parseInt(e.target.dataset.index);
+    if (e.target.checked) selected.add(i);
+    else selected.delete(i);
     updateTotal();
   }
 });
 
-// Pilih semua
-selectAllCheckbox.addEventListener("change", () => {
-  selectedItems.clear();
+selectAll.addEventListener("change", () => {
+  selected.clear();
   document.querySelectorAll(".item-check").forEach((cb, i) => {
-    cb.checked = selectAllCheckbox.checked;
-    if (selectAllCheckbox.checked) selectedItems.add(i);
+    cb.checked = selectAll.checked;
+    if (selectAll.checked) selected.add(i);
   });
   updateTotal();
 });
 
-// Hapus item
-cartContainer.addEventListener("click", (e) => {
-  if (e.target.classList.contains("delete-btn")) {
-    const index = parseInt(e.target.getAttribute("data-index"));
-    cartItems.splice(index, 1);
-    localStorage.setItem("cart", JSON.stringify(cartItems));
-    selectedItems.delete(index);
-    renderCart();
-  }
-});
-
-// Form submit
-document.getElementById("checkout-form").addEventListener("submit", function (e) {
+document.getElementById("account-form").addEventListener("submit", function(e) {
   e.preventDefault();
-
-  // Ambil item yang dipilih
-  const items = [];
-  document.querySelectorAll(".item-check:checked").forEach((cb) => {
-    const idx = parseInt(cb.getAttribute("data-index"));
-    if (cartItems[idx]) items.push(cartItems[idx]);
-  });
-
-  if (items.length === 0) {
-    alert("Pilih dulu item yang ingin dipesan.");
-    return;
-  }
-
-  // Simpan ke input hidden
-  const orderText = items.map(i => `- ${i.name} (${i.category}) - ${i.label}`).join("\n");
-  document.getElementById("order_items").value = orderText;
-
-  // Kirim ke email
-  emailjs.sendForm('service_ucup', 'template_1shj4dt', this)
+  if (selected.size === 0) return alert("Pilih minimal 1 item dari keranjang!");
+  emailjs.sendForm("service_ucup", "template_1shj4dt", this)
     .then(() => {
       alert("✅ Order berhasil dikirim ke email!");
       localStorage.removeItem("cart");
-      window.location.href = "index.html";
+      window.location.reload();
     })
-    .catch((error) => {
-      alert("❌ Gagal kirim: " + error.text);
-    });
+    .catch(err => alert("❌ Gagal kirim: " + err.text));
 });
 
-// Jalankan awal
-document.addEventListener("DOMContentLoaded", () => {
-  renderCart();
-});
+renderCart();
