@@ -8,27 +8,27 @@ const totalHarga = document.getElementById("total-harga");
 
 function renderCart() {
   cartList.innerHTML = "";
-
   if (cart.length === 0) {
     emptyMsg.style.display = "block";
     totalHarga.textContent = "Rp 0";
     return;
   }
-
   emptyMsg.style.display = "none";
 
   cart.forEach((item, index) => {
     const div = document.createElement("div");
     div.className = "cart-item";
+
+    const cleanName = item.name.replace(/\((.*?)\)/g, '').trim(); // Hapus (kategori)
     div.innerHTML = `
-      <label><input type="checkbox" class="item-checkbox" data-index="${index}" checked />
-        ${item.name} - ${item.label}
+      <label>
+        <input type="checkbox" class="item-checkbox" data-index="${index}" checked />
+        ${cleanName} - ${item.label}
       </label>
       <button class="delete-btn" data-index="${index}">❌</button>
     `;
     cartList.appendChild(div);
   });
-
   updateSummary();
 }
 
@@ -37,7 +37,6 @@ function updateSummary() {
   const checkboxes = document.querySelectorAll(".item-checkbox:checked");
   const selectedItems = [...checkboxes].map(cb => cart[cb.dataset.index]);
 
-  // Total harga dari label
   let total = 0;
   selectedItems.forEach(item => {
     const match = item.label.match(/Rp\s?([\d.,]+)/);
@@ -47,20 +46,15 @@ function updateSummary() {
     }
   });
 
-  // Tambah biaya admin
-  const metode = document.querySelector("input[name='metode']:checked");
-  if (metode) {
-    const val = metode.value.toLowerCase();
-    if (val === "qris" || val === "shopeepay" || val === "ovo" || val === "gopay") {
-      total += 1500;
-    }
+  const metode = document.getElementById("metode-terpilih").value.toLowerCase();
+  if (["qris", "shopeepay", "ovo", "gopay"].includes(metode)) {
+    total += 1500;
   }
 
   totalHarga.textContent = "Rp " + total.toLocaleString("id-ID");
 
-  // Simpan ke input hidden
   const orderText = selectedItems
-    .map(i => `- ${i.name} (${i.category}) - ${i.label}`)
+    .map(i => `- ${i.name.replace(/\((.*?)\)/g, '').trim()} - ${i.label}`)
     .join("\n");
   orderInput.value = orderText;
 }
@@ -88,31 +82,23 @@ selectAll.addEventListener("change", () => {
   updateSummary();
 });
 
-document.querySelectorAll("input[name='metode']").forEach(radio => {
-  radio.addEventListener("change", updateSummary);
-});
+// ========== Payment Select ==========
+function selectPayment(el, metode) {
+  const semua = document.querySelectorAll('.payment-inner-card');
+  const inputMetode = document.getElementById('metode-terpilih');
 
-// ========== EmailJS ==========
-emailjs.init("nAUL1b5lv7jJmOcaY");
-document.getElementById("account-form").addEventListener("submit", function (e) {
-  e.preventDefault();
-
-  if (orderInput.value.trim() === "") {
-    alert("❌ Pilih minimal 1 item dari keranjang!");
-    return;
+  if (el.classList.contains('selected')) {
+    el.classList.remove('selected');
+    inputMetode.value = '';
+  } else {
+    semua.forEach(e => e.classList.remove('selected'));
+    el.classList.add('selected');
+    inputMetode.value = metode;
   }
+  updateSummary();
+}
 
-  emailjs.sendForm("service_ucup", "template_1shj4dt", this)
-    .then(() => {
-      alert("✅ Order berhasil dikirim ke email!");
-      localStorage.removeItem("cart");
-      window.location.href = "index.html";
-    })
-    .catch(err => {
-      alert("❌ Gagal mengirim order: " + err.text);
-    });
-});
-// Data rekening berdasarkan metode pembayaran
+// ========== Data Rekening ==========
 const paymentData = {
   QRIS: {
     img: 'assets/payment/qris2.png',
@@ -147,34 +133,37 @@ const paymentData = {
     account: '901433678333',
     name: 'ADE ANASIRU MUALIM',
   },
-  'Bank Jago': {
+  "Bank Jago": {
     account: '103923428497',
     name: 'REVITA FEBRIANTI',
   },
   Blu: {
     account: '003406906539',
     name: 'DEWI ANGGRIANI',
-  }
+  },
 };
 
-// Tampilkan popup jika sudah pilih metode pembayaran
-document.getElementById("account-form").addEventListener("submit", function(e) {
+// ========== Popup Pembayaran ==========
+document.getElementById("account-form").addEventListener("submit", function (e) {
   e.preventDefault();
-  const metode = document.querySelector('input[name="metode"]:checked');
-  if (!metode) {
-    alert("Pilih metode pembayaran terlebih dahulu.");
+
+  if (orderInput.value.trim() === "") {
+    alert("❌ Pilih minimal 1 item dari keranjang!");
     return;
   }
 
-  const metodeVal = metode.value;
+  const metode = document.getElementById("metode-terpilih").value;
+  if (!metode) {
+    alert("❌ Pilih metode pembayaran terlebih dahulu.");
+    return;
+  }
+
   const popup = document.getElementById("payment-popup");
   const info = document.getElementById("payment-info");
-
   const total = document.getElementById("total-harga").innerText;
+  const data = paymentData[metode] || {};
 
-  const data = paymentData[metodeVal] || {};
-
-  let html = `<p><strong>Jenis Pembayaran:</strong> ${metodeVal}</p>`;
+  let html = `<p><strong>Jenis Pembayaran:</strong> ${metode}</p>`;
   html += `<p><strong>Jumlah Bayar:</strong> ${total}</p>`;
 
   if (data.isQR) {
@@ -189,15 +178,36 @@ document.getElementById("account-form").addEventListener("submit", function(e) {
   popup.classList.remove("hidden");
 });
 
-// Tombol batal dan lanjut dari popup
+// Tombol popup
 document.getElementById("cancel-payment").addEventListener("click", () => {
   document.getElementById("payment-popup").classList.add("hidden");
 });
 
 document.getElementById("confirm-payment").addEventListener("click", () => {
   document.getElementById("payment-popup").classList.add("hidden");
-  document.getElementById("account-form").submit(); // submit sebenarnya
+
+  const metode = document.getElementById("metode-terpilih").value;
+
+  let metodeInput = document.querySelector("input[name='metode_emailjs']");
+  if (!metodeInput) {
+    metodeInput = document.createElement("input");
+    metodeInput.type = "hidden";
+    metodeInput.name = "metode_emailjs";
+    document.getElementById("account-form").appendChild(metodeInput);
+  }
+  metodeInput.value = metode;
+
+  emailjs.sendForm("service_ucup", "template_1shj4dt", document.getElementById("account-form"))
+    .then(() => {
+      alert("✅ Order berhasil dikirim ke email!");
+      localStorage.removeItem("cart");
+      window.location.href = "index.html";
+    })
+    .catch(err => {
+      alert("❌ Gagal mengirim order: " + err.text);
+    });
 });
 
-// ========== Inisialisasi ==========
+// ========== Init ==========
+emailjs.init("nAUL1b5lv7jJmOcaY");
 renderCart();
