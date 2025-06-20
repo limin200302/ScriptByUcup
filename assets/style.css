@@ -267,3 +267,46 @@ img {
   transform: translateY(0);
   opacity: 1;
 }
+/* === Hamburger Menu === */
+.hamburger {
+  font-size: 1.8rem;
+  color: #ffcc00;
+  cursor: pointer;
+  display: none;
+}
+
+.mobile-nav {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: #1f1f2e;
+  flex-direction: column;
+  width: 200px;
+  box-shadow: -2px 4px 10px rgba(0,0,0,0.4);
+  padding: 1rem;
+  z-index: 1000;
+}
+
+.mobile-nav a {
+  text-decoration: none;
+  color: #fff;
+  padding: 10px 0;
+  border-bottom: 1px solid #333;
+  display: block;
+}
+
+.mobile-nav.show {
+  display: flex;
+}
+
+/* === Responsive === */
+@media (max-width: 768px) {
+  .header-right {
+    display: none;
+  }
+
+  .hamburger {
+    display: block;
+  }
+}
