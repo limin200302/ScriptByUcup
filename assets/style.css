@@ -45,8 +45,9 @@ img {
 .header-right .nav-links {
   list-style: none;
   display: flex;
-  gap: 1.2rem;
+  gap: 1rem;
   font-size: 0.85rem;
+  magrin: 0;
 }
 
 .header-right .nav-links a {
@@ -330,4 +331,29 @@ img {
 .top-nav a[href*="register"]:hover {
   background-color: #ffcc00;
   color: #1f1f2e;
+}
+.header-left {
+  display: flex;
+  align-items: center;
+}
+
+.logo-text {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #ffcc00;
+  white-space: nowrap;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.header-logo {
+  width: 35px;
+  height: 35px;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 0 5px rgba(0,0,0,0.3);
 }
