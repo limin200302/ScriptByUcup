@@ -109,6 +109,18 @@ body {
   margin-right: 8px;
   vertical-align: middle;
 }
+.payment-inner-card {
+  background: #4c2a85;
+  border-radius: 8px;
+  margin: 6px 0;
+  padding: 8px 10px;
+}
+.payment-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+}
 .pay-icon {
   width: 20px;
   height: 20px;
