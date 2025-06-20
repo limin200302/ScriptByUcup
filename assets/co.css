@@ -171,62 +171,63 @@ input[type="radio"]:checked + .payment-label {
   padding: 8px 12px;
   border-radius: 8px;
 }
+
 .payment-popup {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(20, 0, 30, 0.6);
+  background: rgba(15, 0, 30, 0.4);
   backdrop-filter: blur(6px);
   display: flex;
-  justify-content: center;
   align-items: center;
-  z-index: 999;
+  justify-content: center;
+  z-index: 9999;
 }
 
-.payment-popup .popup-content {
-  background: linear-gradient(135deg, #4b0082, #2b0a3d);
+.popup-content {
+  background: linear-gradient(135deg, #320052, #1c0035);
   padding: 20px;
-  border-radius: 12px;
+  border-radius: 15px;
   width: 90%;
   max-width: 400px;
-  color: white;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+  color: #fff;
+  box-shadow: 0 0 20px rgba(255,255,255,0.1);
+  animation: popin 0.3s ease;
 }
 
-.payment-popup .popup-content h3 {
-  margin-top: 0;
-  text-align: center;
+@keyframes popin {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
 }
 
 .popup-actions {
-  margin-top: 20px;
   display: flex;
   justify-content: space-between;
-  gap: 10px;
+  margin-top: 20px;
 }
 
 .popup-actions button {
   flex: 1;
+  margin: 0 5px;
   padding: 10px;
-  border: none;
-  border-radius: 8px;
   font-weight: bold;
+  border-radius: 8px;
+  border: none;
+  color: white;
   cursor: pointer;
 }
 
 #confirm-payment {
-  background: #00ffcc;
-  color: #000;
+  background-color: #28a745;
 }
 
 #cancel-payment {
-  background: #ff5e5e;
-  color: #fff;
+  background-color: #dc3545;
 }
 
-.hidden {
+.payment-popup.hidden {
   display: none;
 }
   
