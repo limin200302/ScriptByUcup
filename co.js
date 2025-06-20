@@ -14,19 +14,17 @@ function renderCart() {
     return;
   }
   emptyMsg.style.display = "none";
-
   cart.forEach((item, index) => {
     const div = document.createElement("div");
     div.className = "cart-item";
-
     const cleanName = item.name.replace(/\((.*?)\)/g, '').trim(); // Hapus (kategori)
-    div.innerHTML = `
+    div.innerHTML = \`
       <label>
-        <input type="checkbox" class="item-checkbox" data-index="${index}" checked />
-        ${cleanName} - ${item.label}
+        <input type="checkbox" class="item-checkbox" data-index="\${index}" checked />
+        \${cleanName} - \${item.label}
       </label>
-      <button class="delete-btn" data-index="${index}">❌</button>
-    `;
+      <button class="delete-btn" data-index="\${index}">❌</button>
+    \`;
     cartList.appendChild(div);
   });
   updateSummary();
@@ -36,26 +34,22 @@ function renderCart() {
 function updateSummary() {
   const checkboxes = document.querySelectorAll(".item-checkbox:checked");
   const selectedItems = [...checkboxes].map(cb => cart[cb.dataset.index]);
-
   let total = 0;
   selectedItems.forEach(item => {
-    const match = item.label.match(/Rp\s?([\d.,]+)/);
+    const match = item.label.match(/Rp\\s?([\\d.,]+)/);
     if (match) {
       const angka = parseInt(match[1].replace(/[.,]/g, ""));
       total += angka;
     }
   });
-
   const metode = document.getElementById("metode-terpilih").value.toLowerCase();
   if (["qris", "shopeepay", "ovo", "gopay"].includes(metode)) {
     total += 1500;
   }
-
   totalHarga.textContent = "Rp " + total.toLocaleString("id-ID");
-
   const orderText = selectedItems
-    .map(i => `- ${i.name.replace(/\((.*?)\)/g, '').trim()} - ${i.label}`)
-    .join("\n");
+    .map(i => \`- \${i.name.replace(/\\((.*?)\\)/g, '').trim()} - \${i.label}\`)
+    .join("\\n");
   orderInput.value = orderText;
 }
 
@@ -65,7 +59,6 @@ cartList.addEventListener("change", (e) => {
     updateSummary();
   }
 });
-
 cartList.addEventListener("click", (e) => {
   if (e.target.classList.contains("delete-btn")) {
     const index = e.target.dataset.index;
@@ -74,7 +67,6 @@ cartList.addEventListener("click", (e) => {
     renderCart();
   }
 });
-
 selectAll.addEventListener("change", () => {
   document.querySelectorAll(".item-checkbox").forEach(cb => {
     cb.checked = selectAll.checked;
@@ -86,7 +78,6 @@ selectAll.addEventListener("change", () => {
 function selectPayment(el, metode) {
   const semua = document.querySelectorAll('.payment-inner-card');
   const inputMetode = document.getElementById('metode-terpilih');
-
   if (el.classList.contains('selected')) {
     el.classList.remove('selected');
     inputMetode.value = '';
@@ -146,43 +137,43 @@ const paymentData = {
 // ========== Popup Pembayaran ==========
 document.getElementById("account-form").addEventListener("submit", function (e) {
   e.preventDefault();
-updateSummary ():
   if (orderInput.value.trim() === "") {
     alert("❌ Pilih minimal 1 item dari keranjang!");
     return;
   }
-
   const metode = document.getElementById("metode-terpilih").value;
   if (!metode) {
     alert("❌ Pilih metode pembayaran terlebih dahulu.");
     return;
   }
-
   const popup = document.getElementById("payment-popup");
   const info = document.getElementById("payment-info");
   const total = document.getElementById("total-harga").innerText;
   const data = paymentData[metode] || {};
-
-  let html = `<p><strong>Jenis Pembayaran:</strong> ${metode}</p>`;
-  html += `<p><strong>Jumlah Bayar:</strong> ${total}</p>`;
-
+  let html = \`<p><strong>Jenis Pembayaran:</strong> \${metode}</p>\`;
+  html += \`<p><strong>Jumlah Bayar:</strong> \${total}</p>\`;
   if (data.isQR) {
-  html += `<img src="${data.img}" alt="QRIS" style="
-    display:block;
-    max-width:220px;
-    width:100%;
-    height:auto;
-    margin:15px auto;
-    border-radius:12px;
-    box-shadow:0 0 10px rgba(0,0,0,0.4);
-  ">`;
-  html += `<p><strong>Nama:</strong> ${data.name}</p>`;
+    html += \`<img src="\${data.img}" alt="QRIS" style="
+      display:block;
+      max-width:220px;
+      width:100%;
+      height:auto;
+      margin:15px auto;
+      border-radius:12px;
+      box-shadow:0 0 10px rgba(0,0,0,0.4);
+    ">\`;
+    html += \`<p><strong>Nama:</strong> \${data.name}</p>\`;
+  } else {
+    html += \`<p><strong>Nomor Rekening:</strong> \${data.account || '-'}</p>\`;
+    html += \`<p><strong>Atas Nama:</strong> \${data.name || '-'}</p>\`;
   }
-} else {
-    html += `<p><strong>Nomor Rekening:</strong> ${data.account || '-'}</p>`;
-    html += `<p><strong>Atas Nama:</strong> ${data.name || '-'}</p>`;
-  }
-
+  html += \`
+    <div style="margin-top:15px;font-size:13px;color:#ccc">
+      <strong>Note:</strong><br>
+      • Transfer sesuai nominal, jika salah segera hubungi admin via WhatsApp.<br>
+      • Jika sudah transfer, klik "Lanjutkan", sistem akan proses order 10-15 menit.
+    </div>
+  \`;
   info.innerHTML = html;
   popup.classList.remove("hidden");
 });
@@ -191,12 +182,9 @@ updateSummary ():
 document.getElementById("cancel-payment").addEventListener("click", () => {
   document.getElementById("payment-popup").classList.add("hidden");
 });
-
 document.getElementById("confirm-payment").addEventListener("click", () => {
   document.getElementById("payment-popup").classList.add("hidden");
-
   const metode = document.getElementById("metode-terpilih").value;
-
   let metodeInput = document.querySelector("input[name='metode_emailjs']");
   if (!metodeInput) {
     metodeInput = document.createElement("input");
@@ -205,7 +193,6 @@ document.getElementById("confirm-payment").addEventListener("click", () => {
     document.getElementById("account-form").appendChild(metodeInput);
   }
   metodeInput.value = metode;
-
   emailjs.sendForm("service_ucup", "template_1shj4dt", document.getElementById("account-form"))
     .then(() => {
       alert("✅ Order berhasil dikirim ke email!");
