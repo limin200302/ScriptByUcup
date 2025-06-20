@@ -161,9 +161,10 @@ document.getElementById("wa-confirm").addEventListener("click", () => {
     const item = cart[itemIndex];
     if (item) items.push(item);
   });
-
   if (items.length === 0) return;
-
+// Kirim data item ke input hidden sebelum form dikirim
+document.getElementById("order_items").value =
+  items.map(i => `- ${i.name} (${i.category}) - ${i.label}`).join("\n");
   // Simpan order ke input hidden
   const orderText = items.map(i => `- ${i.name} (${i.category}) - ${i.label}`).join("\n");
   document.getElementById("order_items").value = orderText;
