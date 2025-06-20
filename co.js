@@ -1,3 +1,6 @@
+r: " + error.text);
+    });
+});
 // Ambil data dari localStorage
 let cartItems = JSON.parse(localStorage.getItem("cart")) || [];
 let selectedItems = new Set();
@@ -23,6 +26,7 @@ const bonusData = {
     295000: "Bonus🎁: VIP Points"
   }
 };
+
 const categoryThumbnails = {
   cash: "assets/img/cash.png",
   boxlegends: "assets/img/boxlegends.png",
@@ -31,6 +35,7 @@ const categoryThumbnails = {
   goldenshot: "assets/img/goldenshot.png",
   boxcollector: "assets/img/boxcol.png"
 };
+
 const cartContainer = document.getElementById("cart-list");
 const totalPriceEl = document.getElementById("total-price");
 const checkoutBtn = document.getElementById("checkout-btn");
@@ -49,38 +54,29 @@ function getBonus(category, price) {
 
 function renderCart() {
   cartContainer.innerHTML = "";
-
   if (cartItems.length === 0) {
     emptyMsg.style.display = "block";
     return;
   }
-
   emptyMsg.style.display = "none";
-
   cartItems.forEach((item, index) => {
     const price = getPriceFromLabel(item.label);
     const bonus = getBonus(item.category, price);
-
     const div = document.createElement("div");
-div.className = "cart-item";
+    div.className = "cart-item";
 
-// Tambahkan bagian ini:
-const imgSrc = categoryThumbnails[item.category.toLowerCase()] || "assets/img/default-thumb.png";
-
-div.innerHTML = `
-  <input type="checkbox" class="item-check" data-index="${index}">
-  <img src="${imgSrc}" class="item-thumb" alt="${item.category}">
-  <div class="item-info">
-    <div class="item-name">${item.name}</div>
-    <div class="item-label">${item.label}</div>
-    ${bonus ? `<div class="item-bonus">${bonus}</div>` : ""}
-  </div>
-  <button class="delete-btn" data-index="${index}">Hapus</button>
-`;
-cartContainer.appendChild(div);
-
+    const imgSrc = categoryThumbnails[item.category.toLowerCase()] || "assets/img/default-thumb.png";
+    div.innerHTML = `
+      <input type="checkbox" class="item-check" data-index="${index}">
+      <img src="${imgSrc}" class="item-thumb" alt="${item.category}">
+      <div class="item-info">
+        <div class="item-name">${item.name}</div>
+        <div class="item-label">${item.label}</div>
+        ${bonus ? `<div class="item-bonus">${bonus}</div>` : ""}
+      </div>
+      <button class="delete-btn" data-index="${index}">Hapus</button>`;
+    cartContainer.appendChild(div);
   });
-
   updateTotal();
   checkSelectAllStatus();
 }
@@ -88,14 +84,12 @@ cartContainer.appendChild(div);
 function updateTotal() {
   let total = 0;
   let count = 0;
-
   selectedItems.forEach(i => {
     const item = cartItems[i];
     const price = getPriceFromLabel(item.label);
     total += price;
     count++;
   });
-
   totalPriceEl.textContent = "Rp " + total.toLocaleString("id-ID");
   checkoutBtn.textContent = `Checkout (${count})`;
 }
@@ -141,10 +135,12 @@ cartContainer.addEventListener("click", (e) => {
 document.addEventListener("DOMContentLoaded", () => {
   renderCart();
 });
+
 window.addEventListener("beforeunload", () => {
-  // Pastikan badge ikut update saat kembali ke halaman utama
   localStorage.setItem("cart", JSON.stringify(cartItems));
 });
+
+// === ALUR POPUP KONFIRMASI CHECKOUT ===
 document.getElementById("checkout-btn").addEventListener("click", () => {
   document.getElementById("confirm-popup").classList.remove("hidden");
 });
@@ -156,29 +152,22 @@ document.getElementById("wa-cancel").addEventListener("click", () => {
 document.getElementById("wa-confirm").addEventListener("click", () => {
   const cart = JSON.parse(localStorage.getItem("cart")) || [];
   const selected = document.querySelectorAll(".cart-item input[type='checkbox']:checked");
-
   let items = [];
   selected.forEach((checkbox) => {
     const itemIndex = checkbox.dataset.index;
     const item = cart[itemIndex];
     if (item) items.push(item);
   });
-
   if (items.length === 0) return;
 
-  let message = "Halo, saya ingin memesan item berikut:\n";
-  items.forEach((item) => {
-    message += `- ${item.name} (${item.category}) seharga ${item.label}\n`;
-  });
-
-  const encoded = encodeURIComponent(message);
-  window.open(`https://wa.me/6285713056206?text=${encoded}`, "_blank");
+  document.getElementById("confirm-popup").classList.add("hidden");
+  showPopup(); // buka form input akun
 });
-// === POPUP SHOW & CLOSE ===
+
+// === POPUP FORM AKUN ===
 function showPopup() {
   document.getElementById("popup-form").style.display = "flex";
 }
-
 function closePopup() {
   document.getElementById("popup-form").style.display = "none";
 }
@@ -192,7 +181,7 @@ document.getElementById("account-form").addEventListener("submit", function (e) 
   emailjs.sendForm('service_ucup', 'template_1shj4dt', this)
     .then(function () {
       alert("✅ Order berhasil dikirim ke email!");
-      closePopup(); // Tutup pop-up setelah sukses
+      closePopup();
     }, function (error) {
       alert("❌ Gagal kirim order: " + error.text);
     });
