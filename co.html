@@ -44,97 +44,59 @@
       <input type="text" name="whatsapp" required />
     </div>
 
- <h2>💳 Metode Pembayaran</h2>
+      <h2>💳 Metode Pembayaran</h2>
 <div class="form-card">
+
+  <!-- Petunjuk -->
+  <p style="font-size: 14px; color: #ccc; margin-bottom: 10px;">
+    Klik 1x untuk memilih. Klik 2x untuk membatalkan.
+  </p>
 
   <!-- QRIS -->
   <div class="form-card collapsible" onclick="toggleCollapse(this)">🧾 QRIS</div>
   <div class="form-sub" style="display:none">
-    <div class="payment-inner-card">
-      <label>
-        <input type="radio" name="metode" value="QRIS" />
-        <span class="payment-label">
-          <img src="assets/payment/qris.png" alt="QRIS"> QRIS (+Rp 1.500)
-        </span>
-      </label>
+    <div class="payment-inner-card" onclick="selectPayment(this, 'QRIS')">
+      <span class="payment-label">
+        <img src="assets/payment/qris.png" alt="QRIS"> QRIS (+Rp 1.500)
+      </span>
     </div>
   </div>
 
   <!-- E-Wallet -->
   <div class="form-card collapsible" onclick="toggleCollapse(this)">💼 E-Wallet</div>
   <div class="form-sub" style="display:none">
-    <div class="payment-inner-card">
-      <label>
-        <input type="radio" name="metode" value="Dana" />
-        <span class="payment-label">
-          <img src="assets/payment/dana.png" alt="Dana"> Dana
-        </span>
-      </label>
+    <div class="payment-inner-card" onclick="selectPayment(this, 'Dana')">
+      <span class="payment-label"><img src="assets/payment/dana.png" alt="Dana"> Dana</span>
     </div>
-    <div class="payment-inner-card">
-      <label>
-        <input type="radio" name="metode" value="ShopeePay" />
-        <span class="payment-label">
-          <img src="assets/payment/shopeepay.png" alt="ShopeePay"> ShopeePay (+Rp 1.500)
-        </span>
-      </label>
+    <div class="payment-inner-card" onclick="selectPayment(this, 'ShopeePay')">
+      <span class="payment-label"><img src="assets/payment/shopeepay.png" alt="ShopeePay"> ShopeePay (+Rp 1.500)</span>
     </div>
-    <div class="payment-inner-card">
-      <label>
-        <input type="radio" name="metode" value="Ovo" />
-        <span class="payment-label">
-          <img src="assets/payment/ovo.png" alt="Ovo"> Ovo (+Rp 1.500)
-        </span>
-      </label>
+    <div class="payment-inner-card" onclick="selectPayment(this, 'Ovo')">
+      <span class="payment-label"><img src="assets/payment/ovo.png" alt="Ovo"> Ovo (+Rp 1.500)</span>
     </div>
-    <div class="payment-inner-card">
-      <label>
-        <input type="radio" name="metode" value="GoPay" />
-        <span class="payment-label">
-          <img src="assets/payment/gopay.png" alt="GoPay"> GoPay (+Rp 1.500)
-        </span>
-      </label>
+    <div class="payment-inner-card" onclick="selectPayment(this, 'GoPay')">
+      <span class="payment-label"><img src="assets/payment/gopay.png" alt="GoPay"> GoPay (+Rp 1.500)</span>
     </div>
   </div>
 
-  <!-- Bank Indonesia -->
+  <!-- Bank -->
   <div class="form-card collapsible" onclick="toggleCollapse(this)">🏦 Bank Indonesia</div>
   <div class="form-sub" style="display:none">
-    <div class="payment-inner-card">
-      <label>
-        <input type="radio" name="metode" value="BCA" />
-        <span class="payment-label">
-          <img src="assets/payment/bca.png" alt="BCA"> BCA
-        </span>
-      </label>
+    <div class="payment-inner-card" onclick="selectPayment(this, 'BCA')">
+      <span class="payment-label"><img src="assets/payment/bca.png" alt="BCA"> BCA</span>
     </div>
-    <div class="payment-inner-card">
-      <label>
-        <input type="radio" name="metode" value="BRI" />
-        <span class="payment-label">
-          <img src="assets/payment/bri.png" alt="BRI"> BRI
-        </span>
-      </label>
+    <div class="payment-inner-card" onclick="selectPayment(this, 'BRI')">
+      <span class="payment-label"><img src="assets/payment/bri.png" alt="BRI"> BRI</span>
     </div>
-    <div class="payment-inner-card">
-      <label>
-        <input type="radio" name="metode" value="SeaBank" />
-        <span class="payment-label">
-          <img src="assets/payment/blubca.png" alt="SeaBank"> SeaBank
-        </span>
-      </label>
+    <div class="payment-inner-card" onclick="selectPayment(this, 'SeaBank')">
+      <span class="payment-label"><img src="assets/payment/blubca.png" alt="SeaBank"> SeaBank</span>
     </div>
-    <div class="payment-inner-card">
-      <label>
-        <input type="radio" name="metode" value="Bank Jago" />
-        <span class="payment-label">
-          <img src="assets/payment/jago.png" alt="Jago"> Bank Jago
-        </span>
-      </label>
+    <div class="payment-inner-card" onclick="selectPayment(this, 'Bank Jago')">
+      <span class="payment-label"><img src="assets/payment/jago.png" alt="Bank Jago"> Bank Jago</span>
     </div>
   </div>
-
 </div>
+<input type="hidden" name="metode" id="metode-terpilih">
     
   
     <h2>🎁 Kode Promo</h2>
