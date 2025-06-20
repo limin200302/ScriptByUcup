@@ -161,11 +161,17 @@ document.getElementById("wa-confirm").addEventListener("click", () => {
     const item = cart[itemIndex];
     if (item) items.push(item);
   });
+
   if (items.length === 0) return;
+
+  // Simpan order ke input hidden
+  const orderText = items.map(i => `- ${i.name} (${i.category}) - ${i.label}`).join("\n");
+  document.getElementById("order_items").value = orderText;
 
   document.getElementById("confirm-popup").classList.add("hidden");
   showPopup();
 });
+
 
 // === POPUP FORM ===
 function showPopup() {
