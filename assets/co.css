@@ -196,3 +196,74 @@ body {
   border-radius: 6px;
   cursor: pointer;
 }
+/* === POPUP OVERLAY === */
+.popup-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+/* === FORM CONTAINER === */
+.popup-content {
+  background: #fff;
+  padding: 20px;
+  width: 90%;
+  max-width: 400px;
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.3);
+  font-family: Arial, sans-serif;
+}
+
+.popup-content h3 {
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+/* === INPUT & SELECT === */
+.popup-content input,
+.popup-content select {
+  width: 100%;
+  padding: 10px;
+  margin: 6px 0 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+/* === NOTE BOX === */
+.popup-note {
+  background-color: #fff3cd;
+  border-left: 5px solid orange;
+  padding: 10px;
+  margin-bottom: 12px;
+  font-size: 14px;
+  color: #856404;
+  border-radius: 8px;
+}
+
+/* === BUTTON AREA === */
+.popup-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.popup-buttons button {
+  width: 48%;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  background-color: orange;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.popup-buttons button:hover {
+  background-color: #e69500;
+}
