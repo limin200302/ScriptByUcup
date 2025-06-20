@@ -231,4 +231,9 @@ input[type="radio"]:checked + .payment-label {
   background: #e53935;
   color: white;
 }
-  
+.item-bonus {
+  font-size: 13px;
+  color: red;
+  font-style: italic;
+  margin-top: 4px;
+}
