@@ -102,8 +102,8 @@ form.addEventListener("submit", async (e) => {
       createdAt: new Date()
     });
 
-    alert("Pendaftaran berhasil! Kamu akan diarahkan ke halaman utama.");
-    window.location.href = "index.html";
+    alert("Pendaftaran berhasil! Silakan login.");
+window.location.href = "login.html";
   } catch (err) {
     errorMsg.textContent = err.message.includes("email-already") ? "Email sudah digunakan!" : "Gagal mendaftar.";
   }
