@@ -8,7 +8,33 @@
   <script src="script.js" defer></script>
 </head>
 <body>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
 
+  const firebaseConfig = {
+    apiKey: "AIzaSyA-29lXZhj3j8xHZTyGHhhxjFWlc4Yi9xc",
+    authDomain: "mamet-ucup-store.firebaseapp.com",
+    projectId: "mamet-ucup-store",
+    storageBucket: "mamet-ucup-store.appspot.com",
+    messagingSenderId: "869665931228",
+    appId: "1:869665931228:web:2e4aac081befbca516d919",
+    measurementId: "G-VR803Q47EC"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      const greeting = document.createElement("div");
+      greeting.textContent = `Halo, ${user.displayName} 👋`;
+      greeting.style.cssText = "text-align:center; margin: 1rem 0; font-weight:bold; color: #ffcc00;";
+      document.body.prepend(greeting);
+    }
+  });
+</script>
+  
   <!-- Header -->
   <header class="main-header">
     <button class="hamburger" id="hamburgerBtn">☰</button>
