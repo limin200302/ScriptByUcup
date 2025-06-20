@@ -333,10 +333,17 @@ img {
 
 /* === Hamburger Button === */
 .hamburger {
-  font-size: 1.5rem;
-  color: #ffcc00;
-  display: none;
+  font-size: 1.8rem;
   cursor: pointer;
+  color: #ffcc00;
+  margin-right: 1rem;
+  padding: 0.5rem 1rem;
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  z-index: 1001;
+  background: none;
+  border: none;
 }
 
 /* === Mobile Menu === */
@@ -359,16 +366,21 @@ img {
   text-decoration: none;
   padding: 8px 0;
   border-bottom: 1px solid #444;
-  font-size: 0.95rem;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: color 0.3s;
 }
 
 .mobile-menu a:last-child {
   border-bottom: none;
 }
 
-.mobile-menu.show {
-  display: flex;
+.mobile-menu a:hover {
+  color: #ffcc00;
 }
+  .mobile-menu.show {
+  left: 0;
+  }
 
 /* === Logo di Kanan === */
 .header-logo {
