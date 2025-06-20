@@ -38,7 +38,7 @@ body {
   color: white;
 }
 
-.auth-card button {
+.auth-card button[type="submit"] {
   width: 100%;
   padding: 10px;
   background: #ffcc00;
@@ -52,6 +52,30 @@ body {
 
 .auth-card button:hover {
   background: #ffe066;
+}
+
+.password-group {
+  position: relative;
+}
+
+.toggle-password {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #ffcc00;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.suggestion-text {
+  font-size: 0.85rem;
+  color: #ffa500;
+  text-align: left;
+  margin-bottom: 5px;
+  margin-top: -8px;
 }
 
 .error-text {
