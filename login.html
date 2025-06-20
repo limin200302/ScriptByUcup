@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login - Mamet Store</title>
+  <style>
+    body { font-family: sans-serif; padding: 2rem; background: #f2f2f2; }
+    form { max-width: 400px; margin: auto; background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    h2 { text-align: center; margin-bottom: 1.5rem; }
+    input { width: 100%; padding: 10px; margin-bottom: 1rem; border: 1px solid #ccc; border-radius: 5px; }
+    button { width: 100%; padding: 10px; background: #009688; border: none; color: white; border-radius: 5px; font-weight: bold; }
+    .text-center { text-align: center; margin-top: 1rem; font-size: 14px; }
+  </style>
+</head>
+<body>
+
+  <form id="login-form">
+    <h2>🔑 Login Akun</h2>
+    <input type="email" id="email" placeholder="Email" required />
+    <input type="password" id="password" placeholder="Password" required />
+    <button type="submit">Masuk</button>
+    <div class="text-center">
+      Belum punya akun? <a href="register.html">Daftar di sini</a>
+    </div>
+  </form>
+
+  <!-- Firebase SDK -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyA-29lXZhj3j8xHZTyGHhhxjFWlc4Yi9xc",
+      authDomain: "mamet-ucup-store.firebaseapp.com",
+      projectId: "mamet-ucup-store",
+      storageBucket: "mamet-ucup-store.firebasestorage.app",
+      messagingSenderId: "869665931228",
+      appId: "1:869665931228:web:2e4aac081befbca516d919",
+      measurementId: "G-VR803Q47EC"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    document.getElementById('login-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value.trim();
+
+      try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        alert("✅ Login berhasil!");
+        window.location.href = "co.html"; // masuk ke halaman checkout atau dashboard
+      } catch (error) {
+        alert("❌ " + error.message);
+      }
+    });
+  </script>
+</body>
+</html>
