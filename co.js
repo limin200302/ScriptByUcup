@@ -1,6 +1,3 @@
-r: " + error.text);
-    });
-});
 // Ambil data dari localStorage
 let cartItems = JSON.parse(localStorage.getItem("cart")) || [];
 let selectedItems = new Set();
@@ -59,13 +56,14 @@ function renderCart() {
     return;
   }
   emptyMsg.style.display = "none";
+
   cartItems.forEach((item, index) => {
     const price = getPriceFromLabel(item.label);
     const bonus = getBonus(item.category, price);
+    const imgSrc = categoryThumbnails[item.category?.toLowerCase()] || "assets/img/default-thumb.png";
+
     const div = document.createElement("div");
     div.className = "cart-item";
-
-    const imgSrc = categoryThumbnails[item.category.toLowerCase()] || "assets/img/default-thumb.png";
     div.innerHTML = `
       <input type="checkbox" class="item-check" data-index="${index}">
       <img src="${imgSrc}" class="item-thumb" alt="${item.category}">
@@ -77,6 +75,7 @@ function renderCart() {
       <button class="delete-btn" data-index="${index}">Hapus</button>`;
     cartContainer.appendChild(div);
   });
+
   updateTotal();
   checkSelectAllStatus();
 }
@@ -84,8 +83,8 @@ function renderCart() {
 function updateTotal() {
   let total = 0;
   let count = 0;
-  selectedItems.forEach(i => {
-    const item = cartItems[i];
+  selectedItems.forEach(index => {
+    const item = cartItems[index];
     const price = getPriceFromLabel(item.label);
     total += price;
     count++;
@@ -94,7 +93,11 @@ function updateTotal() {
   checkoutBtn.textContent = `Checkout (${count})`;
 }
 
-cartContainer.addEventListener("change", function (e) {
+function fixCartIndex() {
+  selectedItems.clear();
+}
+
+cartContainer.addEventListener("change", (e) => {
   if (e.target.classList.contains("item-check")) {
     const index = parseInt(e.target.getAttribute("data-index"));
     if (e.target.checked) {
@@ -127,7 +130,7 @@ cartContainer.addEventListener("click", (e) => {
     const index = parseInt(e.target.getAttribute("data-index"));
     cartItems.splice(index, 1);
     localStorage.setItem("cart", JSON.stringify(cartItems));
-    selectedItems.delete(index);
+    fixCartIndex();
     renderCart();
   }
 });
@@ -140,7 +143,7 @@ window.addEventListener("beforeunload", () => {
   localStorage.setItem("cart", JSON.stringify(cartItems));
 });
 
-// === ALUR POPUP KONFIRMASI CHECKOUT ===
+// === POPUP KONFIRMASI CHECKOUT ===
 document.getElementById("checkout-btn").addEventListener("click", () => {
   document.getElementById("confirm-popup").classList.remove("hidden");
 });
@@ -161,10 +164,10 @@ document.getElementById("wa-confirm").addEventListener("click", () => {
   if (items.length === 0) return;
 
   document.getElementById("confirm-popup").classList.add("hidden");
-  showPopup(); // buka form input akun
+  showPopup();
 });
 
-// === POPUP FORM AKUN ===
+// === POPUP FORM ===
 function showPopup() {
   document.getElementById("popup-form").style.display = "flex";
 }
@@ -177,7 +180,6 @@ emailjs.init("nAUL1b5lv7jJmOcaY");
 
 document.getElementById("account-form").addEventListener("submit", function (e) {
   e.preventDefault();
-
   emailjs.sendForm('service_ucup', 'template_1shj4dt', this)
     .then(function () {
       alert("✅ Order berhasil dikirim ke email!");
