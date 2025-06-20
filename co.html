@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Checkout - Mamet Store</title>
-  <link rel="stylesheet" href="assets/co.css?v=99" />
+  <link rel="stylesheet" href="assets/co.css?v=100" />
   <script src="co.js" defer></script>
   <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
 </head>
@@ -45,16 +45,25 @@
     </div>
 
     <h2>💳 Metode Pembayaran</h2>
-    <div class="form-card">
+    <div class="form-card collapsible" onclick="toggleCollapse(this)">QRIS</div>
+    <div class="form-sub" style="display:none">
       <label><input type="radio" name="metode" value="QRIS"> QRIS (+Rp 1.500)</label>
+    </div>
+
+    <div class="form-card collapsible" onclick="toggleCollapse(this)">E-Wallet</div>
+    <div class="form-sub" style="display:none">
       <label><input type="radio" name="metode" value="Dana"> Dana</label>
-      <label><input type="radio" name="metode" value="Ovo"> Ovo (+Rp 1.500)</label>
       <label><input type="radio" name="metode" value="ShopeePay"> ShopeePay (+Rp 1.500)</label>
+      <label><input type="radio" name="metode" value="Ovo"> Ovo (+Rp 1.500)</label>
       <label><input type="radio" name="metode" value="GoPay"> GoPay (+Rp 1.500)</label>
+    </div>
+
+    <div class="form-card collapsible" onclick="toggleCollapse(this)">Bank Indonesia</div>
+    <div class="form-sub" style="display:none">
       <label><input type="radio" name="metode" value="BCA"> BCA</label>
       <label><input type="radio" name="metode" value="BRI"> BRI</label>
       <label><input type="radio" name="metode" value="SeaBank"> SeaBank</label>
-      <label><input type="radio" name="metode" value="Blu BCA"> Blu BCA</label>
+      <label><input type="radio" name="metode" value="Bank Jago"> Bank Jago</label>
     </div>
 
     <h2>🎁 Kode Promo</h2>
@@ -67,5 +76,12 @@
     <div class="total-box">Total: <span id="total-harga">Rp 0</span></div>
     <button type="submit" class="order-btn">📩 Pesan Sekarang</button>
   </form>
+
+  <script>
+    function toggleCollapse(el) {
+      const next = el.nextElementSibling;
+      next.style.display = next.style.display === 'none' ? 'block' : 'none';
+    }
+  </script>
 </body>
 </html>
