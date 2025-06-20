@@ -1,6 +1,17 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
-import { getFirestore, doc, setDoc, getDocs, collection, query, where } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+import {
+  getAuth,
+  createUserWithEmailAndPassword
+} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+import {
+  getFirestore,
+  doc,
+  setDoc,
+  getDocs,
+  collection,
+  query,
+  where
+} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
 // === Firebase Config
 const firebaseConfig = {
@@ -13,7 +24,6 @@ const firebaseConfig = {
   measurementId: "G-VR803Q47EC"
 };
 
-// === Inisialisasi
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
@@ -26,9 +36,10 @@ const password = document.getElementById("password");
 const confirmPassword = document.getElementById("confirmPassword");
 const errorMsg = document.getElementById("errorMsg");
 const suggestionText = document.getElementById("usernameSuggestion");
+const toggleBtns = document.querySelectorAll(".toggle-password");
 
 // === Show/Hide Password
-document.querySelectorAll(".toggle-password").forEach(button => {
+toggleBtns.forEach(button => {
   button.addEventListener("click", () => {
     const input = button.previousElementSibling;
     if (input.type === "password") {
@@ -41,10 +52,13 @@ document.querySelectorAll(".toggle-password").forEach(button => {
   });
 });
 
-// === Cek Username Unik
+// === Cek Username Sudah Dipakai
 username.addEventListener("input", async () => {
   const uname = username.value.trim().toLowerCase();
-  if (uname.length < 3) return suggestionText.textContent = "";
+  if (uname.length < 3) {
+    suggestionText.textContent = "";
+    return;
+  }
   const taken = await checkUsernameExists(uname);
   if (taken) {
     suggestionText.textContent = `Nama sudah dipakai. Coba: ${uname}${Math.floor(Math.random() * 900 + 100)}`;
@@ -59,7 +73,7 @@ async function checkUsernameExists(uname) {
   return !snap.empty;
 }
 
-// === Proses Daftar
+// === Submit Form Register
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
   errorMsg.textContent = "";
@@ -68,6 +82,7 @@ form.addEventListener("submit", async (e) => {
   const userEmail = email.value.trim();
   const userPass = password.value;
   const confirmPass = confirmPassword.value;
+  const submitBtn = form.querySelector('button[type="submit"]');
 
   if (!uname || !userEmail || !userPass || !confirmPass) {
     return errorMsg.textContent = "Semua kolom wajib diisi!";
@@ -81,6 +96,10 @@ form.addEventListener("submit", async (e) => {
   if (isTaken) {
     return errorMsg.textContent = "Username sudah digunakan!";
   }
+
+  // Loading State
+  submitBtn.disabled = true;
+  submitBtn.textContent = "Mendaftarkan...";
 
   try {
     const cred = await createUserWithEmailAndPassword(auth, userEmail, userPass);
@@ -97,5 +116,7 @@ form.addEventListener("submit", async (e) => {
     errorMsg.textContent = err.message.includes("email-already")
       ? "Email sudah digunakan!"
       : "Gagal mendaftar.";
+    submitBtn.disabled = false;
+    submitBtn.textContent = "Daftar";
   }
 });
