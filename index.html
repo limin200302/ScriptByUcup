@@ -5,92 +5,68 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mamet Store – Top Up Game & Aplikasi</title>
   <link rel="stylesheet" href="assets/style.css" />
-  <script src="script.js" defer></script>
+  <script src="assets/script.js" defer></script>
 </head>
 <body>
 
-<header class="main-header">
-  <div class="hamburger" onclick="toggleMenu()">☰</div>
-  <div class="logo-text">Mamet Ucup Store</div>
-</header>
+  <header class="main-header">
+    <div class="hamburger" onclick="toggleMenu()">☰</div>
+    <div class="logo-text">Mamet Ucup Store</div>
+  </header>
 
-<!-- Sidebar Menu -->
-<nav id="mobile-menu" class="mobile-menu">
-  <a href="index.html">Beranda</a>
-  <a href="tentang.html">Tentang</a>
-  <a href="login.html">Login</a>
-  <a href="register.html">Daftar</a>
-</nav>
+  <!-- Sidebar Menu -->
+  <nav id="mobile-menu" class="mobile-menu">
+    <a href="index.html">Beranda</a>
+    <a href="tentang.html">Tentang</a>
+    <a href="login.html">Login</a>
+    <a href="register.html">Daftar</a>
+  </nav>
 
-<section class="hero">
-  <div class="hero-slider">
-    <img src="assets/img/slider1.jpeg" class="bg-slide active" alt="Slider 1">
-    <img src="assets/img/slider2.jpeg" class="bg-slide" alt="Slider 2">
-    <img src="assets/img/slider3.jpeg" class="bg-slide" alt="Slider 3">
-  </div>
+  <section class="hero">
+    <div class="hero-slider">
+      <img src="assets/img/slider1.jpeg" class="bg-slide active" alt="Slider 1">
+      <img src="assets/img/slider2.jpeg" class="bg-slide" alt="Slider 2">
+      <img src="assets/img/slider3.jpeg" class="bg-slide" alt="Slider 3">
+    </div>
+    <div class="hero-content">
+      <h1>Selamat Datang di Mamet Store</h1>
+      <p>Top Up Game & Aplikasi dengan cepat dan terpercaya!</p>
+      <a href="#" class="btn-cta">Mulai Belanja</a>
+    </div>
+  </section>
 
-  <div class="hero-content">
-    <h1>Selamat Datang di Mamet Store</h1>
-    <p>Top Up Game & Aplikasi dengan cepat dan terpercaya!</p>
-    <a href="#" class="btn-cta">Mulai Belanja</a>
-  </div>
-</section>
-
-  
   <section class="menu-section">
     <h2>Game & Aplikasi Populer</h2>
     <div class="menu-grid">
       <a href="ballpool.html" class="menu-item">
-  <img src="assets/img/8Ballpool.png" alt="8Ball Pool">
-  <span>8Ball Pool</span>
-</a>
-      <div class="menu-item">
-        <img src="assets/img/Mobilelegends.png" alt="Mobile Legends">
-        <span>Mobile Legends</span>
-      </div>
-      <div class="menu-item">
-        <img src="assets/img/coc.png" alt="Clash of Clans">
-        <span>Clash of Clans</span>
-      </div>
-      <div class="menu-item">
-        <img src="assets/img/freefire.png" alt="Free Fire">
-        <span>Free Fire</span>
-      </div>
-      <div class="menu-item">
-        <img src="assets/img/bigolive.png" alt="Bigo Live">
-        <span>Bigo Live</span>
-      </div>
-      <div class="menu-item">
-        <img src="assets/img/iqiyi.png" alt="iQIYI">
-        <span>iQIYI</span>
-      </div>
-      <div class="menu-item">
-        <img src="assets/img/tt.png" alt="TikTok">
-        <span>TikTok</span>
-      </div>
+        <img src="assets/img/8Ballpool.png" alt="8Ball Pool">
+        <span>8Ball Pool</span>
+      </a>
+      <div class="menu-item"><img src="assets/img/Mobilelegends.png" alt="Mobile Legends"><span>Mobile Legends</span></div>
+      <div class="menu-item"><img src="assets/img/coc.png" alt="Clash of Clans"><span>Clash of Clans</span></div>
+      <div class="menu-item"><img src="assets/img/freefire.png" alt="Free Fire"><span>Free Fire</span></div>
+      <div class="menu-item"><img src="assets/img/bigolive.png" alt="Bigo Live"><span>Bigo Live</span></div>
+      <div class="menu-item"><img src="assets/img/iqiyi.png" alt="iQIYI"><span>iQIYI</span></div>
+      <div class="menu-item"><img src="assets/img/tt.png" alt="TikTok"><span>TikTok</span></div>
     </div>
   </section>
 
   <footer class="main-footer">
     <p>&copy; 2025 Mamet Store. All rights reserved.</p>
   </footer>
+
   <div class="floating-contact">
-  <input type="checkbox" id="toggle-contact" hidden />
-  <label for="toggle-contact" class="contact-toggle">Contact</label>
-  <div class="contact-icons">
-    <a href="https://www.facebook.com/mamet.ucupp" target="_blank" title="Facebook">
-      <img src="assets/img/facebook.png" alt="Facebook" />
-    </a>
-    <a href="https://wa.me/6285713056206" target="_blank" title="WhatsApp">
-      <img src="assets/img/whatsapp.png" alt="WhatsApp" />
-    </a>
+    <input type="checkbox" id="toggle-contact" hidden />
+    <label for="toggle-contact" class="contact-toggle">Contact</label>
+    <div class="contact-icons">
+      <a href="https://www.facebook.com/mamet.ucupp" target="_blank" title="Facebook">
+        <img src="assets/img/facebook.png" alt="Facebook" />
+      </a>
+      <a href="https://wa.me/6285713056206" target="_blank" title="WhatsApp">
+        <img src="assets/img/whatsapp.png" alt="WhatsApp" />
+      </a>
+    </div>
   </div>
-  </div>  
-  <script>
-  function toggleMenu() {
-    const menu = document.getElementById("mobile-menu");
-    menu.classList.toggle("show");
-  }
-  </script>
+
 </body>
 </html>
