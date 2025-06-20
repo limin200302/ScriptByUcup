@@ -108,12 +108,15 @@ body {
   width: auto;
   margin-right: 8px;
   vertical-align: middle;
+  border-radius: 4px;
 }
 .payment-inner-card {
   background: #4c2a85;
   border-radius: 8px;
   margin: 6px 0;
   padding: 8px 10px;
+  transition: background 0.2s ease;
+  cursor: pointer;
 }
 .payment-label {
   display: inline-flex;
@@ -153,7 +156,6 @@ body {
 }
 
 /* Efek saat dipilih */
-input[type="radio"]:checked + label {
-  background-color: #5b2a87;
-  color: #fff;
+input[type="radio"][name="metode"] {
+  display: none;
 }
