@@ -1,4 +1,4 @@
-// Sticky Header (aktif terus saat scroll)
+// Sticky Header
 window.addEventListener('scroll', () => {
   const header = document.querySelector('.main-header');
   if (window.scrollY > 10) {
@@ -8,14 +8,12 @@ window.addEventListener('scroll', () => {
   }
 });
 
-// === FINAL: Background Hero Slider (auto + swipe)
 document.addEventListener('DOMContentLoaded', () => {
-  console.log("Website Mamet Store siap digunakan 🚀");
-
+  // Hero Slider
   const bgSlides = document.querySelectorAll('.bg-slide');
   const sliderContainer = document.querySelector('.hero-slider');
   let currentSlide = 0;
-  let interval = setInterval(nextSlide, 3000);
+  let interval;
 
   function showSlide(index) {
     bgSlides.forEach(slide => slide.classList.remove('active'));
@@ -37,11 +35,13 @@ document.addEventListener('DOMContentLoaded', () => {
     interval = setInterval(nextSlide, 3000);
   }
 
-  // === Swipe / Drag support
+  showSlide(currentSlide);
+  interval = setInterval(nextSlide, 3000);
+
+  // Swipe support
   let startX = 0;
   let isDragging = false;
 
-  // Touch (HP)
   sliderContainer.addEventListener('touchstart', (e) => {
     startX = e.touches[0].clientX;
   });
@@ -51,7 +51,6 @@ document.addEventListener('DOMContentLoaded', () => {
     handleSwipe(endX - startX);
   });
 
-  // Mouse (desktop)
   sliderContainer.addEventListener('mousedown', (e) => {
     isDragging = true;
     startX = e.clientX;
@@ -75,11 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Tampilkan slide pertama
-  showSlide(currentSlide);
-});
-// === Final Hamburger Sidebar
-document.addEventListener('DOMContentLoaded', () => {
+  // === Hamburger Menu
   const hamburgerBtn = document.getElementById('hamburgerBtn');
   const closeBtn = document.getElementById('closeMenu');
   const menu = document.getElementById('mobile-menu');
