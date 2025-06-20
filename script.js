@@ -78,7 +78,25 @@ document.addEventListener('DOMContentLoaded', () => {
   // Tampilkan slide pertama
   showSlide(currentSlide);
 });
-function toggleMenu() {
+// === Final Hamburger Sidebar
+document.addEventListener('DOMContentLoaded', () => {
+  const hamburgerBtn = document.getElementById('hamburgerBtn');
+  const closeBtn = document.getElementById('closeMenu');
   const menu = document.getElementById('mobile-menu');
-  menu.classList.toggle('show');
-}
+  const overlay = document.getElementById('menu-overlay');
+
+  hamburgerBtn.addEventListener('click', () => {
+    menu.classList.add('show');
+    overlay.classList.add('show');
+  });
+
+  closeBtn.addEventListener('click', () => {
+    menu.classList.remove('show');
+    overlay.classList.remove('show');
+  });
+
+  overlay.addEventListener('click', () => {
+    menu.classList.remove('show');
+    overlay.classList.remove('show');
+  });
+});
