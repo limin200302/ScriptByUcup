@@ -1,17 +1,6 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
-import {
-  getAuth,
-  createUserWithEmailAndPassword,
-} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
-import {
-  getFirestore,
-  doc,
-  setDoc,
-  getDocs,
-  collection,
-  query,
-  where
-} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
+import { getFirestore, doc, setDoc, getDocs, collection, query, where } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
 
 // === Firebase Config
 const firebaseConfig = {
@@ -23,6 +12,8 @@ const firebaseConfig = {
   appId: "1:869665931228:web:2e4aac081befbca516d919",
   measurementId: "G-VR803Q47EC"
 };
+
+// === Inisialisasi
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
@@ -39,8 +30,7 @@ const suggestionText = document.getElementById("usernameSuggestion");
 // === Show/Hide Password
 document.querySelectorAll(".toggle-password").forEach(button => {
   button.addEventListener("click", () => {
-    const inputId = button.dataset.target;
-    const input = document.getElementById(inputId);
+    const input = button.previousElementSibling;
     if (input.type === "password") {
       input.type = "text";
       button.textContent = "🙈";
@@ -51,14 +41,10 @@ document.querySelectorAll(".toggle-password").forEach(button => {
   });
 });
 
-// === Cek Username Exist
+// === Cek Username Unik
 username.addEventListener("input", async () => {
   const uname = username.value.trim().toLowerCase();
-  if (uname.length < 3) {
-    suggestionText.textContent = "";
-    return;
-  }
-
+  if (uname.length < 3) return suggestionText.textContent = "";
   const taken = await checkUsernameExists(uname);
   if (taken) {
     suggestionText.textContent = `Nama sudah dipakai. Coba: ${uname}${Math.floor(Math.random() * 900 + 100)}`;
@@ -73,7 +59,7 @@ async function checkUsernameExists(uname) {
   return !snap.empty;
 }
 
-// === Daftar Submit
+// === Proses Daftar
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
   errorMsg.textContent = "";
@@ -84,19 +70,16 @@ form.addEventListener("submit", async (e) => {
   const confirmPass = confirmPassword.value;
 
   if (!uname || !userEmail || !userPass || !confirmPass) {
-    errorMsg.textContent = "Semua kolom wajib diisi!";
-    return;
+    return errorMsg.textContent = "Semua kolom wajib diisi!";
   }
 
   if (userPass !== confirmPass) {
-    errorMsg.textContent = "Password tidak cocok!";
-    return;
+    return errorMsg.textContent = "Password tidak cocok!";
   }
 
   const isTaken = await checkUsernameExists(uname);
   if (isTaken) {
-    errorMsg.textContent = "Username sudah digunakan!";
-    return;
+    return errorMsg.textContent = "Username sudah digunakan!";
   }
 
   try {
@@ -111,7 +94,8 @@ form.addEventListener("submit", async (e) => {
     alert("Pendaftaran berhasil! Silakan login.");
     window.location.href = "login.html";
   } catch (err) {
-    errorMsg.textContent = err.message.includes("email-already") ?
-      "Email sudah digunakan!" : "Gagal mendaftar.";
+    errorMsg.textContent = err.message.includes("email-already")
+      ? "Email sudah digunakan!"
+      : "Gagal mendaftar.";
   }
 });
