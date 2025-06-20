@@ -22,7 +22,7 @@ function renderCart() {
     div.className = "cart-item";
     div.innerHTML = `
       <label><input type="checkbox" class="item-checkbox" data-index="${index}" checked />
-        ${item.name} (${item.category}) - ${item.label}
+        ${item.name} - ${item.label}
       </label>
       <button class="delete-btn" data-index="${index}">❌</button>
     `;
