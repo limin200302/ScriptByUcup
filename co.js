@@ -174,3 +174,26 @@ document.getElementById("wa-confirm").addEventListener("click", () => {
   const encoded = encodeURIComponent(message);
   window.open(`https://wa.me/6285713056206?text=${encoded}`, "_blank");
 });
+// === POPUP SHOW & CLOSE ===
+function showPopup() {
+  document.getElementById("popup-form").style.display = "flex";
+}
+
+function closePopup() {
+  document.getElementById("popup-form").style.display = "none";
+}
+
+// === EMAILJS ===
+emailjs.init("nAUL1b5lv7jJmOcaY");
+
+document.getElementById("account-form").addEventListener("submit", function (e) {
+  e.preventDefault();
+
+  emailjs.sendForm('service_ucup', 'template_1shj4dt', this)
+    .then(function () {
+      alert("✅ Order berhasil dikirim ke email!");
+      closePopup(); // Tutup pop-up setelah sukses
+    }, function (error) {
+      alert("❌ Gagal kirim order: " + error.text);
+    });
+});
