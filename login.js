@@ -1,7 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
-import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
-import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
 
+// Konfigurasi Firebase kamu
 const firebaseConfig = {
   apiKey: "AIzaSyA-29lXZhj3j8xHZTyGHhhxjFWlc4Yi9xc",
   authDomain: "mamet-ucup-store.firebaseapp.com",
@@ -12,41 +12,34 @@ const firebaseConfig = {
   measurementId: "G-VR803Q47EC"
 };
 
+// Inisialisasi Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-const db = getFirestore(app);
 
-const loginBtn = document.getElementById("loginGoogle");
-const statusText = document.getElementById("loginStatus");
+// Login dengan Google
+const googleBtn = document.getElementById("googleLogin");
 
-loginBtn.addEventListener("click", async () => {
+googleBtn.addEventListener("click", async () => {
   const provider = new GoogleAuthProvider();
   try {
     const result = await signInWithPopup(auth, provider);
     const user = result.user;
 
-    // Simpan user baru ke Firestore jika belum ada
-    const userRef = doc(db, "users", user.uid);
-    const userSnap = await getDoc(userRef);
-    if (!userSnap.exists()) {
-      await setDoc(userRef, {
-        uid: user.uid,
-        email: user.email,
-        displayName: user.displayName,
-        photoURL: user.photoURL,
-        createdAt: new Date()
-      });
-    }
-
-    // Simpan nama ke localStorage
+    // Simpan nama user ke localStorage (jika kamu mau tampilkan di index.html)
     localStorage.setItem("username", user.displayName);
-    statusText.textContent = "Login berhasil! Mengarahkan...";
-    setTimeout(() => {
-      window.location.href = "index.html";
-    }, 1000);
 
-  } catch (err) {
-    console.error(err);
-    statusText.textContent = "Login gagal. Silakan coba lagi.";
+    // Redirect ke index.html
+    window.location.href = "index.html";
+  } catch (error) {
+    alert("Login gagal: " + error.message);
+  }
+});
+
+// (Optional) Cek status login saat file dimuat
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    console.log("Sudah login sebagai:", user.displayName);
+  } else {
+    console.log("Belum login");
   }
 });
