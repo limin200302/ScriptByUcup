@@ -9,19 +9,27 @@
 </head>
 <body>
 
+  <!-- Header -->
   <header class="main-header">
-    <div class="hamburger" onclick="toggleMenu()">☰</div>
+    <button class="hamburger" id="hamburgerBtn">☰</button>
     <div class="logo-text">Mamet Ucup Store</div>
   </header>
 
   <!-- Sidebar Menu -->
-  <nav id="mobile-menu" class="mobile-menu">
-    <a href="index.html">Beranda</a>
-    <a href="tentang.html">Tentang</a>
-    <a href="login.html">Login</a>
-    <a href="register.html">Daftar</a>
-  </nav>
+  <div id="mobile-menu" class="mobile-menu">
+    <div class="menu-header">
+      <button id="closeMenu">✖</button>
+    </div>
+    <ul>
+      <li><a href="index.html">🏠 Beranda</a></li>
+      <li><a href="tentang.html">📄 Tentang</a></li>
+      <li><a href="login.html">🔐 Login</a></li>
+      <li><a href="register.html">📝 Daftar</a></li>
+    </ul>
+  </div>
+  <div class="menu-overlay" id="menu-overlay"></div>
 
+  <!-- Hero Section -->
   <section class="hero">
     <div class="hero-slider">
       <img src="assets/img/slider1.jpeg" class="bg-slide active" alt="Slider 1">
@@ -35,6 +43,7 @@
     </div>
   </section>
 
+  <!-- Game Section -->
   <section class="menu-section">
     <h2>Game & Aplikasi Populer</h2>
     <div class="menu-grid">
@@ -51,10 +60,12 @@
     </div>
   </section>
 
+  <!-- Footer -->
   <footer class="main-footer">
     <p>&copy; 2025 Mamet Store. All rights reserved.</p>
   </footer>
 
+  <!-- Floating Contact -->
   <div class="floating-contact">
     <input type="checkbox" id="toggle-contact" hidden />
     <label for="toggle-contact" class="contact-toggle">Contact</label>
