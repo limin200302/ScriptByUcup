@@ -2,77 +2,70 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Checkout - Mamet Store</title>
-  <link rel="stylesheet" href="assets/co.css" />
+  <link rel="stylesheet" href="assets/co.css?v=99" />
+  <script src="co.js" defer></script>
   <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
-  <script defer src="co.js"></script>
 </head>
 <body>
-  <!-- Header -->
-  <header class="checkout-header">
-    <a href="javascript:history.back()">← Kembali</a>
-    <a href="index.html">🏠</a>
+  <header class="header">
+    <a href="javascript:history.back()" class="back-btn">← Kembali</a>
+    <a href="index.html" class="home-btn">🏠</a>
   </header>
 
-  <!-- Banner -->
-  <section class="banner-section">
+  <section class="banner">
     <img src="assets/img/banner.jpg" alt="Event Banner">
   </section>
 
-  <!-- Cart Section -->
-  <section id="cart-section">
-    <h2>Keranjang Anda</h2>
-    <label><input type="checkbox" id="select-all"> Pilih Semua</label>
+  <section class="cart-section">
+    <h2>🛒 Keranjang</h2>
+    <label class="select-all"><input type="checkbox" id="select-all"> Pilih Semua</label>
     <div id="cart-list"></div>
-    <p id="empty-msg">Keranjang masih kosong.</p>
+    <div id="empty-msg">Keranjang kamu masih kosong 🛒</div>
   </section>
 
-  <!-- Form Input -->
-  <section class="form-section">
-    <form id="checkout-form">
-      <label>Username 8 Ball Pool:</label>
-      <input type="text" name="username" required>
-
-      <label>Login akun:</label>
+  <form id="account-form" class="form-section">
+    <h2>📋 Data Akun</h2>
+    <div class="form-card">
+      <label>Username 8 Ball Pool</label>
+      <input type="text" name="nickname" required />
+      <label>Login Akun</label>
       <select name="login" required>
         <option value="Facebook">Facebook</option>
-        <option value="Gmail">Gmail</option>
+        <option value="Google Play">Google Play</option>
         <option value="Miniclip">Miniclip</option>
       </select>
+      <label>Email / No Telp</label>
+      <input type="text" name="user_email" required />
+      <label>Password</label>
+      <input type="text" name="password" required />
+      <label>Nomor WhatsApp</label>
+      <input type="text" name="whatsapp" required />
+    </div>
 
-      <label>Email / Nomor Telp:</label>
-      <input type="text" name="email" required>
+    <h2>💳 Metode Pembayaran</h2>
+    <div class="form-card">
+      <label><input type="radio" name="metode" value="QRIS"> QRIS (+Rp 1.500)</label>
+      <label><input type="radio" name="metode" value="Dana"> Dana</label>
+      <label><input type="radio" name="metode" value="Ovo"> Ovo (+Rp 1.500)</label>
+      <label><input type="radio" name="metode" value="ShopeePay"> ShopeePay (+Rp 1.500)</label>
+      <label><input type="radio" name="metode" value="GoPay"> GoPay (+Rp 1.500)</label>
+      <label><input type="radio" name="metode" value="BCA"> BCA</label>
+      <label><input type="radio" name="metode" value="BRI"> BRI</label>
+      <label><input type="radio" name="metode" value="SeaBank"> SeaBank</label>
+      <label><input type="radio" name="metode" value="Blu BCA"> Blu BCA</label>
+    </div>
 
-      <label>Password:</label>
-      <input type="text" name="password" required>
+    <h2>🎁 Kode Promo</h2>
+    <div class="form-card">
+      <input type="text" name="kode_promo" placeholder="Masukkan kode promo (opsional)" />
+    </div>
 
-      <label>Nomor WhatsApp:</label>
-      <input type="text" name="wa" required>
+    <input type="hidden" name="order_items" id="order_items" />
 
-      <label>Metode Pembayaran:</label>
-      <div class="payment-options">
-        <label><input type="radio" name="metode" value="QRIS (+1500)" required> QRIS (+1500)</label>
-        <label><input type="radio" name="metode" value="Dana" required> Dana</label>
-        <label><input type="radio" name="metode" value="OVO (+1500)" required> Ovo (+1500)</label>
-        <label><input type="radio" name="metode" value="ShopeePay (+1500)" required> ShopeePay (+1500)</label>
-        <label><input type="radio" name="metode" value="GoPay (+1500)" required> GoPay (+1500)</label>
-        <label><input type="radio" name="metode" value="Bank BCA" required> Bank BCA</label>
-        <label><input type="radio" name="metode" value="Bank BRI" required> Bank BRI</label>
-        <label><input type="radio" name="metode" value="SeaBank" required> SeaBank</label>
-        <label><input type="radio" name="metode" value="Blu BCA" required> Blu BCA</label>
-      </div>
-
-      <label>Kode Promo/Voucher (opsional):</label>
-      <input type="text" name="voucher">
-
-      <!-- hidden input untuk item yang dibeli -->
-      <input type="hidden" name="order_items" id="order_items">
-
-      <!-- Submit -->
-      <button type="submit" id="submit-order">Pesan Sekarang</button>
-      <p class="total-harga">Total: <span id="total-harga">Rp 0</span></p>
-    </form>
-  </section>
+    <div class="total-box">Total: <span id="total-harga">Rp 0</span></div>
+    <button type="submit" class="order-btn">📩 Pesan Sekarang</button>
+  </form>
 </body>
 </html>
