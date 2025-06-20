@@ -293,3 +293,19 @@ img {
 .nav:hover {
   background: rgba(0,0,0,0.7);
 }
+/* === Login & Daftar Button === */
+.top-nav a[href*="login"], .top-nav a[href*="register"] {
+  padding: 6px 14px;
+  background-color: #2a2a3a;
+  border: 1px solid #ffcc00;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.top-nav a[href*="login"]:hover,
+.top-nav a[href*="register"]:hover {
+  background-color: #ffcc00;
+  color: #1f1f2e;
+}
