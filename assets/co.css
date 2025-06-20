@@ -159,3 +159,9 @@ body {
 input[type="radio"][name="metode"] {
   display: none;
 }
+input[type="radio"]:checked + .payment-label {
+  background: #ffce00;
+  color: #000;
+  padding: 8px 12px;
+  border-radius: 8px;
+}
