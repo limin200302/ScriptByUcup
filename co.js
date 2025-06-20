@@ -112,6 +112,92 @@ document.getElementById("account-form").addEventListener("submit", function (e) 
       alert("❌ Gagal mengirim order: " + err.text);
     });
 });
+// Data rekening berdasarkan metode pembayaran
+const paymentData = {
+  QRIS: {
+    img: 'assets/payment/qris2.png',
+    name: 'Warung Alwi mantap',
+    isQR: true,
+  },
+  Dana: {
+    account: '085713056206',
+    name: 'ADE ANASIRU MUALIM',
+  },
+  Ovo: {
+    account: '085713056206',
+    name: 'ADE ANASIRU MUALIM',
+  },
+  GoPay: {
+    account: '085713056206',
+    name: 'ADE ANASIRU MUALIM',
+  },
+  ShopeePay: {
+    account: '085713056206',
+    name: 'Mamet Ucup Store',
+  },
+  BRI: {
+    account: '356901013211502',
+    name: 'ADE ANASIRU MUALIM',
+  },
+  BCA: {
+    account: '4922069551',
+    name: 'ADE ANASIRU MUALIM',
+  },
+  SeaBank: {
+    account: '901433678333',
+    name: 'ADE ANASIRU MUALIM',
+  },
+  'Bank Jago': {
+    account: '103923428497',
+    name: 'REVITA FEBRIANTI',
+  },
+  Blu: {
+    account: '003406906539',
+    name: 'DEWI ANGGRIANI',
+  }
+};
+
+// Tampilkan popup jika sudah pilih metode pembayaran
+document.getElementById("account-form").addEventListener("submit", function(e) {
+  e.preventDefault();
+  const metode = document.querySelector('input[name="metode"]:checked');
+  if (!metode) {
+    alert("Pilih metode pembayaran terlebih dahulu.");
+    return;
+  }
+
+  const metodeVal = metode.value;
+  const popup = document.getElementById("payment-popup");
+  const info = document.getElementById("payment-info");
+
+  const total = document.getElementById("total-harga").innerText;
+
+  const data = paymentData[metodeVal] || {};
+
+  let html = `<p><strong>Jenis Pembayaran:</strong> ${metodeVal}</p>`;
+  html += `<p><strong>Jumlah Bayar:</strong> ${total}</p>`;
+
+  if (data.isQR) {
+    html += `<img src="${data.img}" alt="QRIS" style="width:100%;max-height:200px;margin:10px 0;border-radius:10px;">`;
+    html += `<p><strong>Nama:</strong> ${data.name}</p>`;
+  } else {
+    html += `<p><strong>Nomor Rekening:</strong> ${data.account || '-'}</p>`;
+    html += `<p><strong>Atas Nama:</strong> ${data.name || '-'}</p>`;
+  }
+
+  info.innerHTML = html;
+  popup.classList.remove("hidden");
+});
+
+// Tombol batal dan lanjut dari popup
+document.getElementById("cancel-payment").addEventListener("click", () => {
+  document.getElementById("payment-popup").classList.add("hidden");
+});
+
+document.getElementById("confirm-payment").addEventListener("click", () => {
+  document.getElementById("payment-popup").classList.add("hidden");
+  document.getElementById("account-form").submit(); // submit sebenarnya
+});
 
 // ========== Inisialisasi ==========
 renderCart();
