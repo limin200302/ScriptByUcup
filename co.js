@@ -146,7 +146,7 @@ const paymentData = {
 // ========== Popup Pembayaran ==========
 document.getElementById("account-form").addEventListener("submit", function (e) {
   e.preventDefault();
-
+updateSummary ():
   if (orderInput.value.trim() === "") {
     alert("❌ Pilih minimal 1 item dari keranjang!");
     return;
