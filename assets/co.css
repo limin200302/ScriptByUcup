@@ -138,6 +138,9 @@ body {
   padding: 10px;
   transition: background 0.3s;
 }
+.payment-inner-card.selected {
+  background: #ffc107;
+  color: #000;
 
 .payment-option-card label {
   display: flex;
