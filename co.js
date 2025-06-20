@@ -7,7 +7,6 @@ const orderInput = document.getElementById("order_items");
 const totalHarga = document.getElementById("total-harga");
 
 function renderCart() {
-  function renderCart() {
   const cart = JSON.parse(localStorage.getItem("cart") || "[]"); // Muat ulang cart dari localStorage
   cartList.innerHTML = "";
 
