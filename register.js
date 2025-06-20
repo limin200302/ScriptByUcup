@@ -1,19 +1,8 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
-import {
-  getAuth,
-  createUserWithEmailAndPassword
-} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
-import {
-  getFirestore,
-  doc,
-  setDoc,
-  getDocs,
-  collection,
-  query,
-  where
-} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+import { getFirestore, doc, setDoc, getDocs, collection, query, where } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
-// === Firebase Config
+// Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyA-29lXZhj3j8xHZTyGHhhxjFWlc4Yi9xc",
   authDomain: "mamet-ucup-store.firebaseapp.com",
@@ -28,43 +17,36 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// === Elemen DOM
+// DOM
 const form = document.getElementById("registerForm");
 const username = document.getElementById("username");
 const email = document.getElementById("email");
 const password = document.getElementById("password");
 const confirmPassword = document.getElementById("confirmPassword");
 const errorMsg = document.getElementById("errorMsg");
-const suggestionText = document.getElementById("usernameSuggestion");
-const toggleBtns = document.querySelectorAll(".toggle-password");
+const usernameSuggestion = document.getElementById("usernameSuggestion");
 
-// === Show/Hide Password
-toggleBtns.forEach(button => {
-  button.addEventListener("click", () => {
-    const input = button.previousElementSibling;
+// Show/Hide password
+document.querySelectorAll(".toggle-password").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const targetId = btn.getAttribute("data-target");
+    const input = document.getElementById(targetId);
     if (input.type === "password") {
       input.type = "text";
-      button.textContent = "🙈";
+      btn.textContent = "🙈";
     } else {
       input.type = "password";
-      button.textContent = "👁";
+      btn.textContent = "👁";
     }
   });
 });
 
-// === Cek Username Sudah Dipakai
+// Cek Username
 username.addEventListener("input", async () => {
   const uname = username.value.trim().toLowerCase();
-  if (uname.length < 3) {
-    suggestionText.textContent = "";
-    return;
-  }
-  const taken = await checkUsernameExists(uname);
-  if (taken) {
-    suggestionText.textContent = `Nama sudah dipakai. Coba: ${uname}${Math.floor(Math.random() * 900 + 100)}`;
-  } else {
-    suggestionText.textContent = "";
-  }
+  if (uname.length < 3) return usernameSuggestion.textContent = "";
+  const isTaken = await checkUsernameExists(uname);
+  usernameSuggestion.textContent = isTaken ? `Nama sudah dipakai. Coba: ${uname}${Math.floor(100 + Math.random() * 900)}` : "";
 });
 
 async function checkUsernameExists(uname) {
@@ -73,7 +55,7 @@ async function checkUsernameExists(uname) {
   return !snap.empty;
 }
 
-// === Submit Form Register
+// Submit Daftar
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
   errorMsg.textContent = "";
@@ -82,24 +64,22 @@ form.addEventListener("submit", async (e) => {
   const userEmail = email.value.trim();
   const userPass = password.value;
   const confirmPass = confirmPassword.value;
-  const submitBtn = form.querySelector('button[type="submit"]');
 
   if (!uname || !userEmail || !userPass || !confirmPass) {
-    return errorMsg.textContent = "Semua kolom wajib diisi!";
+    errorMsg.textContent = "Semua kolom wajib diisi!";
+    return;
   }
 
   if (userPass !== confirmPass) {
-    return errorMsg.textContent = "Password tidak cocok!";
+    errorMsg.textContent = "Password tidak cocok!";
+    return;
   }
 
   const isTaken = await checkUsernameExists(uname);
   if (isTaken) {
-    return errorMsg.textContent = "Username sudah digunakan!";
+    errorMsg.textContent = "Username sudah digunakan!";
+    return;
   }
-
-  // Loading State
-  submitBtn.disabled = true;
-  submitBtn.textContent = "Mendaftarkan...";
 
   try {
     const cred = await createUserWithEmailAndPassword(auth, userEmail, userPass);
@@ -113,10 +93,10 @@ form.addEventListener("submit", async (e) => {
     alert("Pendaftaran berhasil! Silakan login.");
     window.location.href = "login.html";
   } catch (err) {
-    errorMsg.textContent = err.message.includes("email-already")
-      ? "Email sudah digunakan!"
-      : "Gagal mendaftar.";
-    submitBtn.disabled = false;
-    submitBtn.textContent = "Daftar";
+    if (err.message.includes("email-already")) {
+      errorMsg.textContent = "Email sudah digunakan!";
+    } else {
+      errorMsg.textContent = "Gagal mendaftar. Silakan coba lagi.";
+    }
   }
 });
