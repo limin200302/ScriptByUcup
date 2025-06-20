@@ -1,83 +1,151 @@
-body {
+/* RESET */
+* {
+  box-sizing: border-box;
   margin: 0;
+  padding: 0;
   font-family: 'Segoe UI', sans-serif;
-  background: #2b0a3d;
-  color: #fff;
 }
-
-.header {
-  background: #1d0133;
-  padding: 10px;
-  display: flex;
-  justify-content: space-between;
-  font-weight: bold;
+body {
+  background: #f4f4f8;
+  padding-bottom: 100px;
+  color: #333;
 }
-
-.back-btn, .home-btn {
-  color: #fff;
+a {
+  color: inherit;
   text-decoration: none;
 }
 
-.banner img {
-  width: 100%;
-  max-height: 200px;
-  object-fit: cover;
-  border-bottom: 2px solid #fff;
-}
-
-.cart-section {
-  padding: 15px;
-}
-
-#cart-list .cart-item {
-  background: #3c176b;
-  border-radius: 10px;
-  margin: 10px 0;
-  padding: 10px;
+/* HEADER */
+.header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-
-.select-all {
-  margin: 10px 0;
-  display: block;
-}
-
-.form-section {
-  padding: 15px;
-}
-
-.form-card {
-  background: #3c176b;
-  padding: 15px;
-  border-radius: 10px;
-  margin-bottom: 20px;
-}
-
-.form-card input, .form-card select {
-  width: 100%;
-  padding: 8px;
-  margin-top: 4px;
-  margin-bottom: 12px;
-  border-radius: 6px;
-  border: none;
-}
-
-.total-box {
-  text-align: center;
-  font-size: 18px;
-  margin: 15px 0;
-}
-
-.order-btn {
-  background: #ffce00;
-  border: none;
-  padding: 12px;
-  width: 100%;
-  border-radius: 10px;
-  font-size: 18px;
+  background: #ff914d;
+  padding: 10px 15px;
+  color: white;
   font-weight: bold;
-  color: #000;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+}
+
+/* BANNER */
+.banner img {
+  width: 100%;
+  max-height: 300px;
+  object-fit: cover;
+  margin-bottom: 10px;
+  border-radius: 8px;
+}
+
+/* SECTION */
+section {
+  padding: 15px;
+}
+
+/* KERANJANG */
+.cart-section h2,
+.form-section h2 {
+  margin-bottom: 10px;
+  color: #222;
+}
+.cart-item {
+  background: white;
+  padding: 12px;
+  margin-bottom: 8px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+.cart-item label {
+  flex: 1;
+}
+.delete-btn {
+  background: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 6px;
   cursor: pointer;
+}
+.select-all {
+  display: block;
+  margin-bottom: 10px;
+}
+#empty-msg {
+  text-align: center;
+  color: gray;
+  margin-top: 15px;
+}
+
+/* FORM */
+.form-card {
+  background: white;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  margin-bottom: 15px;
+}
+.form-card label {
+  display: block;
+  margin-top: 10px;
+  font-weight: 500;
+}
+.form-card input,
+.form-card select {
+  width: 100%;
+  margin-top: 5px;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+/* COLLAPSIBLE */
+.collapsible {
+  background: #fff3e0;
+  padding: 12px 15px;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-bottom: 5px;
+  border: 1px solid #ffd1a0;
+}
+.form-sub {
+  background: white;
+  padding: 10px 15px;
+  margin-bottom: 15px;
+  border-radius: 0 0 10px 10px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+.form-sub label {
+  display: block;
+  margin: 8px 0;
+}
+
+/* TOTAL & BUTTON */
+.total-box {
+  font-size: 18px;
+  text-align: center;
+  margin-top: 20px;
+  font-weight: bold;
+  color: #222;
+}
+.order-btn {
+  width: 90%;
+  margin: 20px auto;
+  display: block;
+  background: #28a745;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  transition: background 0.2s;
+}
+.order-btn:hover {
+  background: #218838;
 }
