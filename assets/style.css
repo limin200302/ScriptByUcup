@@ -309,4 +309,83 @@ img {
   .hamburger {
     display: block;
   }
+
+/* === Header Navigation === */
+.desktop-nav {
+  display: flex;
+  gap: 1.2rem;
+  font-size: 0.85rem;
+}
+
+.desktop-nav a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 6px 10px;
+  border-radius: 20px;
+  transition: background 0.3s;
+}
+
+.desktop-nav a:hover {
+  background-color: #ffcc00;
+  color: #1f1f2e;
+}
+
+/* === Hamburger Button === */
+.hamburger {
+  font-size: 1.5rem;
+  color: #ffcc00;
+  display: none;
+  cursor: pointer;
+}
+
+/* === Mobile Menu === */
+.mobile-menu {
+  display: none;
+  flex-direction: column;
+  position: absolute;
+  top: 70px;
+  right: 20px;
+  background-color: #2a2a3a;
+  border: 1px solid #444;
+  padding: 1rem;
+  border-radius: 10px;
+  z-index: 999;
+  box-shadow: 0 0 15px rgba(0,0,0,0.5);
+}
+
+.mobile-menu a {
+  color: #fff;
+  text-decoration: none;
+  padding: 8px 0;
+  border-bottom: 1px solid #444;
+  font-size: 0.95rem;
+}
+
+.mobile-menu a:last-child {
+  border-bottom: none;
+}
+
+.mobile-menu.show {
+  display: flex;
+}
+
+/* === Logo di Kanan === */
+.header-logo {
+  width: 35px;
+  height: 35px;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 0 5px rgba(0,0,0,0.3);
+}
+
+/* === Responsive Rules === */
+@media screen and (max-width: 768px) {
+  .desktop-nav {
+    display: none;
+  }
+
+  .hamburger {
+    display: block;
+  }
 }
