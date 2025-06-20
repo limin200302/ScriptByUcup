@@ -167,9 +167,18 @@ document.getElementById("account-form").addEventListener("submit", function (e) 
   html += `<p><strong>Jumlah Bayar:</strong> ${total}</p>`;
 
   if (data.isQR) {
-    html += `<img src="${data.img}" alt="QRIS" style="width:100%;max-height:200px;margin:10px 0;border-radius:10px;">`;
-    html += `<p><strong>Nama:</strong> ${data.name}</p>`;
-  } else {
+  html += `<img src="${data.img}" alt="QRIS" style="
+    display:block;
+    max-width:220px;
+    width:100%;
+    height:auto;
+    margin:15px auto;
+    border-radius:12px;
+    box-shadow:0 0 10px rgba(0,0,0,0.4);
+  ">`;
+  html += `<p><strong>Nama:</strong> ${data.name}</p>`;
+  }
+} else {
     html += `<p><strong>Nomor Rekening:</strong> ${data.account || '-'}</p>`;
     html += `<p><strong>Atas Nama:</strong> ${data.name || '-'}</p>`;
   }
