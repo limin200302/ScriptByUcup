@@ -2,88 +2,124 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <title>Admin - Update Status Transaksi</title>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Panel - Mamet Store</title>
   <style>
-    body { font-family: Arial, sans-serif; padding: 20px; background: #f9f9f9; }
-    .box { background: white; padding: 20px; border-radius: 8px; max-width: 400px; margin: auto; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-    label, select, input, button { display: block; margin-top: 10px; width: 100%; }
-    button { padding: 10px; background: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer; }
-    .status-display { margin-top: 15px; font-weight: bold; }
+    body {
+      font-family: Arial, sans-serif;
+      background: #f7f7f7;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .admin-container {
+      max-width: 800px;
+      margin: auto;
+    }
+    .transaksi {
+      background: white;
+      padding: 15px;
+      border-radius: 12px;
+      margin-bottom: 15px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .transaksi p {
+      margin: 6px 0;
+    }
+    .status-btn {
+      background: #4caf50;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .status-btn:disabled {
+      background: #ccc;
+    }
+    .kosong {
+      text-align: center;
+      color: #999;
+      font-style: italic;
+      margin-top: 50px;
+    }
   </style>
 </head>
 <body>
-  <div class="box">
-    <h2>🔧 Admin - Ubah Status Transaksi</h2>
 
-    <label>Username / Nickname:</label>
-    <input type="text" id="nicknameInput" placeholder="Masukkan nickname">
+  <h1>Admin Panel - Riwayat Transaksi</h1>
+  <div class="admin-container" id="riwayat-list"></div>
+  <div class="kosong" id="kosong-msg">Belum ada transaksi untuk diubah statusnya.</div>
 
-    <button onclick="checkStatus()">🔍 Cek Status</button>
-
-    <div class="status-display" id="statusDisplay"></div>
-
-    <label>Ubah Status:</label>
-    <select id="statusSelect">
-      <option value="">-- Pilih Status Baru --</option>
-      <option value="sedang diproses">Sedang Diproses</option>
-      <option value="berhasil">Berhasil</option>
-      <option value="gagal">Gagal</option>
-      <option value="dibatalkan">Dibatalkan</option>
-    </select>
-
-    <button onclick="updateStatus()">✅ Update Status</button>
-  </div>
-
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
   <script>
-    // Ganti dengan project kamu
-    const supabaseUrl = 'https://etfbdevjytilaykogzwa.supabase.co'; // << GANTI
-    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV0ZmJkZXZqeXRpbGF5a29nendhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA0NjE0MjAsImV4cCI6MjA2NjAzNzQyMH0.rGwSOp2_l9eWK2B7Fk7BFo0_JK4BOY5GAYJOa3C58tM'; // << GANTI (anon key)
+    // Sudah diisi dengan data kamu
+    const supabaseUrl = 'https://etfbdevjytilaykogzwa.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV0ZmJkZXZqeXRpbGF5a29nendhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA0NjE0MjAsImV4cCI6MjA2NjAzNzQyMH0.rGwSOp2_l9eWK2B7Fk7BFo0_JK4BOY5GAYJOa3C58tM';
     const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
-    let rowId = null;
+    // Login admin sederhana
+    const pass = prompt("Masukkan password admin:");
+    if (pass !== "RAHASIA123") {
+      alert("Akses ditolak.");
+      window.location.href = "index.html";
+    }
 
-    async function checkStatus() {
-      const nickname = document.getElementById('nicknameInput').value;
+    // Ambil data dari tabel "transaksi"
+    async function loadRiwayat() {
       const { data, error } = await supabase
-        .from('transaksi')
-        .select('id, status')
-        .eq('nickname', nickname)
-        .single();
+        .from("transaksi")
+        .select("*")
+        .order("created_at", { ascending: false });
 
-      const display = document.getElementById('statusDisplay');
-      if (error || !data) {
-        display.textContent = '❌ Nickname tidak ditemukan.';
-        rowId = null;
-      } else {
-        display.textContent = `✅ Status saat ini: ${data.status}`;
-        rowId = data.id;
-      }
-    }
-
-    async function updateStatus() {
-      if (!rowId) {
-        alert('Cek nickname dulu sebelum update.');
-        return;
-      }
-      const newStatus = document.getElementById('statusSelect').value;
-      if (!newStatus) {
-        alert('Pilih status baru dulu.');
+      if (error || !data || data.length === 0) {
+        document.getElementById("kosong-msg").style.display = "block";
         return;
       }
 
-      const { error } = await supabase
-        .from('transaksi')
-        .update({ status: newStatus })
-        .eq('id', rowId);
+      document.getElementById("kosong-msg").style.display = "none";
+      const container = document.getElementById("riwayat-list");
 
-      if (error) {
-        alert('❌ Gagal update status.');
+      data.forEach(tx => {
+        const div = document.createElement("div");
+        div.className = "transaksi";
+        div.innerHTML = `
+          <p><strong>Tanggal:</strong> ${new Date(tx.created_at).toLocaleString("id-ID")}</p>
+          <p><strong>Username:</strong> ${tx.username || '-'}</p>
+          <p><strong>Item:</strong><br>${(tx.order_items || "").replace(/\n/g, "<br>")}</p>
+          <p><strong>Total:</strong> ${tx.total}</p>
+          <p><strong>Metode:</strong> ${tx.metode}</p>
+          <p><strong>Status:</strong> <span id="status-${tx.id}">${tx.status}</span></p>
+          <button class="status-btn" onclick="updateStatus('${tx.id}')">Ubah Status</button>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    // Fungsi ubah status
+    async function updateStatus(id) {
+      const newStatus = prompt("Masukkan status baru (Selesai / Gagal):", "Selesai");
+      if (newStatus && (newStatus === "Selesai" || newStatus === "Gagal")) {
+        const { error } = await supabase
+          .from("transaksi")
+          .update({ status: newStatus })
+          .eq("id", id);
+
+        if (error) {
+          alert("Gagal memperbarui status: " + error.message);
+        } else {
+          document.getElementById(`status-${id}`).innerText = newStatus;
+          alert("Status berhasil diperbarui!");
+        }
       } else {
-        alert('✅ Status berhasil diperbarui!');
-        checkStatus(); // refresh status display
+        alert("Status tidak valid. Hanya bisa 'Selesai' atau 'Gagal'.");
       }
     }
+
+    loadRiwayat();
   </script>
+
 </body>
 </html>
