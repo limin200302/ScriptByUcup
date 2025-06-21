@@ -1,15 +1,16 @@
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
+// Inisialisasi Supabase
 const supabase = createClient(
   'https://etfbdevjytilaykogzwa.supabase.co',
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV0ZmJkZXZqeXRpbGF5a29nendhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA0NjE0MjAsImV4cCI6MjA2NjAzNzQyMH0.rGwSOp2_l9eWK2B7Fk7BFo0_JK4BOY5GAYJOa3C58tM<potong token kamu>' // Gantilah dengan public anon key dari Supabase
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV0ZmJkZXZqeXRpbGF5a29nendhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA0NjE0MjAsImV4cCI6MjA2NjAzNzQyMH0.rGwSOp2_l9eWK2B7Fk7BFo0_JK4BOY5GAYJOa3C58tM'
 );
 
 // Elemen penting
 const menu = document.getElementById("menuList");
 const usernameBox = document.getElementById("usernameDisplay");
 
-// Render menu
+// Render menu sesuai status login
 function renderMenu(user) {
   if (user) {
     const username = user.user_metadata?.full_name || user.email;
@@ -29,18 +30,18 @@ function renderMenu(user) {
     `;
   }
 
-  // Logout
+  // Tombol logout
   const logoutBtn = document.getElementById("logoutBtn");
   if (logoutBtn) {
     logoutBtn.addEventListener("click", async (e) => {
       e.preventDefault();
       await supabase.auth.signOut();
       alert("Berhasil logout");
-      location.reload();
+      renderMenu(null);
     });
   }
 
-  // Google Login
+  // Tombol login Google
   const googleLoginBtn = document.getElementById("googleLoginBtn");
   if (googleLoginBtn) {
     googleLoginBtn.addEventListener("click", async (e) => {
@@ -48,33 +49,25 @@ function renderMenu(user) {
       await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: 'https://aesthetic-crostata-7c8181.netlify.app' // Ganti ke domain kamu
+          redirectTo: 'https://aesthetic-crostata-7c8181.netlify.app' // Ubah sesuai domain deploy kamu
         }
       });
     });
   }
 }
 
-// Jalankan saat load + dengarkan perubahan status login
-supabase.auth.getSession().then(async ({ data: session }) => {
-  if (session?.user) {
-    renderMenu(session.user);
-  } else {
-    renderMenu(null);
-  }
+// Cek user saat halaman load (supaya bisa detect setelah redirect Google)
+document.addEventListener("DOMContentLoaded", async () => {
+  const { data: { user } } = await supabase.auth.getUser();
+  renderMenu(user);
 });
 
-// Listener realtime untuk login/logout (termasuk setelah redirect Google)
-supabase.auth.onAuthStateChange(async (event, session) => {
-  if (session?.user) {
-    renderMenu(session.user);
-  } else {
-    renderMenu(null);
-  }
+// Dengarkan perubahan status login
+supabase.auth.onAuthStateChange((_event, session) => {
+  renderMenu(session?.user || null);
 });
 
-
-// Hamburger
+// === Hamburger Menu ===
 document.getElementById("hamburgerBtn")?.addEventListener("click", () => {
   document.getElementById("mobile-menu").classList.add("show");
   document.getElementById("menu-overlay").classList.add("show");
@@ -90,8 +83,7 @@ document.getElementById("menu-overlay")?.addEventListener("click", () => {
   document.getElementById("menu-overlay").classList.remove("show");
 });
 
-
-// Slider
+// === Hero Slider Otomatis ===
 let currentSlide = 0;
 const slides = document.querySelectorAll(".bg-slide");
 setInterval(() => {
