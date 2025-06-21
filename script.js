@@ -1,140 +1,95 @@
-// Import Supabase (harus pakai <script type="module"> di index.html)
+// === Supabase Init ===
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
-const supabase = createClient(
-  'https://etfbdevjytilaykogzwa.supabase.co',
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV0ZmJkZXZqeXRpbGF5a29nendhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA0NjE0MjAsImV4cCI6MjA2NjAzNzQyMH0.rGwSOp2_l9eWK2B7Fk7BFo0_JK4BOY5GAYJOa3C58tM'
-);
+const supabaseUrl = 'https://etfbdevjytilaykogzwa.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV0ZmJkZXZqeXRpbGF5a29nendhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA0NjE0MjAsImV4cCI6MjA2NjAzNzQyMH0.rGwSOp2_l9eWK2B7Fk7BFo0_JK4BOY5GAYJOa3C58tM'; // Ganti dengan API key terbaru kalau perlu
+const supabase = createClient(supabaseUrl, supabaseKey);
 
-// === Sticky Header
-window.addEventListener('scroll', () => {
-  const header = document.querySelector('.main-header');
-  if (window.scrollY > 10) {
-    header.classList.add('scrolled');
-  } else {
-    header.classList.remove('scrolled');
-  }
+// === DOM Reference ===
+const hamburgerBtn = document.getElementById("hamburgerBtn");
+const closeMenuBtn = document.getElementById("closeMenu");
+const mobileMenu = document.getElementById("mobile-menu");
+const overlay = document.getElementById("menu-overlay");
+
+// === Hamburger Menu Toggle ===
+hamburgerBtn.addEventListener("click", () => {
+  mobileMenu.classList.add("show");
+  overlay.classList.add("show");
+});
+closeMenuBtn.addEventListener("click", () => {
+  mobileMenu.classList.remove("show");
+  overlay.classList.remove("show");
+});
+overlay.addEventListener("click", () => {
+  mobileMenu.classList.remove("show");
+  overlay.classList.remove("show");
 });
 
-document.addEventListener('DOMContentLoaded', async () => {
-  // === Hero Slider
-  const bgSlides = document.querySelectorAll('.bg-slide');
-  const sliderContainer = document.querySelector('.hero-slider');
-  let currentSlide = 0;
-  let interval;
+// === Update UI Auth Status ===
+async function updateAuthUI() {
+  const { data: { session } } = await supabase.auth.getSession();
+  const menu = document.querySelector(".mobile-menu ul");
 
-  function showSlide(index) {
-    bgSlides.forEach(slide => slide.classList.remove('active'));
-    bgSlides[index].classList.add('active');
-  }
+  // Bersihkan menu lama
+  menu.innerHTML = "";
 
-  function nextSlide() {
-    currentSlide = (currentSlide + 1) % bgSlides.length;
-    showSlide(currentSlide);
-  }
+  // Hapus greeting lama jika ada
+  const prevGreeting = document.getElementById("greeting");
+  if (prevGreeting) prevGreeting.remove();
 
-  function prevSlide() {
-    currentSlide = (currentSlide - 1 + bgSlides.length) % bgSlides.length;
-    showSlide(currentSlide);
-  }
+  if (session?.user) {
+    const user = session.user;
+    const username = user.user_metadata?.username || user.email;
 
-  function resetInterval() {
-    clearInterval(interval);
-    interval = setInterval(nextSlide, 3000);
-  }
-
-  showSlide(currentSlide);
-  interval = setInterval(nextSlide, 3000);
-
-  // === Swipe Support
-  let startX = 0;
-  let isDragging = false;
-
-  sliderContainer.addEventListener('touchstart', (e) => {
-    startX = e.touches[0].clientX;
-  });
-
-  sliderContainer.addEventListener('touchend', (e) => {
-    const endX = e.changedTouches[0].clientX;
-    handleSwipe(endX - startX);
-  });
-
-  sliderContainer.addEventListener('mousedown', (e) => {
-    isDragging = true;
-    startX = e.clientX;
-  });
-
-  sliderContainer.addEventListener('mouseup', (e) => {
-    if (!isDragging) return;
-    isDragging = false;
-    const endX = e.clientX;
-    handleSwipe(endX - startX);
-  });
-
-  function handleSwipe(deltaX) {
-    if (Math.abs(deltaX) > 50) {
-      if (deltaX > 0) {
-        prevSlide();
-      } else {
-        nextSlide();
-      }
-      resetInterval();
-    }
-  }
-
-  // === Hamburger Menu
-  const hamburgerBtn = document.getElementById('hamburgerBtn');
-  const closeBtn = document.getElementById('closeMenu');
-  const menu = document.getElementById('mobile-menu');
-  const overlay = document.getElementById('menu-overlay');
-
-  hamburgerBtn.addEventListener('click', () => {
-    menu.classList.add('show');
-    overlay.classList.add('show');
-  });
-
-  closeBtn.addEventListener('click', () => {
-    menu.classList.remove('show');
-    overlay.classList.remove('show');
-  });
-
-  overlay.addEventListener('click', () => {
-    menu.classList.remove('show');
-    overlay.classList.remove('show');
-  });
-
-  // === Cek Login User
-  const { data: { user } } = await supabase.auth.getUser();
-  const menuList = document.querySelector(".mobile-menu ul");
-
-  if (user) {
-    // Tambahkan sapaan
+    // Tambahkan greeting
     const greeting = document.createElement("div");
-    greeting.textContent = `Halo, ${user.user_metadata?.username || user.email} 👋`;
+    greeting.id = "greeting";
+    greeting.textContent = `Halo, ${username} 👋`;
     greeting.style.cssText = "text-align:center; margin: 1rem 0; font-weight:bold; color: #ffcc00;";
     document.body.prepend(greeting);
 
-    // Tambah menu Riwayat
-    const riwayat = document.createElement("li");
-    riwayat.innerHTML = `<a href="history.html">📋 Riwayat</a>`;
-    menuList.appendChild(riwayat);
+    // Isi menu untuk user login
+    menu.innerHTML = `
+      <li><a href="index.html">🏠 Beranda</a></li>
+      <li><a href="tentang.html">📄 Tentang</a></li>
+      <li><a href="#" id="logoutBtn">🚪 Logout</a></li>
+    `;
+  } else {
+    // Isi menu untuk user belum login
+    menu.innerHTML = `
+      <li><a href="index.html">🏠 Beranda</a></li>
+      <li><a href="tentang.html">📄 Tentang</a></li>
+      <li><a href="login.html">🔐 Login</a></li>
+      <li><a href="register.html">📝 Daftar</a></li>
+    `;
+  }
+}
 
-    // Tambah tombol Logout
-    const logout = document.createElement("li");
-    logout.innerHTML = `<a href="#" id="logoutBtn">🚪 Logout</a>`;
-    menuList.appendChild(logout);
-
-    // Sembunyikan Login & Daftar
-    menuList.querySelectorAll("li").forEach((li) => {
-      const link = li.querySelector("a")?.getAttribute("href");
-      if (link === "login.html" || link === "register.html") li.remove();
-    });
-
-    // Logout action
-    document.getElementById("logoutBtn").addEventListener("click", async (e) => {
-      e.preventDefault();
-      await supabase.auth.signOut();
-      location.reload();
-    });
+// === Logout Handler ===
+document.addEventListener("click", async (e) => {
+  if (e.target.id === "logoutBtn") {
+    e.preventDefault();
+    await supabase.auth.signOut();
+    alert("Berhasil logout.");
+    updateAuthUI(); // Update UI setelah logout
   }
 });
+
+// === Inisialisasi Saat Load ===
+updateAuthUI();
+
+// === (Optional) Auto-rotate Slider ===
+// Jika kamu punya slider otomatis di hero-section
+const slides = document.querySelectorAll('.bg-slide');
+let currentSlide = 0;
+
+function showSlide(index) {
+  slides.forEach((slide, i) => {
+    slide.classList.toggle('active', i === index);
+  });
+}
+
+setInterval(() => {
+  currentSlide = (currentSlide + 1) % slides.length;
+  showSlide(currentSlide);
+}, 4000); // ganti slide setiap 4 detik
