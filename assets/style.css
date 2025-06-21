@@ -43,6 +43,7 @@ img {
   font-weight: bold;
   color: #ffcc00;
   white-space: nowrap;
+  transition: transform 0.4s ease;
 }
 
 .header-right {
@@ -330,4 +331,32 @@ img {
   font-weight: bold;
   background: #b59a16;
   border-bottom: 1px solid #ddd;
+}
+/* === Animasi Hamburger & Header === */
+.hamburger {
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+.hamburger:hover {
+  transform: translateX(5px) scale(1.1);
+}
+.logo-text:hover {
+  transform: scale(1.05) translateY(-2px);
+}
+
+/* === Garis animasi antara header dan slider === */
+.header-divider {
+  height: 4px;
+  width: 100%;
+  animation: colorShift 6s infinite;
+  box-shadow: 0 0 12px #ffcc00;
+}
+
+@keyframes colorShift {
+  0% { background-color: #ffcc00; box-shadow: 0 0 8px #ffcc00; }
+  25% { background-color: #00ffc3; box-shadow: 0 0 10px #00ffc3; }
+  50% { background-color: #ff006e; box-shadow: 0 0 12px #ff006e; }
+  75% { background-color: #3ae374; box-shadow: 0 0 14px #3ae374; }
+  100% { background-color: #ffcc00; box-shadow: 0 0 16px #ffcc00; }
 }
