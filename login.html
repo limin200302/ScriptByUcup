@@ -23,5 +23,14 @@
       </form>
     </div>
   </section>
+  <!-- Di bagian index.html -->
+<p id="userInfo"></p>
+
+<script>
+  const email = localStorage.getItem("userEmail")
+  if (email) {
+    document.getElementById("userInfo").textContent = `Selamat datang, ${email}`
+  }
+</script>
 </body>
 </html>
