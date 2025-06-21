@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Login - Mamet Store</title>
   <link rel="stylesheet" href="assets/login.css" />
   <script type="module" src="login.js" defer></script>
@@ -10,7 +10,7 @@
 <body>
   <section class="auth-container">
     <div class="auth-card">
-      <h2>Login</h2>
+      <h2>Login Akun</h2>
       <form id="loginForm">
         <input type="email" id="email" placeholder="Email" required />
         <div class="password-group">
@@ -23,14 +23,11 @@
       </form>
     </div>
   </section>
-  <!-- Di bagian index.html -->
-<p id="userInfo"></p>
-
-<script>
-  const email = localStorage.getItem("userEmail")
-  if (email) {
-    document.getElementById("userInfo").textContent = `Selamat datang, ${email}`
+  <script>
+  const userEmail = localStorage.getItem("userEmail");
+  if (userEmail) {
+    document.body.insertAdjacentHTML('afterbegin', `<div style="background:#222;padding:10px;color:#fff;text-align:center;">Halo, ${userEmail}</div>`);
   }
-</script>
+  </script>
 </body>
 </html>
