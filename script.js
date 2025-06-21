@@ -1,22 +1,62 @@
-// === Supabase Init ===
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
-const supabaseUrl = 'https://etfbdevjytilaykogzwa.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV0ZmJkZXZqeXRpbGF5a29nendhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA0NjE0MjAsImV4cCI6MjA2NjAzNzQyMH0.rGwSOp2_l9eWK2B7Fk7BFo0_JK4BOY5GAYJOa3C58tM'; // Ganti dengan API key terbaru kalau perlu
-const supabase = createClient(supabaseUrl, supabaseKey);
+// Inisialisasi Supabase
+const supabase = createClient(
+  'https://etfbdevjytilaykogzwa.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV0ZmJkZXZqeXRpbGF5a29nendhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA0NjE0MjAsImV4cCI6MjA2NjAzNzQyMH0.rGwSOp2_l9eWK2B7Fk7BFo0_JK4BOY5GAYJOa3C58tM'
+);
 
-// === DOM Reference ===
-const hamburgerBtn = document.getElementById("hamburgerBtn");
-const closeMenuBtn = document.getElementById("closeMenu");
+// === UI Dinamis berdasarkan login ===
+const menu = document.querySelector(".mobile-menu ul");
+
+function renderMenu(user) {
+  menu.innerHTML = `
+    <li><a href="index.html">🏠 Beranda</a></li>
+    <li><a href="tentang.html">📄 Tentang</a></li>
+  `;
+
+  if (user) {
+    const username = user.user_metadata?.username || user.email;
+
+    menu.innerHTML += `
+      <li><a href="#">👋 ${username}</a></li>
+      <li><a href="riwayat.html">📜 Riwayat Transaksi</a></li>
+      <li><a href="#" id="logoutBtn">🚪 Logout</a></li>
+    `;
+  } else {
+    menu.innerHTML += `
+      <li><a href="login.html">🔐 Login</a></li>
+      <li><a href="register.html">📝 Daftar</a></li>
+    `;
+  }
+}
+
+// Cek Status Login Saat Halaman Dibuka
+supabase.auth.getUser().then(({ data: { user } }) => {
+  renderMenu(user);
+});
+
+// Logout
+document.addEventListener("click", async (e) => {
+  if (e.target.id === "logoutBtn") {
+    e.preventDefault();
+    await supabase.auth.signOut();
+    alert("Berhasil keluar.");
+    location.reload();
+  }
+});
+
+// === Hamburger Menu ===
+const hamburger = document.getElementById("hamburgerBtn");
+const closeBtn = document.getElementById("closeMenu");
 const mobileMenu = document.getElementById("mobile-menu");
 const overlay = document.getElementById("menu-overlay");
 
-// === Hamburger Menu Toggle ===
-hamburgerBtn.addEventListener("click", () => {
+hamburger.addEventListener("click", () => {
   mobileMenu.classList.add("show");
   overlay.classList.add("show");
 });
-closeMenuBtn.addEventListener("click", () => {
+closeBtn.addEventListener("click", () => {
   mobileMenu.classList.remove("show");
   overlay.classList.remove("show");
 });
@@ -25,71 +65,12 @@ overlay.addEventListener("click", () => {
   overlay.classList.remove("show");
 });
 
-// === Update UI Auth Status ===
-async function updateAuthUI() {
-  const { data: { session } } = await supabase.auth.getSession();
-  const menu = document.querySelector(".mobile-menu ul");
-
-  // Bersihkan menu lama
-  menu.innerHTML = "";
-
-  // Hapus greeting lama jika ada
-  const prevGreeting = document.getElementById("greeting");
-  if (prevGreeting) prevGreeting.remove();
-
-  if (session?.user) {
-    const user = session.user;
-    const username = user.user_metadata?.username || user.email;
-
-    // Tambahkan greeting
-    const greeting = document.createElement("div");
-    greeting.id = "greeting";
-    greeting.textContent = `Halo, ${username} 👋`;
-    greeting.style.cssText = "text-align:center; margin: 1rem 0; font-weight:bold; color: #ffcc00;";
-    document.body.prepend(greeting);
-
-    // Isi menu untuk user login
-    menu.innerHTML = `
-      <li><a href="index.html">🏠 Beranda</a></li>
-      <li><a href="tentang.html">📄 Tentang</a></li>
-      <li><a href="#" id="logoutBtn">🚪 Logout</a></li>
-    `;
-  } else {
-    // Isi menu untuk user belum login
-    menu.innerHTML = `
-      <li><a href="index.html">🏠 Beranda</a></li>
-      <li><a href="tentang.html">📄 Tentang</a></li>
-      <li><a href="login.html">🔐 Login</a></li>
-      <li><a href="register.html">📝 Daftar</a></li>
-    `;
-  }
-}
-
-// === Logout Handler ===
-document.addEventListener("click", async (e) => {
-  if (e.target.id === "logoutBtn") {
-    e.preventDefault();
-    await supabase.auth.signOut();
-    alert("Berhasil logout.");
-    updateAuthUI(); // Update UI setelah logout
-  }
-});
-
-// === Inisialisasi Saat Load ===
-updateAuthUI();
-
-// === (Optional) Auto-rotate Slider ===
-// Jika kamu punya slider otomatis di hero-section
-const slides = document.querySelectorAll('.bg-slide');
+// === Slider Hero Otomatis ===
 let currentSlide = 0;
-
-function showSlide(index) {
-  slides.forEach((slide, i) => {
-    slide.classList.toggle('active', i === index);
-  });
-}
+const slides = document.querySelectorAll(".bg-slide");
 
 setInterval(() => {
+  slides[currentSlide].classList.remove("active");
   currentSlide = (currentSlide + 1) % slides.length;
-  showSlide(currentSlide);
-}, 4000); // ganti slide setiap 4 detik
+  slides[currentSlide].classList.add("active");
+}, 4000);
