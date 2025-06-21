@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin - Update Status Transaksi</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; background: #f9f9f9; }
+    .box { background: white; padding: 20px; border-radius: 8px; max-width: 400px; margin: auto; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    label, select, input, button { display: block; margin-top: 10px; width: 100%; }
+    button { padding: 10px; background: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer; }
+    .status-display { margin-top: 15px; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h2>🔧 Admin - Ubah Status Transaksi</h2>
+
+    <label>Username / Nickname:</label>
+    <input type="text" id="nicknameInput" placeholder="Masukkan nickname">
+
+    <button onclick="checkStatus()">🔍 Cek Status</button>
+
+    <div class="status-display" id="statusDisplay"></div>
+
+    <label>Ubah Status:</label>
+    <select id="statusSelect">
+      <option value="">-- Pilih Status Baru --</option>
+      <option value="sedang diproses">Sedang Diproses</option>
+      <option value="berhasil">Berhasil</option>
+      <option value="gagal">Gagal</option>
+      <option value="dibatalkan">Dibatalkan</option>
+    </select>
+
+    <button onclick="updateStatus()">✅ Update Status</button>
+  </div>
+
+  <script>
+    // Ganti dengan project kamu
+    const supabaseUrl = 'https://etfbdevjytilaykogzwa.supabase.co'; // << GANTI
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV0ZmJkZXZqeXRpbGF5a29nendhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA0NjE0MjAsImV4cCI6MjA2NjAzNzQyMH0.rGwSOp2_l9eWK2B7Fk7BFo0_JK4BOY5GAYJOa3C58tM'; // << GANTI (anon key)
+    const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
+    let rowId = null;
+
+    async function checkStatus() {
+      const nickname = document.getElementById('nicknameInput').value;
+      const { data, error } = await supabase
+        .from('transaksi')
+        .select('id, status')
+        .eq('nickname', nickname)
+        .single();
+
+      const display = document.getElementById('statusDisplay');
+      if (error || !data) {
+        display.textContent = '❌ Nickname tidak ditemukan.';
+        rowId = null;
+      } else {
+        display.textContent = `✅ Status saat ini: ${data.status}`;
+        rowId = data.id;
+      }
+    }
+
+    async function updateStatus() {
+      if (!rowId) {
+        alert('Cek nickname dulu sebelum update.');
+        return;
+      }
+      const newStatus = document.getElementById('statusSelect').value;
+      if (!newStatus) {
+        alert('Pilih status baru dulu.');
+        return;
+      }
+
+      const { error } = await supabase
+        .from('transaksi')
+        .update({ status: newStatus })
+        .eq('id', rowId);
+
+      if (error) {
+        alert('❌ Gagal update status.');
+      } else {
+        alert('✅ Status berhasil diperbarui!');
+        checkStatus(); // refresh status display
+      }
+    }
+  </script>
+</body>
+</html>
