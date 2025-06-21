@@ -400,3 +400,10 @@ img {
   50% { background-position: 100% 50%; box-shadow: 0 0 20px #ff6699; }
   100% { background-position: 0% 50%; box-shadow: 0 0 10px #66ccff; }
 }
+.riwayat-item {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  background-color: #f9f9f9;
+}
