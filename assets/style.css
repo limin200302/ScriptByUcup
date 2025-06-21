@@ -360,3 +360,43 @@ img {
   75% { background-color: #3ae374; box-shadow: 0 0 14px #3ae374; }
   100% { background-color: #ffcc00; box-shadow: 0 0 16px #ffcc00; }
 }
+@keyframes bounceText {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+@keyframes wiggleBtn {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(5deg); }
+  75% { transform: rotate(-5deg); }
+}
+
+.logo-text {
+  animation: bounceText 2s infinite;
+  transition: transform 0.3s ease;
+}
+
+.hamburger {
+  animation: wiggleBtn 2.5s infinite;
+  font-size: 1.4rem;
+  padding: 0.5rem 0.8rem;
+  border: none;
+  background: none;
+  color: #ffcc00;
+  cursor: pointer;
+}
+
+.separator-line {
+  height: 4px;
+  background: linear-gradient(270deg, #ffcc00, #ff6699, #66ccff, #ffcc00);
+  background-size: 600% 600%;
+  box-shadow: 0 0 10px #ffcc00;
+  animation: flowLine 6s ease infinite;
+  margin-top: -4px;
+}
+
+@keyframes flowLine {
+  0% { background-position: 0% 50%; box-shadow: 0 0 10px #ffcc00; }
+  50% { background-position: 100% 50%; box-shadow: 0 0 20px #ff6699; }
+  100% { background-position: 0% 50%; box-shadow: 0 0 10px #66ccff; }
+}
