@@ -237,6 +237,9 @@ document.getElementById("confirm-payment").addEventListener("click", () => {
   const total = document.getElementById("total-harga").innerText;
 const orderText = document.getElementById("order_items").value;
 
+    const nickname = document.querySelector("input[name='nickname']").value;
+  localStorage.setItem("nickname", nickname); // Simpan nickname ke localStorage
+
   const transaksiBaru = {
     waktu: new Date().toISOString(),
     item: orderText,
