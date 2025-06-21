@@ -55,10 +55,16 @@ function renderMenu(user) {
   }
 }
 
-// Cek user saat load
-supabase.auth.getUser().then(({ data: { user } }) => {
-  renderMenu(user);
+// Cek status login saat halaman dibuka
+supabase.auth.getSession().then(async ({ data: session }) => {
+  if (session) {
+    const { data: { user } } = await supabase.auth.getUser();
+    renderMenu(user);
+  } else {
+    renderMenu(null);
+  }
 });
+
 
 // Hamburger
 document.getElementById("hamburgerBtn")?.addEventListener("click", () => {
