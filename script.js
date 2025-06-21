@@ -2,13 +2,14 @@ import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js
 
 const supabase = createClient(
   'https://etfbdevjytilaykogzwa.supabase.co',
-  'YOUR_PUBLIC_ANON_KEY'
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...<potong token kamu>' // Gantilah dengan public anon key dari Supabase
 );
 
+// Elemen penting
 const menu = document.getElementById("menuList");
 const usernameBox = document.getElementById("usernameDisplay");
 
-// Render menu berdasarkan user login
+// Render menu
 function renderMenu(user) {
   if (user) {
     const username = user.user_metadata?.full_name || user.email;
@@ -34,12 +35,12 @@ function renderMenu(user) {
     logoutBtn.addEventListener("click", async (e) => {
       e.preventDefault();
       await supabase.auth.signOut();
-      alert("Berhasil keluar.");
-      renderMenu(null);
+      alert("Berhasil logout");
+      location.reload();
     });
   }
 
-  // Login Google
+  // Google Login
   const googleLoginBtn = document.getElementById("googleLoginBtn");
   if (googleLoginBtn) {
     googleLoginBtn.addEventListener("click", async (e) => {
@@ -47,36 +48,34 @@ function renderMenu(user) {
       await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: 'https://aesthetic-crostata-7c8181.netlify.app' // Sesuaikan
+          redirectTo: 'https://aesthetic-crostata-7c8181.netlify.app' // Ganti ke domain kamu
         }
       });
     });
   }
 }
 
-// Cek saat load
+// Cek user saat load
 supabase.auth.getUser().then(({ data: { user } }) => {
   renderMenu(user);
 });
 
-// Hamburger logic
-const hamburger = document.getElementById("hamburgerBtn");
-const closeBtn = document.getElementById("closeMenu");
-const mobileMenu = document.getElementById("mobile-menu");
-const overlay = document.getElementById("menu-overlay");
+// Hamburger
+document.getElementById("hamburgerBtn")?.addEventListener("click", () => {
+  document.getElementById("mobile-menu").classList.add("show");
+  document.getElementById("menu-overlay").classList.add("show");
+});
 
-hamburger?.addEventListener("click", () => {
-  mobileMenu.classList.add("show");
-  overlay.classList.add("show");
+document.getElementById("closeMenu")?.addEventListener("click", () => {
+  document.getElementById("mobile-menu").classList.remove("show");
+  document.getElementById("menu-overlay").classList.remove("show");
 });
-closeBtn?.addEventListener("click", () => {
-  mobileMenu.classList.remove("show");
-  overlay.classList.remove("show");
+
+document.getElementById("menu-overlay")?.addEventListener("click", () => {
+  document.getElementById("mobile-menu").classList.remove("show");
+  document.getElementById("menu-overlay").classList.remove("show");
 });
-overlay?.addEventListener("click", () => {
-  mobileMenu.classList.remove("show");
-  overlay.classList.remove("show");
-});
+
 
 // Slider
 let currentSlide = 0;
