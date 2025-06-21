@@ -1,25 +1,83 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Riwayat Transaksi</title>
-  <link rel="stylesheet" href="assets/style.css">
-  <script type="module" src="script.js" defer></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Riwayat Transaksi</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f7f7f7;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .riwayat-container {
+      max-width: 800px;
+      margin: auto;
+    }
+    .transaksi {
+      background: white;
+      padding: 15px;
+      border-radius: 12px;
+      margin-bottom: 15px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .transaksi p {
+      margin: 6px 0;
+    }
+    .kosong {
+      text-align: center;
+      color: #999;
+      font-style: italic;
+      margin-top: 50px;
+    }
+    .btn-kembali {
+      display: inline-block;
+      margin-top: 20px;
+      text-decoration: none;
+      background: #007bff;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 8px;
+    }
+    .btn-kembali:hover {
+      background: #0056b3;
+    }
+  </style>
 </head>
 <body>
-  <header class="main-header">
-    <a href="index.html" class="logo-text">⬅ Mamet Store</a>
-  </header>
+  <h1>Riwayat Transaksi</h1>
+  <div class="riwayat-container" id="riwayat-list"></div>
+  <div class="kosong" id="kosong-msg">Belum ada transaksi tersimpan.</div>
+  <div style="text-align:center">
+    <a href="index.html" class="btn-kembali">⬅️ Kembali ke Beranda</a>
+  </div>
 
-  <main style="padding: 1rem;">
-    <h2>📜 Riwayat Transaksi</h2>
-    <div id="riwayatContainer" class="riwayat-list"></div>
-  </main>
+  <script>
+    const riwayat = JSON.parse(localStorage.getItem("riwayat_transaksi")) || [];
+    const container = document.getElementById("riwayat-list");
+    const kosongMsg = document.getElementById("kosong-msg");
 
-  <script>
-    // Panggil fungsi tampilkan
-    document.addEventListener("DOMContentLoaded", tampilkanRiwayat);
-  </script>
+    if (riwayat.length === 0) {
+      kosongMsg.style.display = "block";
+    } else {
+      kosongMsg.style.display = "none";
+      riwayat.reverse().forEach(data => {
+        const div = document.createElement("div");
+        div.className = "transaksi";
+        div.innerHTML = `
+          <p><strong>Tanggal:</strong> ${new Date(data.waktu).toLocaleString("id-ID")}</p>
+          <p><strong>Item:</strong><br>${data.item.replace(/\n/g, "<br>")}</p>
+          <p><strong>Total:</strong> ${data.total}</p>
+          <p><strong>Metode:</strong> ${data.metode}</p>
+          <p><strong>Status:</strong> ${data.status}</p>
+        `;
+        container.appendChild(div);
+      });
+    }
+  </script>
 </body>
 </html>
