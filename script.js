@@ -8,42 +8,43 @@ const supabase = createClient(
 
 // === UI Dinamis berdasarkan login ===
 const menu = document.querySelector(".mobile-menu ul");
+const usernameBox = document.getElementById("usernameDisplay");
 
 function renderMenu(user) {
-  menu.innerHTML = `
-    <li><a href="index.html">🏠 Beranda</a></li>
-    <li><a href="tentang.html">📄 Tentang</a></li>
-  `;
-
   if (user) {
     const username = user.user_metadata?.username || user.email;
-
-    menu.innerHTML += `
-      <li><a href="#">👋 ${username}</a></li>
+    usernameBox.innerText = `👋 ${username}`;
+    menu.innerHTML = `
+      <li><a href="index.html">🏠 Beranda</a></li>
+      <li><a href="tentang.html">📄 Tentang</a></li>
       <li><a href="riwayat.html">📜 Riwayat Transaksi</a></li>
       <li><a href="#" id="logoutBtn">🚪 Logout</a></li>
     `;
   } else {
-    menu.innerHTML += `
+    usernameBox.innerText = "";
+    menu.innerHTML = `
+      <li><a href="index.html">🏠 Beranda</a></li>
+      <li><a href="tentang.html">📄 Tentang</a></li>
       <li><a href="login.html">🔐 Login</a></li>
       <li><a href="register.html">📝 Daftar</a></li>
     `;
   }
+
+  // Tambah event listener logout kalau ada
+  const logoutBtn = document.getElementById("logoutBtn");
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", async (e) => {
+      e.preventDefault();
+      await supabase.auth.signOut();
+      alert("Berhasil keluar.");
+      renderMenu(null);
+    });
+  }
 }
 
-// Cek Status Login Saat Halaman Dibuka
+// Cek status login saat halaman dibuka
 supabase.auth.getUser().then(({ data: { user } }) => {
   renderMenu(user);
-});
-
-// Logout
-document.addEventListener("click", async (e) => {
-  if (e.target.id === "logoutBtn") {
-    e.preventDefault();
-    await supabase.auth.signOut();
-    alert("Berhasil keluar.");
-    location.reload();
-  }
 });
 
 // === Hamburger Menu ===
@@ -68,7 +69,6 @@ overlay.addEventListener("click", () => {
 // === Slider Hero Otomatis ===
 let currentSlide = 0;
 const slides = document.querySelectorAll(".bg-slide");
-
 setInterval(() => {
   slides[currentSlide].classList.remove("active");
   currentSlide = (currentSlide + 1) % slides.length;
