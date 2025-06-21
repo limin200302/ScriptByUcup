@@ -234,6 +234,8 @@ document.getElementById("cancel-payment").addEventListener("click", () => {
 document.getElementById("confirm-payment").addEventListener("click", () => {
   document.getElementById("payment-popup").classList.add("hidden");
   const metode = document.getElementById("metode-terpilih").value;
+  const total = document.getElementById("total-harga").innerText;
+const orderText = document.getElementById("order_items").value;
 
   const transaksiBaru = {
     waktu: new Date().toISOString(),
