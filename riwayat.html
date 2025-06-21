@@ -46,9 +46,28 @@
     .btn-kembali:hover {
       background: #0056b3;
     }
+    .status {
+      font-weight: bold;
+      padding: 4px 8px;
+      border-radius: 6px;
+      display: inline-block;
+    }
+    .proses {
+      background: #ffeb3b;
+      color: #333;
+    }
+    .berhasil {
+      background: #4caf50;
+      color: white;
+    }
+    .gagal {
+      background: #f44336;
+      color: white;
+    }
   </style>
 </head>
 <body>
+
   <h1>Riwayat Transaksi</h1>
   <div class="riwayat-container" id="riwayat-list"></div>
   <div class="kosong" id="kosong-msg">Belum ada transaksi tersimpan.</div>
@@ -56,28 +75,65 @@
     <a href="index.html" class="btn-kembali">⬅️ Kembali ke Beranda</a>
   </div>
 
+  <!-- Supabase CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
   <script>
-    const riwayat = JSON.parse(localStorage.getItem("riwayat_transaksi")) || [];
+    const supabaseUrl = 'https://etfbdevjytilaykogzwa.supabase.co'; // GANTI SESUAI PROJECTMU
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV0ZmJkZXZqeXRpbGF5a29nendhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA0NjE0MjAsImV4cCI6MjA2NjAzNzQyMH0.rGwSOp2_l9eWK2B7Fk7BFo0_JK4BOY5GAYJOa3C58tM'; // GANTI DENGAN ANON PUBLIC KEY
+    const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+  </script>
+
+  <!-- Main Script -->
+  <script>
     const container = document.getElementById("riwayat-list");
     const kosongMsg = document.getElementById("kosong-msg");
+    const nickname = localStorage.getItem("nickname");
 
-    if (riwayat.length === 0) {
+    if (!nickname) {
+      kosongMsg.innerText = "Nickname tidak ditemukan.";
       kosongMsg.style.display = "block";
+      container.innerHTML = "";
     } else {
+      loadRiwayat();
+    }
+
+    async function loadRiwayat() {
+      const { data, error } = await supabase
+        .from("transaksi")
+        .select("*")
+        .eq("nickname", nickname)
+        .order("created_at", { ascending: false });
+
+      if (error || !data || data.length === 0) {
+        kosongMsg.innerText = "Belum ada transaksi tersimpan.";
+        kosongMsg.style.display = "block";
+        container.innerHTML = "";
+        return;
+      }
+
       kosongMsg.style.display = "none";
-      riwayat.reverse().forEach(data => {
+
+      data.forEach(tx => {
         const div = document.createElement("div");
         div.className = "transaksi";
+
+        const statusClass = tx.status === "berhasil"
+          ? "berhasil"
+          : tx.status === "gagal"
+          ? "gagal"
+          : "proses";
+
         div.innerHTML = `
-          <p><strong>Tanggal:</strong> ${new Date(data.waktu).toLocaleString("id-ID")}</p>
-          <p><strong>Item:</strong><br>${data.item.replace(/\n/g, "<br>")}</p>
-          <p><strong>Total:</strong> ${data.total}</p>
-          <p><strong>Metode:</strong> ${data.metode}</p>
-          <p><strong>Status:</strong> ${data.status}</p>
+          <p><strong>Tanggal:</strong> ${new Date(tx.created_at).toLocaleString("id-ID")}</p>
+          <p><strong>Item:</strong><br>${(tx.order_items || "").replace(/\n/g, "<br>")}</p>
+          <p><strong>Total:</strong> ${tx.total || "-"}</p>
+          <p><strong>Metode:</strong> ${tx.metode || "-"}</p>
+          <p><strong>Status:</strong> <span class="status ${statusClass}">${tx.status}</span></p>
         `;
         container.appendChild(div);
       });
     }
   </script>
+
 </body>
 </html>
