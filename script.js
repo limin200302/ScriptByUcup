@@ -101,3 +101,42 @@ setInterval(() => {
   currentSlide = (currentSlide + 1) % slides.length;
   slides[currentSlide]?.classList.add("active");
 }, 3000);
+// ======= FUNGSI SIMPAN TRANSAKSI DAN RIWAYAT =======
+
+// Simpan transaksi ke localStorage
+function simpanTransaksi(namaItem, total) {
+  const transaksi = {
+    id: 'trx_' + Date.now(),
+    namaItem,
+    total,
+    waktu: new Date().toLocaleString('id-ID'),
+    status: "Sedang diproses"
+  };
+
+  const histori = JSON.parse(localStorage.getItem('riwayat_transaksi') || '[]');
+  histori.push(transaksi);
+  localStorage.setItem('riwayat_transaksi', JSON.stringify(histori));
+
+  alert("✅ Transaksi berhasil.\nItem kamu sedang diproses.\nAdmin akan menghubungi kamu via WhatsApp jika sudah selesai.");
+}
+
+// Tampilkan transaksi di halaman riwayat
+function tampilkanRiwayat() {
+  const container = document.getElementById("riwayatContainer");
+  if (!container) return;
+
+  const histori = JSON.parse(localStorage.getItem('riwayat_transaksi') || '[]');
+  if (histori.length === 0) {
+    container.innerHTML = "<p>Belum ada riwayat transaksi.</p>";
+    return;
+  }
+
+  container.innerHTML = histori.map(trx => `
+    <div class="riwayat-item">
+      <p><strong>${trx.namaItem}</strong></p>
+      <p>Total: Rp ${trx.total.toLocaleString('id-ID')}</p>
+      <p>Waktu: ${trx.waktu}</p>
+      <p>Status: 🔄 ${trx.status}</p>
+    </div>
+  `).join("");
+}
