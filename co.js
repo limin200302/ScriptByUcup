@@ -235,6 +235,17 @@ document.getElementById("confirm-payment").addEventListener("click", () => {
   document.getElementById("payment-popup").classList.add("hidden");
   const metode = document.getElementById("metode-terpilih").value;
 
+  const transaksiBaru = {
+    waktu: new Date().toISOString(),
+    item: orderText,
+    total: total,
+    metode: metode,
+    status: "Sedang diproses",
+  };
+  let histori = JSON.parse(localStorage.getItem("riwayat_transaksi")) || [];
+  histori.push(transaksiBaru);
+  localStorage.setItem("riwayat_transaksi", JSON.stringify(histori));
+  
   let metodeInput = document.querySelector("input[name='metode_emailjs']");
   if (!metodeInput) {
     metodeInput = document.createElement("input");
