@@ -1,29 +1,26 @@
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
-// Inisialisasi Supabase
 const supabase = createClient(
   'https://etfbdevjytilaykogzwa.supabase.co',
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV0ZmJkZXZqeXRpbGF5a29nendhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA0NjE0MjAsImV4cCI6MjA2NjAzNzQyMH0.rGwSOp2_l9eWK2B7Fk7BFo0_JK4BOY5GAYJOa3C58tM'
+  'YOUR_PUBLIC_ANON_KEY'
 );
 
-// Elemen penting
 const menu = document.getElementById("menuList");
 const usernameBox = document.getElementById("usernameDisplay");
 
-// Render menu dinamis
+// Render menu berdasarkan user login
 function renderMenu(user) {
   if (user) {
     const username = user.user_metadata?.full_name || user.email;
-    usernameBox.innerText = `👋 ${username}`;
-
+    usernameBox.textContent = `👋 ${username}`;
     menu.innerHTML = `
       <li><a href="index.html">🏠 Beranda</a></li>
       <li><a href="tentang.html">📄 Tentang</a></li>
-      <li><a href="riwayat.html">📜 Riwayat Transaksi</a></li>
+      <li><a href="riwayat.html">📜 Riwayat</a></li>
       <li><a href="#" id="logoutBtn">🚪 Logout</a></li>
     `;
   } else {
-    usernameBox.innerText = "";
+    usernameBox.textContent = "";
     menu.innerHTML = `
       <li><a href="index.html">🏠 Beranda</a></li>
       <li><a href="tentang.html">📄 Tentang</a></li>
@@ -31,7 +28,7 @@ function renderMenu(user) {
     `;
   }
 
-  // Handle Logout
+  // Logout
   const logoutBtn = document.getElementById("logoutBtn");
   if (logoutBtn) {
     logoutBtn.addEventListener("click", async (e) => {
@@ -42,7 +39,7 @@ function renderMenu(user) {
     });
   }
 
-  // Handle Login Google
+  // Login Google
   const googleLoginBtn = document.getElementById("googleLoginBtn");
   if (googleLoginBtn) {
     googleLoginBtn.addEventListener("click", async (e) => {
@@ -50,38 +47,38 @@ function renderMenu(user) {
       await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: 'https://aesthetic-crostata-7c8181.netlify.app'
+          redirectTo: 'https://aesthetic-crostata-7c8181.netlify.app' // Sesuaikan
         }
       });
     });
   }
 }
 
-// Cek user saat load
+// Cek saat load
 supabase.auth.getUser().then(({ data: { user } }) => {
   renderMenu(user);
 });
 
-// Hamburger
+// Hamburger logic
 const hamburger = document.getElementById("hamburgerBtn");
 const closeBtn = document.getElementById("closeMenu");
 const mobileMenu = document.getElementById("mobile-menu");
 const overlay = document.getElementById("menu-overlay");
 
-hamburger.addEventListener("click", () => {
+hamburger?.addEventListener("click", () => {
   mobileMenu.classList.add("show");
   overlay.classList.add("show");
 });
-closeBtn.addEventListener("click", () => {
+closeBtn?.addEventListener("click", () => {
   mobileMenu.classList.remove("show");
   overlay.classList.remove("show");
 });
-overlay.addEventListener("click", () => {
+overlay?.addEventListener("click", () => {
   mobileMenu.classList.remove("show");
   overlay.classList.remove("show");
 });
 
-// Hero slider
+// Slider
 let currentSlide = 0;
 const slides = document.querySelectorAll(".bg-slide");
 setInterval(() => {
