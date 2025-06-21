@@ -1,34 +1,23 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mamet Store – Top Up Game & Aplikasi</title>
-  <link rel="stylesheet" href="assets/style.css" />
-  <script type="module" src="script.js" defer></script> <!-- Ini saja cukup -->
-</head>
 <body>
-
   <!-- Header -->
-<header class="main-header">
-  <button class="hamburger" id="hamburgerBtn">☰</button>
-  <div class="logo-text">Mamet Ucup Store</div>
-</header>
+  <header class="main-header">
+    <button class="hamburger" id="hamburgerBtn">☰</button>
+    <div class="logo-text">Mamet Ucup Store</div>
+  </header>
 
   <!-- Sidebar Menu -->
   <div id="mobile-menu" class="mobile-menu">
-  <div class="menu-header">
-    <div id="usernameDisplay" class="menu-username"></div>
-    <button id="closeMenu">✖</button>
+    <div class="menu-header">
+      <div id="usernameDisplay" class="menu-username"></div>
+      <button id="closeMenu">✖</button>
+    </div>
+    <ul id="menuList">
+      <!-- Isi via JS -->
+    </ul>
   </div>
-  <ul id="menuList">
-    <!-- Akan diisi via JS -->
-  </ul>
-</div>
-
   <div class="menu-overlay" id="menu-overlay"></div>
 
-  <!-- Hero Slider -->
+  <!-- Hero Section -->
   <section class="hero">
     <div class="hero-slider">
       <img src="assets/img/slider1.jpeg" class="bg-slide active" alt="Slider 1">
@@ -66,9 +55,8 @@
     <input type="checkbox" id="toggle-contact" hidden />
     <label for="toggle-contact" class="contact-toggle">Contact</label>
     <div class="contact-icons">
-      <a href="https://www.facebook.com/mamet.ucupp" target="_blank" title="Facebook"><img src="assets/img/facebook.png" alt="Facebook" /></a>
-      <a href="https://wa.me/6285713056206" target="_blank" title="WhatsApp"><img src="assets/img/whatsapp.png" alt="WhatsApp" /></a>
+      <a href="https://www.facebook.com/mamet.ucupp" target="_blank"><img src="assets/img/facebook.png" alt="Facebook" /></a>
+      <a href="https://wa.me/6285713056206" target="_blank"><img src="assets/img/whatsapp.png" alt="WhatsApp" /></a>
     </div>
   </div>
 </body>
-</html>
