@@ -1,20 +1,59 @@
-import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+// === Supabase Auth v2 ===
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
 
-const supabase = createClient(
-  'https://etfbdevjytilaykogzwa.supabase.co',
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV0ZmJkZXZqeXRpbGF5a29nendhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA0NjE0MjAsImV4cCI6MjA2NjAzNzQyMH0.rGwSOp2_l9eWK2B7Fk7BFo0_JK4BOY5GAYJOa3C58tM'
-);
+// === Konfigurasi Supabase kamu ===
+const supabaseUrl = 'https://etfbdevjytilaykogzwa.supabase.co'
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFz...'
+const supabase = createClient(supabaseUrl, supabaseKey)
 
-// === Tombol login Google
-const googleBtn = document.getElementById("googleLogin");
+// === DOM Element ===
+const form = document.getElementById("loginForm")
+const email = document.getElementById("email")
+const password = document.getElementById("password")
+const errorMsg = document.getElementById("errorMsg")
 
-googleBtn.addEventListener("click", async () => {
-  const { error } = await supabase.auth.signInWithOAuth({
-    provider: 'google',
-    options: {
-      redirectTo: "https://aesthetic-crostata-7c8181.netlify.app/index.html"
+// === Toggle Show/Hide Password ===
+document.querySelectorAll(".toggle-password").forEach(button => {
+  button.addEventListener("click", () => {
+    const input = button.previousElementSibling
+    if (input.type === "password") {
+      input.type = "text"
+      button.textContent = "🙈"
+    } else {
+      input.type = "password"
+      button.textContent = "👁"
     }
-  });
+  })
+})
 
-  if (error) alert("Login gagal: " + error.message);
-});
+// === Login Submit ===
+form.addEventListener("submit", async (e) => {
+  e.preventDefault()
+  errorMsg.textContent = ""
+
+  const userEmail = email.value.trim()
+  const userPass = password.value
+
+  if (!userEmail || !userPass) {
+    errorMsg.textContent = "Email dan password wajib diisi!"
+    return
+  }
+
+  try {
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: userEmail,
+      password: userPass
+    })
+
+    if (error) {
+      errorMsg.textContent = "Login gagal: " + error.message
+    } else {
+      // Simpan username/email (jika diperlukan)
+      localStorage.setItem("userEmail", userEmail)
+      // Redirect ke halaman utama
+      window.location.href = "index.html"
+    }
+  } catch (err) {
+    errorMsg.textContent = "Terjadi kesalahan. Silakan coba lagi."
+  }
+})
