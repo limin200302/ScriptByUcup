@@ -2,7 +2,7 @@ import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js
 
 const supabase = createClient(
   'https://etfbdevjytilaykogzwa.supabase.co',
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...<potong token kamu>' // Gantilah dengan public anon key dari Supabase
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV0ZmJkZXZqeXRpbGF5a29nendhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA0NjE0MjAsImV4cCI6MjA2NjAzNzQyMH0.rGwSOp2_l9eWK2B7Fk7BFo0_JK4BOY5GAYJOa3C58tM<potong token kamu>' // Gantilah dengan public anon key dari Supabase
 );
 
 // Elemen penting
@@ -55,11 +55,19 @@ function renderMenu(user) {
   }
 }
 
-// Cek status login saat halaman dibuka
+// Jalankan saat load + dengarkan perubahan status login
 supabase.auth.getSession().then(async ({ data: session }) => {
-  if (session) {
-    const { data: { user } } = await supabase.auth.getUser();
-    renderMenu(user);
+  if (session?.user) {
+    renderMenu(session.user);
+  } else {
+    renderMenu(null);
+  }
+});
+
+// Listener realtime untuk login/logout (termasuk setelah redirect Google)
+supabase.auth.onAuthStateChange(async (event, session) => {
+  if (session?.user) {
+    renderMenu(session.user);
   } else {
     renderMenu(null);
   }
