@@ -173,7 +173,7 @@ const paymentData = {
 };
 
 // ========== Popup Pembayaran ==========
-document.getElementById("account-form").addEventListener("submit", async function (e) {
+document.getElementById("account-form").addEventListener("submit", function (e) {
   e.preventDefault();
   if (orderInput.value.trim() === "") {
     alert("❌ Pilih minimal 1 item dari keranjang!");
@@ -184,7 +184,6 @@ document.getElementById("account-form").addEventListener("submit", async functio
     alert("❌ Pilih metode pembayaran terlebih dahulu.");
     return;
   }
-
   const popup = document.getElementById("payment-popup");
   const info = document.getElementById("payment-info");
   const total = document.getElementById("total-harga").innerText;
@@ -192,13 +191,21 @@ document.getElementById("account-form").addEventListener("submit", async functio
   let html = `<p><strong>Jenis Pembayaran:</strong> ${metode}</p>`;
   html += `<p><strong>Jumlah Bayar:</strong> ${total}</p>`;
   if (data.isQR) {
-    html += `<img src="${data.img}" alt="QRIS" style="display:block; max-width:220px; width:100%; height:auto; margin:15px auto; border-radius:12px; box-shadow:0 0 10px rgba(0,0,0,0.4);">`;
+    html += `<img src="${data.img}" alt="QRIS" style="
+      display:block;
+      max-width:220px;
+      width:100%;
+      height:auto;
+      margin:15px auto;
+      border-radius:12px;
+      box-shadow:0 0 10px rgba(0,0,0,0.4);
+    ">`;
     html += `<p><strong>Nama:</strong> ${data.name}</p>`;
   } else {
     html += `<p><strong>Nomor Rekening:</strong> ${data.account || '-'}</p>`;
     html += `<p><strong>Atas Nama:</strong> ${data.name || '-'}</p>`;
   }
-  html += `    
+  html += `
     <div style="margin-top:15px;font-size:13px;color:#ccc">
       <strong>Note:</strong><br>
       • Transfer sesuai nominal, jika salah segera hubungi admin via WhatsApp.<br>
@@ -213,7 +220,7 @@ document.getElementById("cancel-payment").addEventListener("click", () => {
   document.getElementById("payment-popup").classList.add("hidden");
 });
 
-document.getElementById("confirm-payment").addEventListener("click", async () => {
+document.getElementById("confirm-payment").addEventListener("click", () => {
   document.getElementById("payment-popup").classList.add("hidden");
   const metode = document.getElementById("metode-terpilih").value;
   const total = document.getElementById("total-harga").innerText;
@@ -228,14 +235,11 @@ document.getElementById("confirm-payment").addEventListener("click", async () =>
     metode: metode,
     status: "Sedang diproses",
   };
-
-  // Simpan transaksi di localStorage
   let histori = JSON.parse(localStorage.getItem("riwayat_transaksi")) || [];
   histori.push(transaksiBaru);
   localStorage.setItem("riwayat_transaksi", JSON.stringify(histori));
 
-  // Simpan transaksi ke Supabase
-  await saveTransactionToSupabase(transaksiBaru);
+  saveTransactionToSupabase(transaksiBaru); // Simpan ke Supabase
 
   let metodeInput = document.querySelector("input[name='metode_emailjs']");
   if (!metodeInput) {
