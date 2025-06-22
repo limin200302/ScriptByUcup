@@ -1,3 +1,7 @@
+const supabase = createClient(
+  'https://etfbdevjytilaykogzwa.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV0ZmJkZXZqeXRpbGF5a29nendhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA0NjE0MjAsImV4cCI6MjA2NjAzNzQyMH0.rGwSOp2_l9eWK2B7Fk7BFo0_JK4BOY5GAYJOa3C58tM'
+);
 // ========== Bonus Data ==========
 const bonusData = {
   cash: {
@@ -238,8 +242,8 @@ document.getElementById("confirm-payment").addEventListener("click", () => {
 const orderText = document.getElementById("order_items").value;
 
     const nickname = document.querySelector("input[name='nickname']").value;
-  localStorage.setItem("nickname", nickname); // Simpan nickname ke localStorage
-
+  localStorage.setItem("nickname", nickname);
+  
   const transaksiBaru = {
     waktu: new Date().toISOString(),
     item: orderText,
@@ -250,6 +254,8 @@ const orderText = document.getElementById("order_items").value;
   let histori = JSON.parse(localStorage.getItem("riwayat_transaksi")) || [];
   histori.push(transaksiBaru);
   localStorage.setItem("riwayat_transaksi", JSON.stringify(histori));
+  
+  await saveTransactionToSupabase(transaksiBaru);
   
   let metodeInput = document.querySelector("input[name='metode_emailjs']");
   if (!metodeInput) {
