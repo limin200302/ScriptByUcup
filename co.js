@@ -1,6 +1,6 @@
-// Inisialisasi Supabase
+// ========== Inisialisasi Supabase ==========
 const supabase = createClient(
-  'https://etfbdevjytilaykogzwa.supabase.co',
+  'https://etfbdevjytilaykogzwa.supabase.co', 
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV0ZmJkZXZqeXRpbGF5a29nendhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA0NjE0MjAsImV4cCI6MjA2NjAzNzQyMH0.rGwSOp2_l9eWK2B7Fk7BFo0_JK4BOY5GAYJOa3C58tM'
 );
 
@@ -54,6 +54,7 @@ function renderCart() {
     if (bonusData[item.category] && bonusData[item.category][price]) {
       bonusText = `<div class="item-bonus">${bonusData[item.category][price]}</div>`;
     }
+
     div.innerHTML = `
       <label>
         <input type="checkbox" class="item-checkbox" data-index="${index}" checked />
@@ -84,9 +85,7 @@ function updateSummary() {
     total += 1500;
   }
   totalHarga.textContent = "Rp " + total.toLocaleString("id-ID");
-  const orderText = selectedItems
-    .map(i => `- ${i.name.replace(/\((.*?)\)/g, '').trim()} - ${i.label}`)
-    .join("\n");
+  const orderText = selectedItems.map(i => `- ${i.name.replace(/\((.*?)\)/g, '').trim()} - ${i.label}`).join("\n");
   orderInput.value = orderText;
 }
 
@@ -180,7 +179,6 @@ document.getElementById("account-form").addEventListener("submit", async functio
     alert("❌ Pilih minimal 1 item dari keranjang!");
     return;
   }
-
   const metode = document.getElementById("metode-terpilih").value;
   if (!metode) {
     alert("❌ Pilih metode pembayaran terlebih dahulu.");
@@ -200,11 +198,13 @@ document.getElementById("account-form").addEventListener("submit", async functio
     html += `<p><strong>Nomor Rekening:</strong> ${data.account || '-'}</p>`;
     html += `<p><strong>Atas Nama:</strong> ${data.name || '-'}</p>`;
   }
-  html += `<div style="margin-top:15px;font-size:13px;color:#ccc">
-    <strong>Note:</strong><br>
-    • Transfer sesuai nominal, jika salah segera hubungi admin via WhatsApp.<br>
-    • Jika sudah transfer, klik "Lanjutkan", sistem akan proses order 10-15 menit.
-  </div>`;
+  html += `    
+    <div style="margin-top:15px;font-size:13px;color:#ccc">
+      <strong>Note:</strong><br>
+      • Transfer sesuai nominal, jika salah segera hubungi admin via WhatsApp.<br>
+      • Jika sudah transfer, klik "Lanjutkan", sistem akan proses order 10-15 menit.
+    </div>
+  `;
   info.innerHTML = html;
   popup.classList.remove("hidden");
 });
@@ -220,7 +220,7 @@ document.getElementById("confirm-payment").addEventListener("click", async () =>
   const orderText = document.getElementById("order_items").value;
   const nickname = document.querySelector("input[name='nickname']").value;
   localStorage.setItem("nickname", nickname); // Simpan nickname ke localStorage
-
+  
   const transaksiBaru = {
     waktu: new Date().toISOString(),
     item: orderText,
@@ -229,15 +229,14 @@ document.getElementById("confirm-payment").addEventListener("click", async () =>
     status: "Sedang diproses",
   };
 
-  // Menyimpan transaksi ke localStorage
+  // Simpan transaksi di localStorage
   let histori = JSON.parse(localStorage.getItem("riwayat_transaksi")) || [];
   histori.push(transaksiBaru);
   localStorage.setItem("riwayat_transaksi", JSON.stringify(histori));
 
-  // Menyimpan transaksi ke Supabase
-  await saveTransactionToSupabase(transaksiBaru); // Fungsi untuk menyimpan ke Supabase
+  // Simpan transaksi ke Supabase
+  await saveTransactionToSupabase(transaksiBaru);
 
-  // Kirim email konfirmasi
   let metodeInput = document.querySelector("input[name='metode_emailjs']");
   if (!metodeInput) {
     metodeInput = document.createElement("input");
@@ -246,10 +245,9 @@ document.getElementById("confirm-payment").addEventListener("click", async () =>
     document.getElementById("account-form").appendChild(metodeInput);
   }
   metodeInput.value = metode;
-
   emailjs.sendForm("service_ucup", "template_1shj4dt", document.getElementById("account-form"))
     .then(() => {
-      alert("Order Berhasil ✅, Admin akan memproses orderanmu ketua🔥");
+      alert("✅ Order berhasil dikirim ke email!");
       localStorage.removeItem("cart");
       window.location.href = "index.html";
     })
@@ -257,19 +255,6 @@ document.getElementById("confirm-payment").addEventListener("click", async () =>
       alert("❌ Gagal mengirim order: " + err.text);
     });
 });
-
-// ========== Save Transaction to Supabase ==========
-async function saveTransactionToSupabase(transaksiBaru) {
-  const { data, error } = await supabase
-    .from('transaksi1') // Nama tabel Supabase
-    .insert([transaksiBaru]);
-
-  if (error) {
-    console.error("Error saving transaction to Supabase:", error);
-  } else {
-    console.log("Transaction saved to Supabase:", data);
-  }
-}
 
 // ========== Init ==========
 emailjs.init("nAUL1b5lv7jJmOcaY");
