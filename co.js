@@ -1,9 +1,3 @@
-// ========== Inisialisasi Supabase ==========
-const supabase = createClient(
-  'https://etfbdevjytilaykogzwa.supabase.co', 
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV0ZmJkZXZqeXRpbGF5a29nendhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA0NjE0MjAsImV4cCI6MjA2NjAzNzQyMH0.rGwSOp2_l9eWK2B7Fk7BFo0_JK4BOY5GAYJOa3C58tM'
-);
-
 // ========== Bonus Data ==========
 const bonusData = {
   cash: {
@@ -26,6 +20,7 @@ const bonusData = {
   }
 };
 
+
 // ========== Render Keranjang ==========
 let cart = JSON.parse(localStorage.getItem("cart") || "[]");
 const cartList = document.getElementById("cart-list");
@@ -37,34 +32,39 @@ const totalHarga = document.getElementById("total-harga");
 function renderCart() {
   cart = JSON.parse(localStorage.getItem("cart") || "[]"); // Selalu ambil ulang
   cartList.innerHTML = "";
+
   if (cart.length === 0) {
     emptyMsg.style.display = "block";
     totalHarga.textContent = "Rp 0";
     return;
   }
+
   emptyMsg.style.display = "none";
   cart.forEach((item, index) => {
     const div = document.createElement("div");
     div.className = "cart-item";
-    const cleanName = item.name.replace(/\((.*?)\)/g, '').trim(); // Ambil nominal harga
-    const match = item.label.match(/Rp\s?([\d.,]+)/);
-    const price = match ? parseInt(match[1].replace(/[.,]/g, "")) : 0;
+    const cleanName = item.name.replace(/\((.*?)\)/g, '').trim();
 
-    let bonusText = "";
-    if (bonusData[item.category] && bonusData[item.category][price]) {
-      bonusText = `<div class="item-bonus">${bonusData[item.category][price]}</div>`;
-    }
+// Ambil nominal harga
+const match = item.label.match(/Rp\s?([\d.,]+)/);
+const price = match ? parseInt(match[1].replace(/[.,]/g, "")) : 0;
 
+// Cek bonus berdasarkan kategori dan harga
+let bonusText = "";
+if (bonusData[item.category] && bonusData[item.category][price]) {
+  bonusText = `<div class="item-bonus">${bonusData[item.category][price]}</div>`;
+}
     div.innerHTML = `
-      <label>
-        <input type="checkbox" class="item-checkbox" data-index="${index}" checked />
-        ${cleanName} - ${item.label}
-        ${bonusText}
-      </label>
-      <button class="delete-btn" data-index="${index}">❌</button>
-    `;
+  <label>
+    <input type="checkbox" class="item-checkbox" data-index="${index}" checked />
+    ${cleanName} - ${item.label}
+    ${bonusText}
+  </label>
+  <button class="delete-btn" data-index="${index}">❌</button>
+`;
     cartList.appendChild(div);
   });
+
   updateSummary();
 }
 
@@ -72,6 +72,7 @@ function renderCart() {
 function updateSummary() {
   const checkboxes = document.querySelectorAll(".item-checkbox:checked");
   const selectedItems = [...checkboxes].map(cb => cart[cb.dataset.index]);
+
   let total = 0;
   selectedItems.forEach(item => {
     const match = item.label.match(/Rp\s?([\d.,]+)/);
@@ -80,12 +81,17 @@ function updateSummary() {
       total += angka;
     }
   });
+
   const metode = document.getElementById("metode-terpilih").value.toLowerCase();
   if (["qris", "shopeepay", "ovo", "gopay"].includes(metode)) {
     total += 1500;
   }
+
   totalHarga.textContent = "Rp " + total.toLocaleString("id-ID");
-  const orderText = selectedItems.map(i => `- ${i.name.replace(/\((.*?)\)/g, '').trim()} - ${i.label}`).join("\n");
+
+  const orderText = selectedItems
+    .map(i => `- ${i.name.replace(/\((.*?)\)/g, '').trim()} - ${i.label}`)
+    .join("\n");
   orderInput.value = orderText;
 }
 
@@ -179,17 +185,21 @@ document.getElementById("account-form").addEventListener("submit", function (e) 
     alert("❌ Pilih minimal 1 item dari keranjang!");
     return;
   }
+
   const metode = document.getElementById("metode-terpilih").value;
   if (!metode) {
     alert("❌ Pilih metode pembayaran terlebih dahulu.");
     return;
   }
+
   const popup = document.getElementById("payment-popup");
   const info = document.getElementById("payment-info");
   const total = document.getElementById("total-harga").innerText;
   const data = paymentData[metode] || {};
+
   let html = `<p><strong>Jenis Pembayaran:</strong> ${metode}</p>`;
   html += `<p><strong>Jumlah Bayar:</strong> ${total}</p>`;
+
   if (data.isQR) {
     html += `<img src="${data.img}" alt="QRIS" style="
       display:block;
@@ -205,6 +215,7 @@ document.getElementById("account-form").addEventListener("submit", function (e) 
     html += `<p><strong>Nomor Rekening:</strong> ${data.account || '-'}</p>`;
     html += `<p><strong>Atas Nama:</strong> ${data.name || '-'}</p>`;
   }
+
   html += `
     <div style="margin-top:15px;font-size:13px;color:#ccc">
       <strong>Note:</strong><br>
@@ -224,10 +235,11 @@ document.getElementById("confirm-payment").addEventListener("click", () => {
   document.getElementById("payment-popup").classList.add("hidden");
   const metode = document.getElementById("metode-terpilih").value;
   const total = document.getElementById("total-harga").innerText;
-  const orderText = document.getElementById("order_items").value;
-  const nickname = document.querySelector("input[name='nickname']").value;
+const orderText = document.getElementById("order_items").value;
+
+    const nickname = document.querySelector("input[name='nickname']").value;
   localStorage.setItem("nickname", nickname); // Simpan nickname ke localStorage
-  
+
   const transaksiBaru = {
     waktu: new Date().toISOString(),
     item: orderText,
@@ -238,9 +250,7 @@ document.getElementById("confirm-payment").addEventListener("click", () => {
   let histori = JSON.parse(localStorage.getItem("riwayat_transaksi")) || [];
   histori.push(transaksiBaru);
   localStorage.setItem("riwayat_transaksi", JSON.stringify(histori));
-
-  saveTransactionToSupabase(transaksiBaru); // Simpan ke Supabase
-
+  
   let metodeInput = document.querySelector("input[name='metode_emailjs']");
   if (!metodeInput) {
     metodeInput = document.createElement("input");
@@ -249,6 +259,7 @@ document.getElementById("confirm-payment").addEventListener("click", () => {
     document.getElementById("account-form").appendChild(metodeInput);
   }
   metodeInput.value = metode;
+
   emailjs.sendForm("service_ucup", "template_1shj4dt", document.getElementById("account-form"))
     .then(() => {
       alert("✅ Order berhasil dikirim ke email!");
