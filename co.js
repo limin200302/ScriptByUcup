@@ -1,3 +1,8 @@
+// Inisialisasi Supabase client
+const supabase = createClient(
+  'https://etfbdevjytilaykogzwa.supabase.co',  // URL Supabase
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV0ZmJkZXZqeXRpbGF5a29nendhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA0NjE0MjAsImV4cCI6MjA2NjAzNzQyMH0.rGwSOp2_l9eWK2B7Fk7BFo0_JK4BOY5GAYJOa3C58tM'  // API key Supabase
+);
 // ========== Bonus Data ==========
 const bonusData = {
   cash: {
@@ -232,25 +237,30 @@ document.getElementById("cancel-payment").addEventListener("click", () => {
 });
 
 document.getElementById("confirm-payment").addEventListener("click", () => {
+document.getElementById("confirm-payment").addEventListener("click", () => {
   document.getElementById("payment-popup").classList.add("hidden");
   const metode = document.getElementById("metode-terpilih").value;
   const total = document.getElementById("total-harga").innerText;
-const orderText = document.getElementById("order_items").value;
-
-    const nickname = document.querySelector("input[name='nickname']").value;
+  const orderText = document.getElementById("order_items").value;
+  const nickname = document.querySelector("input[name='nickname']").value;
   localStorage.setItem("nickname", nickname); // Simpan nickname ke localStorage
-
+  
   const transaksiBaru = {
     waktu: new Date().toISOString(),
     item: orderText,
     total: total,
     metode: metode,
-    status: "Sedang diproses",
+    status: "Sedang diproses", // Status awal saat pemesanan
   };
+  
+  // Simpan ke localStorage
   let histori = JSON.parse(localStorage.getItem("riwayat_transaksi")) || [];
   histori.push(transaksiBaru);
   localStorage.setItem("riwayat_transaksi", JSON.stringify(histori));
-  
+
+  // Simpan ke Supabase
+  saveTransactionToSupabase(transaksiBaru); // Simpan ke Supabase
+
   let metodeInput = document.querySelector("input[name='metode_emailjs']");
   if (!metodeInput) {
     metodeInput = document.createElement("input");
@@ -259,7 +269,7 @@ const orderText = document.getElementById("order_items").value;
     document.getElementById("account-form").appendChild(metodeInput);
   }
   metodeInput.value = metode;
-
+  
   emailjs.sendForm("service_ucup", "template_1shj4dt", document.getElementById("account-form"))
     .then(() => {
       alert("✅ Order berhasil dikirim ke email!");
@@ -270,6 +280,22 @@ const orderText = document.getElementById("order_items").value;
       alert("❌ Gagal mengirim order: " + err.text);
     });
 });
+  
+async function saveTransactionToSupabase(transaksiBaru) {
+  try {
+    // Kirim data transaksi ke Supabase
+    const { data, error } = await supabase
+      .from('transaksi1')  // Ganti 'transaksi1' dengan nama tabel yang Anda gunakan
+      .insert([transaksiBaru]);
+    
+    if (error) {
+      throw error;
+    }
+    console.log('Transaksi berhasil disimpan di Supabase', data);
+  } catch (error) {
+    console.error('Error menyimpan transaksi ke Supabase:', error.message);
+  }
+}
 
 // ========== Init ==========
 emailjs.init("nAUL1b5lv7jJmOcaY");
