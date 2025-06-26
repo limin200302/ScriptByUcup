@@ -1,9 +1,3 @@
-// Inisialisasi Supabase client
-const supabase = createClient(
-  'https://etfbdevjytilaykogzwa.supabase.co',  // URL Supabase
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV0ZmJkZXZqeXRpbGF5a29nendhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA0NjE0MjAsImV4cCI6MjA2NjAzNzQyMH0.rGwSOp2_l9eWK2B7Fk7BFo0_JK4BOY5GAYJOa3C58tM'  // API key Supabase
-);
-
 // ========== Bonus Data ==========
 const bonusData = {
   cash: {
@@ -26,6 +20,7 @@ const bonusData = {
   }
 };
 
+
 // ========== Render Keranjang ==========
 let cart = JSON.parse(localStorage.getItem("cart") || "[]");
 const cartList = document.getElementById("cart-list");
@@ -35,8 +30,7 @@ const orderInput = document.getElementById("order_items");
 const totalHarga = document.getElementById("total-harga");
 
 function renderCart() {
-  // Ambil data dari localStorage
-  cart = JSON.parse(localStorage.getItem("cart") || "[]");
+  cart = JSON.parse(localStorage.getItem("cart") || "[]"); // Selalu ambil ulang
   cartList.innerHTML = "";
 
   if (cart.length === 0) {
@@ -49,20 +43,25 @@ function renderCart() {
   cart.forEach((item, index) => {
     const div = document.createElement("div");
     div.className = "cart-item";
-    const cleanName = item.name.replace(/\((.*?)\)/g, '').trim();  // Ambil nama item
-    const match = item.label.match(/Rp\s?([\d.,]+)/);
-    const price = match ? parseInt(match[1].replace(/[.,]/g, "")) : 0;
-    let bonusText = "";
-    if (bonusData[item.category] && bonusData[item.category][price]) {
-      bonusText = `<div class="item-bonus">${bonusData[item.category][price]}</div>`;
-    }
+    const cleanName = item.name.replace(/\((.*?)\)/g, '').trim();
+
+// Ambil nominal harga
+const match = item.label.match(/Rp\s?([\d.,]+)/);
+const price = match ? parseInt(match[1].replace(/[.,]/g, "")) : 0;
+
+// Cek bonus berdasarkan kategori dan harga
+let bonusText = "";
+if (bonusData[item.category] && bonusData[item.category][price]) {
+  bonusText = `<div class="item-bonus">${bonusData[item.category][price]}</div>`;
+}
     div.innerHTML = `
-      <label>
-        <input type="checkbox" class="item-checkbox" data-index="${index}" checked />
-        ${cleanName} - ${item.label}
-        ${bonusText}
-      </label>
-      <button class="delete-btn" data-index="${index}">❌</button>`;
+  <label>
+    <input type="checkbox" class="item-checkbox" data-index="${index}" checked />
+    ${cleanName} - ${item.label}
+    ${bonusText}
+  </label>
+  <button class="delete-btn" data-index="${index}">❌</button>
+`;
     cartList.appendChild(div);
   });
 
@@ -73,8 +72,8 @@ function renderCart() {
 function updateSummary() {
   const checkboxes = document.querySelectorAll(".item-checkbox:checked");
   const selectedItems = [...checkboxes].map(cb => cart[cb.dataset.index]);
-  let total = 0;
 
+  let total = 0;
   selectedItems.forEach(item => {
     const match = item.label.match(/Rp\s?([\d.,]+)/);
     if (match) {
@@ -89,6 +88,7 @@ function updateSummary() {
   }
 
   totalHarga.textContent = "Rp " + total.toLocaleString("id-ID");
+
   const orderText = selectedItems
     .map(i => `- ${i.name.replace(/\((.*?)\)/g, '').trim()} - ${i.label}`)
     .join("\n");
@@ -179,12 +179,13 @@ const paymentData = {
 };
 
 // ========== Popup Pembayaran ==========
-document.getElementById("account-form").addEventListener("submit", async function (e) {
+document.getElementById("account-form").addEventListener("submit", function (e) {
   e.preventDefault();
   if (orderInput.value.trim() === "") {
     alert("❌ Pilih minimal 1 item dari keranjang!");
     return;
   }
+
   const metode = document.getElementById("metode-terpilih").value;
   if (!metode) {
     alert("❌ Pilih metode pembayaran terlebih dahulu.");
@@ -195,57 +196,79 @@ document.getElementById("account-form").addEventListener("submit", async functio
   const info = document.getElementById("payment-info");
   const total = document.getElementById("total-harga").innerText;
   const data = paymentData[metode] || {};
+
   let html = `<p><strong>Jenis Pembayaran:</strong> ${metode}</p>`;
   html += `<p><strong>Jumlah Bayar:</strong> ${total}</p>`;
+
   if (data.isQR) {
-    html += `<img src="${data.img}" alt="QRIS" style="display:block; max-width:220px; width:100%; height:auto; margin:15px auto; border-radius:12px; box-shadow:0 0 10px rgba(0,0,0,0.4);">`;
+    html += `<img src="${data.img}" alt="QRIS" style="
+      display:block;
+      max-width:220px;
+      width:100%;
+      height:auto;
+      margin:15px auto;
+      border-radius:12px;
+      box-shadow:0 0 10px rgba(0,0,0,0.4);
+    ">`;
     html += `<p><strong>Nama:</strong> ${data.name}</p>`;
   } else {
     html += `<p><strong>Nomor Rekening:</strong> ${data.account || '-'}</p>`;
     html += `<p><strong>Atas Nama:</strong> ${data.name || '-'}</p>`;
   }
+
   html += `
     <div style="margin-top:15px;font-size:13px;color:#ccc">
       <strong>Note:</strong><br>
       • Transfer sesuai nominal, jika salah segera hubungi admin via WhatsApp.<br>
       • Jika sudah transfer, klik "Lanjutkan", sistem akan proses order 10-15 menit.
-    </div>`;
-
+    </div>
+  `;
   info.innerHTML = html;
   popup.classList.remove("hidden");
+});
 
-  // Setelah klik konfirmasi bayar
-  document.getElementById("confirm-payment").addEventListener("click", async () => {
-    document.getElementById("payment-popup").classList.add("hidden");
-    const orderText = document.getElementById("order_items").value;
+document.getElementById("cancel-payment").addEventListener("click", () => {
+  document.getElementById("payment-popup").classList.add("hidden");
+});
+
+document.getElementById("confirm-payment").addEventListener("click", () => {
+  document.getElementById("payment-popup").classList.add("hidden");
+  const metode = document.getElementById("metode-terpilih").value;
+  const total = document.getElementById("total-harga").innerText;
+const orderText = document.getElementById("order_items").value;
+
     const nickname = document.querySelector("input[name='nickname']").value;
-    localStorage.setItem("nickname", nickname); // Simpan nickname ke localStorage
+  localStorage.setItem("nickname", nickname); // Simpan nickname ke localStorage
 
-    const transaksiBaru = {
-      waktu: new Date().toISOString(),
-      item: orderText,
-      total: total,
-      metode: metode,
-      status: "Sedang diproses",
-    };
+  const transaksiBaru = {
+    waktu: new Date().toISOString(),
+    item: orderText,
+    total: total,
+    metode: metode,
+    status: "Sedang diproses",
+  };
+  let histori = JSON.parse(localStorage.getItem("riwayat_transaksi")) || [];
+  histori.push(transaksiBaru);
+  localStorage.setItem("riwayat_transaksi", JSON.stringify(histori));
+  
+  let metodeInput = document.querySelector("input[name='metode_emailjs']");
+  if (!metodeInput) {
+    metodeInput = document.createElement("input");
+    metodeInput.type = "hidden";
+    metodeInput.name = "metode_emailjs";
+    document.getElementById("account-form").appendChild(metodeInput);
+  }
+  metodeInput.value = metode;
 
-    let histori = JSON.parse(localStorage.getItem("riwayat_transaksi")) || [];
-    histori.push(transaksiBaru);
-    localStorage.setItem("riwayat_transaksi", JSON.stringify(histori));
-
-    await saveTransactionToSupabase(transaksiBaru);
-
-    // Kirim email (Opsional)
-    emailjs.sendForm("service_ucup", "template_1shj4dt", document.getElementById("account-form"))
-      .then(() => {
-        alert("✅ Order berhasil dikirim ke email!");
-        localStorage.removeItem("cart");
-        window.location.href = "index.html";
-      })
-      .catch(err => {
-        alert("❌ Gagal mengirim order: " + err.text);
-      });
-  });
+  emailjs.sendForm("service_ucup", "template_1shj4dt", document.getElementById("account-form"))
+    .then(() => {
+      alert("✅ Order berhasil dikirim ke email!");
+      localStorage.removeItem("cart");
+      window.location.href = "index.html";
+    })
+    .catch(err => {
+      alert("❌ Gagal mengirim order: " + err.text);
+    });
 });
 
 // ========== Init ==========
