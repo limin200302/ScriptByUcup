@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Top Up MLBB – Mamet Ucup Store</title>
+  <link rel="stylesheet" href="assets/mlbb.css" />
+  <script src="mlbb.js" defer></script>
+</head>
+<body>
+  <header class="main-header">
+    <div class="logo">Mamet Store</div>
+    <nav class="top-nav">
+      <ul>
+        <li><a href="index.html">Beranda</a></li>
+        <li><a href="mlbb.html" class="active">MLBB</a></li>
+        <li><a href="tentang.html">Tentang</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <h1>Top Up Mobile Legends via Login</h1>
+    <p>Proses cepat 5–15 menit. Masuk dan pilih paket diamond kamu!</p>
+  </section>
+
+  <section class="topup-form">
+    <div class="form-card">
+      <h2>Masukkan Data Akun</h2>
+      <form id="mlbb-form">
+        <label>Email Login:</label>
+        <input type="email" required name="email" placeholder="Email akun MLBB" />
+
+        <label>Kata Sandi:</label>
+        <input type="password" required name="password" placeholder="Password akun MLBB" />
+
+        <label>Catatan Tambahan (Opsional):</label>
+        <textarea name="note" placeholder="Contoh: Login via VK, Moonton, Google, dll"></textarea>
+
+        <h3>Pilih Paket Diamond</h3>
+        <div id="diamond-options" class="diamond-grid"></div>
+
+        <button type="submit">Lanjutkan Top Up</button>
+      </form>
+    </div>
+  </section>
+
+  <footer class="main-footer">
+    <p>&copy; 2025 Mamet Ucup Store. All rights reserved.</p>
+  </footer>
+</body>
+</html>
