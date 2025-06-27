@@ -1,4 +1,11 @@
 // ========== Bonus Data ==========
+const bonusData = {
+  cash: {
+  },
+  boxlegends: {
+  }
+};
+
 
 // ========== Render Keranjang ==========
 let cart = JSON.parse(localStorage.getItem("cart") || "[]");
@@ -9,7 +16,7 @@ const orderInput = document.getElementById("order_items");
 const totalHarga = document.getElementById("total-harga");
 
 function renderCart() {
-  cart = JSON.parse(localStorage.getItem("cart") || "[]");
+  cart = JSON.parse(localStorage.getItem("cart") || "[]"); // Selalu ambil ulang
   cartList.innerHTML = "";
 
   if (cart.length === 0) {
@@ -19,27 +26,32 @@ function renderCart() {
   }
 
   emptyMsg.style.display = "none";
-
   cart.forEach((item, index) => {
     const div = document.createElement("div");
     div.className = "cart-item";
-
     const cleanName = item.name.replace(/\((.*?)\)/g, '').trim();
 
-    div.innerHTML = `
-      <label>
-        <input type="checkbox" class="item-checkbox" data-index="${index}" checked />
-        ${cleanName} - ${item.label}
-      </label>
-      <button class="delete-btn" data-index="${index}">❌</button>
-    `;
+// Ambil nominal harga
+const match = item.label.match(/Rp\s?([\d.,]+)/);
+const price = match ? parseInt(match[1].replace(/[.,]/g, "")) : 0;
 
+// Cek bonus berdasarkan kategori dan harga
+let bonusText = "";
+if (bonusData[item.category] && bonusData[item.category][price]) {
+  bonusText = `<div class="item-bonus">${bonusData[item.category][price]}</div>`;
+}
+    div.innerHTML = `
+  <label>
+    <input type="checkbox" class="item-checkbox" data-index="${index}" checked />
+    ${cleanName} - ${item.label}
+  </label>
+  <button class="delete-btn" data-index="${index}">❌</button>
+`;
     cartList.appendChild(div);
   });
 
   updateSummary();
 }
-
 
 // ========== Update Total & Order Items ==========
 function updateSummary() {
