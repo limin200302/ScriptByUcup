@@ -1,26 +1,4 @@
-co.js
 // ========== Bonus Data ==========
-const bonusData = {
-  cash: {
-    55000: "Bonus🎁: 2 Keping Cue Mastermind",
-    70000: "Bonus🎁: 4 Keping Cue Muramasa",
-    95000: "Bonus🎁: 4 Keping Cue Mastermind",
-    135000: "Bonus🎁: 16 Cue Hawar Beku + 30 Golden Shot",
-    190000: "Bonus🎁: VIP Points",
-    250000: "Bonus🎁: 16 Hawar Beku + 4 Muramasa + 30 Golden Shot",
-    275000: "Bonus🎁: VIP Points"
-  },
-  boxlegends: {
-    60000: "Bonus🎁: 2 Keping Cue Mastermind",
-    75000: "Bonus🎁: 4 Keping Cue Muramasa",
-    100000: "Bonus🎁: 4 Keping Cue Mastermind",
-    145000: "Bonus🎁: 16 Cue Hawar Beku + 30 Golden Shot",
-    200000: "Bonus🎁: VIP Points",
-    265000: "Bonus🎁: 16 Hawar Beku + 4 Muramasa + 30 Golden Shot",
-    295000: "Bonus🎁: VIP Points"
-  }
-};
-
 
 // ========== Render Keranjang ==========
 let cart = JSON.parse(localStorage.getItem("cart") || "[]");
@@ -55,33 +33,13 @@ let bonusText = "";
 if (bonusData[item.category] && bonusData[item.category][price]) {
   bonusText = `<div class="item-bonus">${bonusData[item.category][price]}</div>`;
 }
-    const safeText = document.createElement("div");
-safeText.textContent = `${cleanName} - ${item.label}`;
-
-const label = document.createElement("label");
-const checkbox = document.createElement("input");
-checkbox.type = "checkbox";
-checkbox.className = "item-checkbox";
-checkbox.dataset.index = index;
-checkbox.checked = true;
-
-label.appendChild(checkbox);
-label.appendChild(document.createTextNode(` ${cleanName} - ${item.label}`));
-if (bonusText) {
-  const bonusDiv = document.createElement("div");
-  bonusDiv.className = "item-bonus";
-  bonusDiv.innerText = bonusData[item.category][price];
-  label.appendChild(bonusDiv);
-}
-
-const delBtn = document.createElement("button");
-delBtn.className = "delete-btn";
-delBtn.dataset.index = index;
-delBtn.textContent = "❌";
-
-div.appendChild(label);
-div.appendChild(delBtn);
-    
+    div.innerHTML = `
+  <label>
+    <input type="checkbox" class="item-checkbox" data-index="${index}" checked />
+    ${cleanName} - ${item.label}
+  </label>
+  <button class="delete-btn" data-index="${index}">❌</button>
+`;
     cartList.appendChild(div);
   });
 
