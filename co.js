@@ -55,14 +55,33 @@ let bonusText = "";
 if (bonusData[item.category] && bonusData[item.category][price]) {
   bonusText = `<div class="item-bonus">${bonusData[item.category][price]}</div>`;
 }
-    div.innerHTML = `
-  <label>
-    <input type="checkbox" class="item-checkbox" data-index="${index}" checked />
-    ${cleanName} - ${item.label}
-    ${bonusText}
-  </label>
-  <button class="delete-btn" data-index="${index}">❌</button>
-`;
+    const safeText = document.createElement("div");
+safeText.textContent = `${cleanName} - ${item.label}`;
+
+const label = document.createElement("label");
+const checkbox = document.createElement("input");
+checkbox.type = "checkbox";
+checkbox.className = "item-checkbox";
+checkbox.dataset.index = index;
+checkbox.checked = true;
+
+label.appendChild(checkbox);
+label.appendChild(document.createTextNode(` ${cleanName} - ${item.label}`));
+if (bonusText) {
+  const bonusDiv = document.createElement("div");
+  bonusDiv.className = "item-bonus";
+  bonusDiv.innerText = bonusData[item.category][price];
+  label.appendChild(bonusDiv);
+}
+
+const delBtn = document.createElement("button");
+delBtn.className = "delete-btn";
+delBtn.dataset.index = index;
+delBtn.textContent = "❌";
+
+div.appendChild(label);
+div.appendChild(delBtn);
+    
     cartList.appendChild(div);
   });
 
