@@ -34,7 +34,7 @@ const vipDataCash = [
       { label: "Rp 130.000 - 6.000 Cash", value: 130000 },
       { label: "Rp 250.000 - 12.000 Cash", value: 250000 },
       { label: "Rp 370.000 - 18.000 Cash", value: 370000 },
-      { label: "Rp 495.000 - 24.000 Cash", value: 495000 },,
+      { label: "Rp 495.000 - 24.000 Cash", value: 495000 },
     ],
   },
   {
