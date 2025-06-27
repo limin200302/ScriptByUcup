@@ -5,12 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Tentang – Mamet Ucup Store</title>
   <link rel="stylesheet" href="assets/style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     body {
-      font-family: 'Inter', sans-serif;
       margin: 0;
-      background-color: #f9f9ff;
+      font-family: 'Arial', sans-serif;
+      background-color: #f9f9f9;
       color: #222;
     }
 
@@ -21,76 +20,58 @@
       background-color: #4B0082;
       color: #fff;
       padding: 1rem 2rem;
-      flex-wrap: wrap;
     }
 
     .logo {
-      font-weight: 700;
       font-size: 1.5rem;
+      font-weight: bold;
     }
 
     nav.top-nav ul {
-      list-style: none;
       display: flex;
+      list-style: none;
       gap: 1rem;
-      padding: 0;
       margin: 0;
+      padding: 0;
     }
 
     nav.top-nav ul li a {
-      color: #fff;
+      color: white;
       text-decoration: none;
-      font-weight: 600;
-      transition: color 0.3s ease;
+      font-weight: bold;
     }
 
     nav.top-nav ul li a:hover {
-      color: #ffcd00;
+      text-decoration: underline;
     }
 
     .hero {
-      text-align: center;
-      padding: 3rem 1rem;
       background: linear-gradient(135deg, #6a11cb, #2575fc);
       color: white;
+      padding: 2rem 1rem;
+      text-align: center;
     }
 
     .hero h1 {
-      margin-bottom: 1rem;
-      font-size: 2rem;
-    }
-
-    .menu-section {
-      padding: 2rem 1rem;
-    }
-
-    .menu-grid {
-      width: 100%;
-      padding: 1rem;
-      background-color: #fff;
-    }
-
-    .menu-grid h3 {
-      margin-top: 2rem;
-      color: #4B0082;
-    }
-
-    .menu-grid ol,
-    .menu-grid ul {
-      padding-left: 1.5rem;
-    }
-
-    .menu-grid li {
       margin-bottom: 0.5rem;
     }
 
-    .boxed-section {
+    .menu-section {
+      padding: 1rem;
+    }
+
+    .box {
       border: 2px solid #ddd;
       border-left: 6px solid #4B0082;
+      background-color: #fff;
       padding: 1rem;
-      margin-top: 1.5rem;
-      border-radius: 8px;
-      background: #fafafa;
+      margin-bottom: 1.5rem;
+      border-radius: 6px;
+    }
+
+    .box h3 {
+      margin-top: 0;
+      color: #4B0082;
     }
 
     footer.main-footer {
@@ -98,13 +79,10 @@
       color: white;
       text-align: center;
       padding: 1rem;
-      margin-top: 3rem;
     }
 
-    @media (min-width: 768px) {
-      .menu-grid {
-        padding: 2rem 3rem;
-      }
+    ol, ul {
+      padding-left: 1.5rem;
     }
   </style>
   <script src="script.js" defer></script>
@@ -127,49 +105,45 @@
   </section>
 
   <section class="menu-section">
-    <div class="menu-grid">
-      <p>Ini adalah layanan top up dengan fitur khusus via login.</p>
 
-      <h3>🔹 Apa sih keuntungan dan kelemahan via login?</h3>
-      <p>Setiap kelebihan ada kelemahan, sama seperti hidup — setiap kesenangan pasti ada kesusahan. Ya ga Ketua? 😄</p>
+    <p>Ini adalah layanan top up dengan fitur khusus via login.</p>
 
-      <div class="boxed-section">
-        <h3>✅ Keuntungan via login:</h3>
-        <ol>
-          <li>Harga lebih murah dibandingkan via ID</li>
-          <li>Berinvoice langsung dari sumbernya, yaitu Google Play Store</li>
-          <li>Bisa mendapatkan bonus tertentu sesuai event yang berlangsung</li>
-          <li>Langsung diproses admin ke akun kamu</li>
-          <li>Tidak ada yang namanya server down</li>
-          <li>Proses hanya memakan waktu 5–15 menit saja</li>
-          <li>Admin Mamet Ucup Store hanya ada 2 — Saya sendiri (Ucup) dan istri saya</li>
-          <li>Terjamin keamanannya karena saya tidak merekrut orang luar</li>
-        </ol>
-      </div>
-
-      <div class="boxed-section">
-        <h3>⚠️ Kelemahan via login:</h3>
-        <ol>
-          <li>Memberikan data pribadi atau login ke admin</li>
-          <li>Tidak bisa online akun tersebut secara bersamaan saat proses</li>
-        </ol>
-        <p><strong>Note:</strong> Tapi tenang, setelah transaksi selesai kamu bisa langsung ganti kata sandi. Gak perlu khawatir!</p>
-      </div>
-
-      <div class="boxed-section">
-        <h3>📌 Khusus Top Up Mobile Legends: Bang Bang</h3>
-        <ul>
-          <li>Untuk top up pertama, akun wajib dimainkan oleh admin 1–2x match Rank</li>
-          <li>Kalau mau request Classic saja? Bisa, tapi ada biaya tambahan +5K (2–3x Classic)</li>
-          <li>Orderan selanjutnya aman tanpa perlu main lagi</li>
-          <li>Bisa request invoice Google Play atau riwayat pembelian</li>
-        </ul>
-      </div>
-
-      <p style="margin-top: 2rem;">✅ Sekian dan terima kasih! Selamat berbelanja di Mamet Ucup Store 🎉<br>
-        Top up aman, cepat, dan terpercaya — hanya di sini.
-      </p>
+    <div class="box">
+      <h3>✅ Keuntungan via login</h3>
+      <ol>
+        <li>Harga lebih murah dibandingkan via ID</li>
+        <li>Berinvoice langsung dari sumbernya, yaitu Google Play Store</li>
+        <li>Bisa mendapatkan bonus tertentu sesuai event yang berlangsung</li>
+        <li>Langsung diproses admin ke akun kamu</li>
+        <li>Tidak ada yang namanya server down</li>
+        <li>Proses hanya memakan waktu 5–15 menit saja</li>
+        <li>Admin Mamet Ucup Store hanya ada 2 — Saya sendiri (Ucup) dan istri saya</li>
+        <li>Terjamin keamanannya karena saya tidak merekrut orang luar</li>
+      </ol>
     </div>
+
+    <div class="box">
+      <h3>⚠️ Kelemahan via login</h3>
+      <ol>
+        <li>Memberikan data pribadi atau login ke admin</li>
+        <li>Tidak bisa online akun tersebut secara bersamaan saat proses</li>
+      </ol>
+      <p><strong>Note:</strong> Tapi tenang, setelah transaksi selesai kamu bisa langsung ganti kata sandi. Gak perlu khawatir!</p>
+    </div>
+
+    <div class="box">
+      <h3>📌 Khusus Top Up Mobile Legends: Bang Bang</h3>
+      <ul>
+        <li>Untuk top up pertama, akun wajib dimainkan oleh admin 1–2x match Rank</li>
+        <li>Kalau mau request Classic saja? Bisa, tapi ada biaya tambahan +5K (2–3x Classic)</li>
+        <li>Orderan selanjutnya aman tanpa perlu main lagi</li>
+        <li>Bisa request invoice Google Play atau riwayat pembelian</li>
+      </ul>
+    </div>
+
+    <p>✅ Sekian dan terima kasih! Selamat berbelanja di Mamet Ucup Store 🎉<br>
+    Top up aman, cepat, dan terpercaya — hanya di sini.</p>
+
   </section>
 
   <footer class="main-footer">
