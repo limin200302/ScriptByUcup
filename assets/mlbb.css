@@ -1,113 +1,93 @@
 body {
-  font-family: Arial, sans-serif;
-  background: #f5f7fa;
   margin: 0;
-  padding: 0;
-  color: #333;
-}
-
-.main-header {
-  background: #222;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(to bottom, #0f0f1c, #1a1a2e);
   color: #fff;
-  padding: 10px 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
 }
 
-.logo {
-  font-weight: bold;
-  font-size: 1.2rem;
+.mlbb-header {
+  padding: 1rem;
+  background: #151525;
+  text-align: center;
+  position: relative;
+  border-bottom: 1px solid #333;
 }
 
-.top-nav ul {
-  list-style: none;
-  display: flex;
-  gap: 15px;
-}
-
-.top-nav a {
+.back-button {
+  position: absolute;
+  left: 1rem;
+  top: 1rem;
   color: #fff;
   text-decoration: none;
-  padding: 5px 10px;
+  font-size: 1rem;
 }
 
-.top-nav a.active,
-.top-nav a:hover {
-  background: #fff;
-  color: #000;
-  border-radius: 5px;
-}
-
-.hero {
-  padding: 30px 20px;
-  background: #0088cc;
-  color: #fff;
-  text-align: center;
-}
-
-.topup-form {
-  padding: 30px 20px;
-  display: flex;
-  justify-content: center;
-}
-
-.form-card {
-  background: #fff;
-  padding: 20px;
+.banner img {
   width: 100%;
-  max-width: 500px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px #ccc;
+  border-bottom: 3px solid #ffcc00;
 }
 
-.form-card h2, .form-card h3 {
-  margin-top: 0;
+.produk-section,
+.akun-section {
+  padding: 1.5rem 1rem;
 }
 
-.form-card input,
-.form-card textarea,
-.form-card button {
-  width: 100%;
-  padding: 10px;
-  margin-top: 10px;
-  margin-bottom: 15px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
+.produk-section h2,
+.akun-section h2 {
+  color: #ffcc00;
+  margin-bottom: 1rem;
 }
 
-.form-card button {
-  background: #0088cc;
-  color: #fff;
-  border: none;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-.form-card button:hover {
-  background: #006fa1;
-}
-
-.diamond-grid {
+.produk-grid {
   display: grid;
+  gap: 1rem;
   grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 15px;
-  margin-top: 20px;
 }
 
-.diamond-item {
-  background: #f2f2f2;
-  border: 1px solid #ccc;
-  padding: 15px;
+.produk-item {
+  background: #232344;
+  border: 1px solid #3e3e5e;
+  border-radius: 12px;
+  padding: 1rem;
   text-align: center;
   cursor: pointer;
-  border-radius: 8px;
-  transition: 0.2s ease;
+  transition: transform 0.2s, border 0.2s;
 }
 
-.diamond-item:hover,
-.diamond-item.selected {
-  background: #0088cc;
+.produk-item:hover {
+  transform: scale(1.05);
+  border-color: #ffcc00;
+}
+
+.akun-section input,
+.akun-section select {
+  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  background: #1e1e2f;
   color: #fff;
-  border-color: #006fa1;
+  border: 1px solid #333;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+.mlbb-footer {
+  text-align: center;
+  padding: 1.5rem 1rem;
+}
+
+.btn-order {
+  background: #ffcc00;
+  color: #000;
+  font-weight: bold;
+  padding: 0.8rem 2rem;
+  border: none;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  box-shadow: 0 0 10px #ffcc00aa;
+}
+
+.btn-order:hover {
+  background: #ffe066;
 }
