@@ -6,9 +6,18 @@ const bonusData = {
   }
 };
 
-
-// ========== Render Keranjang ==========
+function addToCart(item) {
 let cart = JSON.parse(localStorage.getItem("cart") || "[]");
+  const exists = cart.find(i => i.name === item.name && i.label === item.label);
+  if (exists) {
+    alert("Item sudah ada di keranjang.");
+    return;
+  }
+  cart.push(item);
+  localStorage.setItem("cart", JSON.stringify(cart));
+  alert("✅ Item berhasil ditambahkan ke keranjang!");
+}
+  
 const cartList = document.getElementById("cart-list");
 const emptyMsg = document.getElementById("empty-msg");
 const selectAll = document.getElementById("select-all");
