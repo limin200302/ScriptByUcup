@@ -65,12 +65,9 @@
     }
 
     .menu-grid {
-      max-width: 800px;
-      margin: auto;
+      width: 100%;
+      padding: 1rem;
       background-color: #fff;
-      padding: 2rem;
-      border-radius: 12px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.06);
     }
 
     .menu-grid h3 {
@@ -91,7 +88,7 @@
       border: 2px solid #ddd;
       border-left: 6px solid #4B0082;
       padding: 1rem;
-      margin-top: 1rem;
+      margin-top: 1.5rem;
       border-radius: 8px;
       background: #fafafa;
     }
@@ -102,6 +99,12 @@
       text-align: center;
       padding: 1rem;
       margin-top: 3rem;
+    }
+
+    @media (min-width: 768px) {
+      .menu-grid {
+        padding: 2rem 3rem;
+      }
     }
   </style>
   <script src="script.js" defer></script>
