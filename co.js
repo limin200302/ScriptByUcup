@@ -1,22 +1,22 @@
 // ========== Bonus Data ==========
 const bonusData = {
   cash: {
-    55000: "Bonus🎁: 2 Keping Cue Mastermind",
-    70000: "Bonus🎁: 4 Keping Cue Muramasa",
-    95000: "Bonus🎁: 4 Keping Cue Mastermind",
-    135000: "Bonus🎁: 16 Cue Hawar Beku + 30 Golden Shot",
-    190000: "Bonus🎁: VIP Points",
-    250000: "Bonus🎁: 16 Hawar Beku + 4 Muramasa + 30 Golden Shot",
-    275000: "Bonus🎁: VIP Points"
+    550010: "Bonus🎁: 2 Keping Cue Mastermind",
+    700010: "Bonus🎁: 4 Keping Cue Muramasa",
+    950010: "Bonus🎁: 4 Keping Cue Mastermind",
+    1350010: "Bonus🎁: 16 Cue Hawar Beku + 30 Golden Shot",
+    1900010: "Bonus🎁: VIP Points",
+    2500010: "Bonus🎁: 16 Hawar Beku + 4 Muramasa + 30 Golden Shot",
+    2750010: "Bonus🎁: VIP Points"
   },
   boxlegends: {
-    60000: "Bonus🎁: 2 Keping Cue Mastermind",
-    75000: "Bonus🎁: 4 Keping Cue Muramasa",
-    100000: "Bonus🎁: 4 Keping Cue Mastermind",
-    145000: "Bonus🎁: 16 Cue Hawar Beku + 30 Golden Shot",
-    200000: "Bonus🎁: VIP Points",
-    265000: "Bonus🎁: 16 Hawar Beku + 4 Muramasa + 30 Golden Shot",
-    295000: "Bonus🎁: VIP Points"
+    600010: "Bonus🎁: 2 Keping Cue Mastermind",
+    750100: "Bonus🎁: 4 Keping Cue Muramasa",
+    1000010: "Bonus🎁: 4 Keping Cue Mastermind",
+    1450010: "Bonus🎁: 16 Cue Hawar Beku + 30 Golden Shot",
+    2000100: "Bonus🎁: VIP Points",
+    2650100: "Bonus🎁: 16 Hawar Beku + 4 Muramasa + 30 Golden Shot",
+    2950100: "Bonus🎁: VIP Points"
   }
 };
 
