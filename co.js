@@ -1,23 +1,28 @@
 // ========== Bonus Data ==========
 const bonusData = {
   cash: {
+    55000: "Bonus🎁: 2 Keping Cue Mastermind",
+    70000: "Bonus🎁: 4 Keping Cue Muramasa",
+    95000: "Bonus🎁: 4 Keping Cue Mastermind",
+    135000: "Bonus🎁: 16 Cue Hawar Beku + 30 Golden Shot",
+    190000: "Bonus🎁: VIP Points",
+    250000: "Bonus🎁: 16 Hawar Beku + 4 Muramasa + 30 Golden Shot",
+    275000: "Bonus🎁: VIP Points"
   },
   boxlegends: {
+    60000: "Bonus🎁: 2 Keping Cue Mastermind",
+    75000: "Bonus🎁: 4 Keping Cue Muramasa",
+    100000: "Bonus🎁: 4 Keping Cue Mastermind",
+    145000: "Bonus🎁: 16 Cue Hawar Beku + 30 Golden Shot",
+    200000: "Bonus🎁: VIP Points",
+    265000: "Bonus🎁: 16 Hawar Beku + 4 Muramasa + 30 Golden Shot",
+    295000: "Bonus🎁: VIP Points"
   }
 };
 
-function addToCart(item) {
+
+// ========== Render Keranjang ==========
 let cart = JSON.parse(localStorage.getItem("cart") || "[]");
-  const exists = cart.find(i => i.name === item.name && i.label === item.label);
-  if (exists) {
-    alert("Item sudah ada di keranjang.");
-    return;
-  }
-  cart.push(item);
-  localStorage.setItem("cart", JSON.stringify(cart));
-  alert("✅ Item berhasil ditambahkan ke keranjang!");
-}
-  
 const cartList = document.getElementById("cart-list");
 const emptyMsg = document.getElementById("empty-msg");
 const selectAll = document.getElementById("select-all");
@@ -53,6 +58,7 @@ if (bonusData[item.category] && bonusData[item.category][price]) {
   <label>
     <input type="checkbox" class="item-checkbox" data-index="${index}" checked />
     ${cleanName} - ${item.label}
+    ${bonusText}
   </label>
   <button class="delete-btn" data-index="${index}">❌</button>
 `;
