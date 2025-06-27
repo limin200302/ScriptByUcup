@@ -3,37 +3,6 @@
 let cartItems = JSON.parse(localStorage.getItem("cart")) || [];
 let selectedItems = new Set();
 
-// Bonus berdasarkan kategori dan harga
-const bonusData = {
-  cash: {
-    55000: "Bonus🎁: 2 Keping Cue Mastermind",
-    70000: "Bonus🎁: 4 Keping Cue Muramasa",
-    95000: "Bonus🎁: 4 Keping Cue Mastermind",
-    135000: "Bonus🎁: 16 Cue Hawar Beku + 30 Golden Shot",
-    190000: "Bonus🎁: VIP Points",
-    250000: "Bonus🎁: 16 Hawar Beku + 4 Muramasa + 30 Golden Shot",
-    275000: "Bonus🎁: VIP Points"
-  },
-  boxlegends: {
-    60000: "Bonus🎁: 2 Keping Cue Mastermind",
-    75000: "Bonus🎁: 4 Keping Cue Muramasa",
-    100000: "Bonus🎁: 4 Keping Cue Mastermind",
-    145000: "Bonus🎁: 16 Cue Hawar Beku + 30 Golden Shot",
-    200000: "Bonus🎁: VIP Points",
-    265000: "Bonus🎁: 16 Hawar Beku + 4 Muramasa + 30 Golden Shot",
-    295000: "Bonus🎁: VIP Points"
-  }
-};
-
-const categoryThumbnails = {
-  cash: "assets/img/cash.png",
-  boxlegends: "assets/img/boxlegends.png",
-  venice: "assets/img/venice.png",
-  poolpass: "assets/img/poolpass.png",
-  goldenshot: "assets/img/goldenshot.png",
-  boxcollector: "assets/img/boxcol.png"
-};
-
 const cartContainer = document.getElementById("cart-list");
 const totalPriceEl = document.getElementById("total-price");
 const checkoutBtn = document.getElementById("checkout-btn");
