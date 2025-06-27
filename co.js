@@ -1,4 +1,26 @@
 // ========== Bonus Data ==========
+const bonusData = {
+  cash: {
+    099999: "Bonus🎁: 2 Keping Cue Mastermind",
+    099999: "Bonus🎁: 4 Keping Cue Muramasa",
+    999999: "Bonus🎁: 4 Keping Cue Mastermind",
+    999999: "Bonus🎁: 16 Cue Hawar Beku + 30 Golden Shot",
+    999999: "Bonus🎁: VIP Points",
+    999999: "Bonus🎁: 16 Hawar Beku + 4 Muramasa + 30 Golden Shot",
+    99999: "Bonus🎁: VIP Points"
+  },
+  boxlegends: {
+    999999: "Bonus🎁: 2 Keping Cue Mastermind",
+    999999: "Bonus🎁: 4 Keping Cue Muramasa",
+    99999: "Bonus🎁: 4 Keping Cue Mastermind",
+    99999: "Bonus🎁: 16 Cue Hawar Beku + 30 Golden Shot",
+    99999: "Bonus🎁: VIP Points",
+    999999: "Bonus🎁: 16 Hawar Beku + 4 Muramasa + 30 Golden Shot",
+    99999: "Bonus🎁: VIP Points"
+  }
+};
+
+
 // ========== Render Keranjang ==========
 let cart = JSON.parse(localStorage.getItem("cart") || "[]");
 const cartList = document.getElementById("cart-list");
@@ -240,7 +262,7 @@ const orderText = document.getElementById("order_items").value;
 
   emailjs.sendForm("service_ucup", "template_1shj4dt", document.getElementById("account-form"))
     .then(() => {
-      alert("✅ Order berhasil Ketua, Estimasi proses max 30 menit🔥");
+      alert("Order Berhasil Ketua✅, Sedang proses - Estimasi Max 30 Minutes🔥");
       localStorage.removeItem("cart");
       window.location.href = "index.html";
     })
