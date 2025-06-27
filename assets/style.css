@@ -407,3 +407,26 @@ img {
   margin-bottom: 1rem;
   background-color: #f9f9f9;
 }
+@keyframes rainbowGlow {
+  0% { color: #ff4b1f; text-shadow: 0 0 5px #ff4b1f; }
+  25% { color: #ff9068; text-shadow: 0 0 10px #ff9068; }
+  50% { color: #36d1dc; text-shadow: 0 0 10px #36d1dc; }
+  75% { color: #8e2de2; text-shadow: 0 0 10px #8e2de2; }
+  100% { color: #ff4b1f; text-shadow: 0 0 5px #ff4b1f; }
+}
+
+@keyframes textWiggle {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(0.8deg); }
+  50% { transform: rotate(-0.8deg); }
+  75% { transform: rotate(0.6deg); }
+}
+
+.glow-text {
+  font-size: 1.1rem;
+  text-align: center;
+  margin-top: 1.5rem;
+  font-weight: bold;
+  animation: rainbowGlow 6s infinite alternate, textWiggle 3s infinite ease-in-out;
+  transition: all 0.3s ease;
+}
