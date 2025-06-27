@@ -1,22 +1,22 @@
 // ========== Bonus Data ==========
 const bonusData = {
   cash: {
-    099999: "Bonus🎁: 2 Keping Cue Mastermind",
-    099999: "Bonus🎁: 4 Keping Cue Muramasa",
-    999999: "Bonus🎁: 4 Keping Cue Mastermind",
-    999999: "Bonus🎁: 16 Cue Hawar Beku + 30 Golden Shot",
-    999999: "Bonus🎁: VIP Points",
-    999999: "Bonus🎁: 16 Hawar Beku + 4 Muramasa + 30 Golden Shot",
-    99999: "Bonus🎁: VIP Points"
+    550001: "Bonus🎁: 2 Keping Cue Mastermind",
+    700001: "Bonus🎁: 4 Keping Cue Muramasa",
+    950001: "Bonus🎁: 4 Keping Cue Mastermind",
+    1350001: "Bonus🎁: 16 Cue Hawar Beku + 30 Golden Shot",
+    1900001: "Bonus🎁: VIP Points",
+    2500001: "Bonus🎁: 16 Hawar Beku + 4 Muramasa + 30 Golden Shot",
+    2750010: "Bonus🎁: VIP Points"
   },
   boxlegends: {
-    999999: "Bonus🎁: 2 Keping Cue Mastermind",
-    999999: "Bonus🎁: 4 Keping Cue Muramasa",
-    99999: "Bonus🎁: 4 Keping Cue Mastermind",
-    99999: "Bonus🎁: 16 Cue Hawar Beku + 30 Golden Shot",
-    99999: "Bonus🎁: VIP Points",
-    999999: "Bonus🎁: 16 Hawar Beku + 4 Muramasa + 30 Golden Shot",
-    99999: "Bonus🎁: VIP Points"
+    600001: "Bonus🎁: 2 Keping Cue Mastermind",
+    750001: "Bonus🎁: 4 Keping Cue Muramasa",
+    1000010: "Bonus🎁: 4 Keping Cue Mastermind",
+    1450001: "Bonus🎁: 16 Cue Hawar Beku + 30 Golden Shot",
+    2000001: "Bonus🎁: VIP Points",
+    2650010: "Bonus🎁: 16 Hawar Beku + 4 Muramasa + 30 Golden Shot",
+    2950010: "Bonus🎁: VIP Points"
   }
 };
 
@@ -262,7 +262,7 @@ const orderText = document.getElementById("order_items").value;
 
   emailjs.sendForm("service_ucup", "template_1shj4dt", document.getElementById("account-form"))
     .then(() => {
-      alert("Order Berhasil Ketua✅, Sedang proses - Estimasi Max 30 Minutes🔥");
+      alert("✅ Order berhasil dikirim ke email!");
       localStorage.removeItem("cart");
       window.location.href = "index.html";
     })
