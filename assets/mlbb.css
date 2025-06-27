@@ -1,0 +1,113 @@
+body {
+  font-family: Arial, sans-serif;
+  background: #f5f7fa;
+  margin: 0;
+  padding: 0;
+  color: #333;
+}
+
+.main-header {
+  background: #222;
+  color: #fff;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.top-nav ul {
+  list-style: none;
+  display: flex;
+  gap: 15px;
+}
+
+.top-nav a {
+  color: #fff;
+  text-decoration: none;
+  padding: 5px 10px;
+}
+
+.top-nav a.active,
+.top-nav a:hover {
+  background: #fff;
+  color: #000;
+  border-radius: 5px;
+}
+
+.hero {
+  padding: 30px 20px;
+  background: #0088cc;
+  color: #fff;
+  text-align: center;
+}
+
+.topup-form {
+  padding: 30px 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.form-card {
+  background: #fff;
+  padding: 20px;
+  width: 100%;
+  max-width: 500px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px #ccc;
+}
+
+.form-card h2, .form-card h3 {
+  margin-top: 0;
+}
+
+.form-card input,
+.form-card textarea,
+.form-card button {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.form-card button {
+  background: #0088cc;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.form-card button:hover {
+  background: #006fa1;
+}
+
+.diamond-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.diamond-item {
+  background: #f2f2f2;
+  border: 1px solid #ccc;
+  padding: 15px;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: 0.2s ease;
+}
+
+.diamond-item:hover,
+.diamond-item.selected {
+  background: #0088cc;
+  color: #fff;
+  border-color: #006fa1;
+}
