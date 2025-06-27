@@ -1,64 +1,69 @@
-// ballpoo// ballpool.js
+// ballpool.js
 
 const vipDataCash = [
   {
     name: "Silver",
     logo: "assets/img/silver.png",
     prices: [
-      { label: "Rp 40.000 - 671 Cash", value: 40000 },
-      { label: "Rp 75.000 - 2.200 Cash", value: 75000 },
-      { label: "Rp 130.000 - 4.400 Cash", value: 130000 },
-      { label: "Rp 250.000 - 8.800 Cash", value: 250000 },
-      { label: "Rp 370.000 - 13.200 Cash", value: 370000 },
-      { label: "Rp 495.000 - 16.600 Cash", value: 495000 },
+      { label: "Rp 55.000 - 605 Cash", value: 55000 },
+      { label: "Rp 70.000 - 880 Cash", value: 70000 },
+      { label: "Rp 95.000 - 1.210 Cash", value: 95000 },
+      { label: "Rp 135.000 - 1.892 Cash", value: 135000 },
+      { label: "Rp 190.000 - 2.992 Cash", value: 190000 },
+      { label: "Rp 250.000 - 3.872 Cash", value: 250000 },
+      { label: "Rp 275.000 - 6.600 Cash", value: 275000 },
     ],
   },
   {
     name: "Gold",
     logo: "assets/img/gold.png",
     prices: [
-      { label: "Rp 40.000 - 762 Cash", value: 40000 },
-      { label: "Rp 75.000 - 2.500 Cash", value: 75000 },
-      { label: "Rp 130.000 - 5.000 Cash", value: 130000 },
-      { label: "Rp 250.000 - 10.000 Cash", value: 250000 },
-      { label: "Rp 370.000 - 15.000 Cash", value: 370000 },
-      { label: "Rp 495.000 - 20.000 Cash", value: 495000 },
+      { label: "Rp 55.000 - 688 Cash", value: 55000 },
+      { label: "Rp 70.000 - 1.000 Cash", value: 70000 },
+      { label: "Rp 95.000 - 1.375 Cash", value: 95000 },
+      { label: "Rp 135.000 - 2.150 Cash", value: 135000 },
+      { label: "Rp 190.000 - 3.400 Cash", value: 190000 },
+      { label: "Rp 250.000 - 4.400 Cash", value: 250000 },
+      { label: "Rp 275.000 - 7.500 Cash", value: 275000 },
     ],
   },
   {
     name: "Zamrud",
     logo: "assets/img/zamrud.png",
     prices: [
-      { label: "Rp 40.000 - 915 Cash", value: 40000 },
-      { label: "Rp 75.000 - 3.000 Cash", value: 75000 },
-      { label: "Rp 130.000 - 6.000 Cash", value: 130000 },
-      { label: "Rp 250.000 - 12.000 Cash", value: 250000 },
-      { label: "Rp 370.000 - 18.000 Cash", value: 370000 },
-      { label: "Rp 495.000 - 24.000 Cash", value: 495000 },
+      { label: "Rp 55.000 - 825 Cash", value: 55000 },
+      { label: "Rp 70.000 - 1.200 Cash", value: 70000 },
+      { label: "Rp 95.000 - 1.650 Cash", value: 95000 },
+      { label: "Rp 135.000 - 2.580 Cash", value: 135000 },
+      { label: "Rp 190.000 - 4.080 Cash", value: 190000 },
+      { label: "Rp 250.000 - 5.280 Cash", value: 250000 },
+      { label: "Rp 275.000 - 9.000 Cash", value: 275000 },
     ],
   },
   {
     name: "Diamond",
     logo: "assets/img/diamond.png",
     prices: [
-      { label: "Rp 40.000 - 1.062 Cash", value: 40000 },
-      { label: "Rp 75.000 - 3.500 Cash", value: 75000 },
-      { label: "Rp 130.000 - 7.000 Cash", value: 130000 },
-      { label: "Rp 250.000 - 14.000 Cash", value: 250000 },
-      { label: "Rp 370.000 - 21.000 Cash", value: 370000 },
-      { label: "Rp 495.000 - 28.000 Cash", value: 495000 },
+      { label: "Rp 55.000 - 963 Cash", value: 55000 },
+      { label: "Rp 70.000 - 1.400 Cash", value: 70000 },
+      { label: "Rp 95.000 - 1.925 Cash", value: 95000 },
+      { label: "Rp 135.000 - 3.010 Cash", value: 135000 },
+      { label: "Rp 190.000 - 4.760 Cash", value: 190000 },
+      { label: "Rp 250.000 - 6.160 Cash", value: 250000 },
+      { label: "Rp 275.000 - 10.500 Cash", value: 275000 },
     ],
   },
   {
     name: "Black Diamond",
     logo: "assets/img/blackdiamond.png",
     prices: [
-      { label: "Rp 40.000 - 1.220 Cash", value: 40000 },
-      { label: "Rp 75.000 - 4.000 Cash", value: 75000 },
-      { label: "Rp 130.000 - 8.000 Cash", value: 130000 },
-      { label: "Rp 250.000 - 16.000 Cash", value: 250000 },
-      { label: "Rp 370.000 - 24.000 Cash", value: 370000 },
-      { label: "Rp 495.000 - 32.000 Cash", value: 495000 },
+      { label: "Rp 55.000 - 1.100 Cash", value: 55000 },
+      { label: "Rp 70.000 - 1.600 Cash", value: 70000 },
+      { label: "Rp 95.000 - 2.200 Cash", value: 95000 },
+      { label: "Rp 135.000 - 3.440 Cash", value: 135000 },
+      { label: "Rp 190.000 - 5.440 Cash", value: 190000 },
+      { label: "Rp 250.000 - 7.040 Cash", value: 250000 },
+      { label: "Rp 275.000 - 12.000 Cash", value: 275000 },
     ],
   },
 ];
@@ -67,55 +72,65 @@ const vipDataBox = [
     name: "Silver",
     logo: "assets/img/silver.png",
     prices: [
-      { label: "Rp 45.000 - 21 Box Legends", value: 45000 },
-      { label: "Rp 80.000 - 73 Box Legends", value: 80000 },
-      { label: "Rp 140.000 - 158 Box Legends", value: 140000 },
-      { label: "Rp 270.000 - 296 Box Legends", value: 270000 },
-      { label: "Rp 530.000 - 700 Box Legends", value: 530000 },
+      { label: "Rp 60.000 - 20 Box Legends", value: 60000 },
+      { label: "Rp 75.000 - 29 Box Legends", value: 75000 },
+      { label: "Rp 100.000 - 40 Box Legends", value: 100000 },
+      { label: "Rp 145.000 - 63 Box Legends", value: 145000 },
+      { label: "Rp 200.000 - 100 Box Legends", value: 200000 },
+      { label: "Rp 265.000 - 130 Box Legends", value: 265000 },
+      { label: "Rp 295.000 - 222 Box Legends", value: 295000 },
     ],
   },
   {
     name: "Gold",
     logo: "assets/img/gold.png",
     prices: [
-      { label: "Rp 45.000 - 24 Box Legends", value: 45000 },
-      { label: "Rp 80.000 - 84 Box Legends", value: 80000 },
-      { label: "Rp 140.000 - 168 Box Legends", value: 140000 },
-      { label: "Rp 270.000 - 370 Box Legends", value: 270000 },
-      { label: "Rp 530.000 - 774 Box Legends", value: 530000 },
+      { label: "Rp 60.000 - 22 Box Legends", value: 60000 },
+      { label: "Rp 75.000 - 33 Box Legends", value: 75000 },
+      { label: "Rp 100.000 - 45 Box Legends", value: 100000 },
+      { label: "Rp 145.000 - 72 Box Legends", value: 145000 },
+      { label: "Rp 200.000 - 114 Box Legends", value: 200000 },
+      { label: "Rp 265.000 - 149 Box Legends", value: 265000 },
+      { label: "Rp 295.000 - 252 Box Legends", value: 295000 },
     ],
   },
   {
     name: "Zamrud",
     logo: "assets/img/zamrud.png",
     prices: [
-      { label: "Rp 45.000 - 30 Box Legends", value: 45000 },
-      { label: "Rp 80.000 - 100 Box Legends", value: 80000 },
-      { label: "Rp 140.000 - 202 Box Legends", value: 140000 },
-      { label: "Rp 270.000 - 404 Box Legends", value: 270000 },
-      { label: "Rp 530.000 - 808 Box Legends", value: 530000 },
+      { label: "Rp 60.000 - 27 Box Legends", value: 60000 },
+      { label: "Rp 75.000 - 39 Box Legends", value: 75000 },
+      { label: "Rp 100.000 - 54 Box Legends", value: 100000 },
+      { label: "Rp 145.000 - 86 Box Legends", value: 145000 },
+      { label: "Rp 200.000 - 137 Box Legends", value: 200000 },
+      { label: "Rp 265.000 - 177 Box Legends", value: 265000 },
+      { label: "Rp 295.000 - 303 Box Legends", value: 295000 },
     ],
   },
   {
     name: "Diamond",
     logo: "assets/img/diamond.png",
     prices: [
-      { label: "Rp 45.000 - 35 Box Legends", value: 45000 },
-      { label: "Rp 80.000 - 117 Box Legends", value: 80000 },
-      { label: "Rp 140.000 - 235 Box Legends", value: 140000 },
-      { label: "Rp 270.000 - 471 Box Legends", value: 270000 },
-      { label: "Rp 530.000 - 942 Box Legends", value: 530000 },
+      { label: "Rp 60.000 - 32 Box Legends", value: 60000 },
+      { label: "Rp 75.000 - 46 Box Legends", value: 75000 },
+      { label: "Rp 100.000 - 64 Box Legends", value: 100000 },
+      { label: "Rp 145.000 - 101 Box Legends", value: 145000 },
+      { label: "Rp 200.000 - 159 Box Legends", value: 200000 },
+      { label: "Rp 265.000 - 207 Box Legends", value: 265000 },
+      { label: "Rp 295.000 - 353 Box Legends", value: 295000 },
     ],
   },
   {
     name: "Black Diamond",
     logo: "assets/img/blackdiamond.png",
     prices: [
-      { label: "Rp 45.000 - 40 Box Legends", value: 45000 },
-      { label: "Rp 80.000 - 134 Box Legends", value: 80000 },
-      { label: "Rp 140.000 - 269 Box Legends", value: 140000 },
-      { label: "Rp 270.000 - 539 Box Legends", value: 270000 },
-      { label: "Rp 530.000 - 1078 Box Legends", value: 530000 },
+      { label: "Rp 60.000 - 36 Box Legends", value: 60000 },
+      { label: "Rp 75.000 - 53 Box Legends", value: 75000 },
+      { label: "Rp 100.000 - 72 Box Legends", value: 100000 },
+      { label: "Rp 145.000 - 115 Box Legends", value: 145000 },
+      { label: "Rp 200.000 - 183 Box Legends", value: 200000 },
+      { label: "Rp 265.000 - 237 Box Legends", value: 265000 },
+      { label: "Rp 295.000 - 404 Box Legends", value: 295000 },
     ],
   },
 ];
@@ -139,7 +154,7 @@ const vipDataPoolPass = [
     name: "Pool Pass",
     logo: "assets/img/poolpass.png",
     prices: [
-      { label: "Pool Pass Biasa - Rp 45.000", value: 50000 },
+      { label: "Pool Pass Biasa - Rp 50.000", value: 50000 },
       { label: "Pool Pass Elite - Rp 85.000", value: 85000 },
     ],
   },
@@ -150,10 +165,10 @@ const vipDataGoldenShot = [
     name: "Golden Shot",
     logo: "assets/img/goldenshot.png",
     prices: [
-      { label: "25 Golden Shot - Rp 40.000", value: 40000 },
-      { label: "50 Golden Shot - Rp 80.000", value: 80000 },
-      { label: "75 Golden Shot - Rp 125.000", value: 125000 },
-      { label: "100 Golden Shot - Rp 155.000", value: 155000 },
+      { label: "24 Golden Shot - Rp 45.000", value: 45000 },
+      { label: "48 Golden Shot - Rp 88.000", value: 88000 },
+      { label: "72 Golden Shot - Rp 130.000", value: 130000 },
+      { label: "96 Golden Shot - Rp 170.000", value: 170000 },
     ],
   },
 ];
@@ -162,16 +177,16 @@ const vipDataBoxCollector = [
     name: "Box Collector",
     logo: "assets/img/boxcol.png",
     prices: [
-      { label: "8 Box - Rp 100.000", value: 100000 },
-      { label: "16 Box - Rp 200.000", value: 200000 },
-      { label: "24 Box - Rp 300.000", value: 300000 },
-      { label: "32 Box - Rp 400.000", value: 400000 },
-      { label: "40 Box - Rp 490.000", value: 490000 },
-      { label: "48 Box - Rp 585.000", value: 585000 },
-      { label: "56 Box - Rp 685.000", value: 685000 },
-      { label: "64 Box - Rp 780.000", value: 780000 },
-      { label: "72 Box - Rp 875.000", value: 875000 },
-      { label: "80 Box - Rp 970.000", value: 970000 },
+      { label: "1 Box - Rp 30.000", value: 30000 },
+      { label: "2 Box - Rp 60.000", value: 60000 },
+      { label: "3 Box - Rp 90.000", value: 90000 },
+      { label: "4 Box - Rp 125.000", value: 125000 },
+      { label: "5 Box - Rp 150.000", value: 150000 },
+      { label: "6 Box - Rp 180.000", value: 180000 },
+      { label: "7 Box - Rp 200.000", value: 200000 },
+      { label: "8 Box - Rp 230.000", value: 230000 },
+      { label: "9 Box - Rp 255.000", value: 255000 },
+      { label: "10 Box - Rp 280.000", value: 280000 },
     ],
     note: "• Max 26 kepingan cue promo random untuk 1 Box",
   },
@@ -217,79 +232,68 @@ function renderCategory(category) {
     const grid = document.createElement("div");
     grid.className = "package-grid";
 
-    vip.prices.forEach((pkg) => {
-  const card = document.createElement("div");
-  card.className = "package-card";
+    vip.prices.forEach(pkg => {
+      const card = document.createElement("div");
+      card.className = "package-card";
+      card.innerHTML = `
+        <h3>${pkg.label.split(" - ")[0]}</h3>
+        <p>${pkg.label.split(" - ")[1]}</p>
+        <div class="checkmark-icon">&#10003;</div>
+      `;
 
-  card.innerHTML = `
-    <h3>${pkg.label.split(" - ")[0]}</h3>
-    <p>${pkg.label.split(" - ")[1]}</p>
-    <div class="checkmark-icon">&#10003;</div>
-  `;
+const plusBtn = document.createElement("button");
+plusBtn.className = "btn-plus";
+plusBtn.textContent = "+";
+plusBtn.addEventListener("click", (e) => {
+  e.stopPropagation();
+  
+  // Ambil ulang data terbaru dari localStorage
+  let currentCart = JSON.parse(localStorage.getItem("cart")) || [];
 
-  // Inisialisasi jumlah
-  let quantity = 0;
-
-  const quantityDisplay = document.createElement("span");
-  quantityDisplay.className = "quantity-display";
-  quantityDisplay.textContent = quantity;
-
-  // Tombol + (Tambah)
-  const plusBtn = document.createElement("button");
-  plusBtn.className = "btn-plus";
-  plusBtn.textContent = "+";
-  plusBtn.addEventListener("click", (e) => {
-    e.stopPropagation();
-    quantity++;
-    quantityDisplay.textContent = quantity;
-
-    // Tambahkan ke cart
-    cartItems.push({
-      label: pkg.label,
-      category: category,
-      name: vip.name,
-    });
-
-    localStorage.setItem("cart", JSON.stringify(cartItems));
-    updateCartBadge();
-    animateFlyToCart(e.target);
+  // Tambahkan item baru
+  currentCart.push({
+    label: pkg.label,
+    category: category,
+    name: vip.name
   });
 
-  // Tombol − (Kurang)
-  const minusBtn = document.createElement("button");
-  minusBtn.className = "btn-minus";
-  minusBtn.textContent = "−";
-  minusBtn.addEventListener("click", (e) => {
-    e.stopPropagation();
-    if (quantity > 0) {
-      quantity--;
-      quantityDisplay.textContent = quantity;
+  // Simpan kembali ke localStorage
+  localStorage.setItem("cart", JSON.stringify(currentCart));
 
-      // Hapus satu item dari cart yang cocok
-      const index = cartItems.findIndex(
-        (item) =>
-          item.label === pkg.label &&
-          item.category === category &&
-          item.name === vip.name
-      );
-      if (index !== -1) {
-        cartItems.splice(index, 1);
-        localStorage.setItem("cart", JSON.stringify(cartItems));
-        updateCartBadge();
-      }
-    }
-  });
+  // ✅ Update cartItems global agar badge tetap sinkron
+  cartItems = currentCart;
 
-  // Gabungkan kontrol jumlah
-  const controlWrap = document.createElement("div");
-  controlWrap.className = "btn-control";
-  controlWrap.appendChild(minusBtn);
-  controlWrap.appendChild(quantityDisplay);
-  controlWrap.appendChild(plusBtn);
-
-  card.appendChild(controlWrap);
-  grid.appendChild(card);
+  // Update badge dan animasi
+  updateCartBadge();
+  animateFlyToCart(e.target);
 });
+
+      
+// Tombol -      
+const minusBtn = document.createElement("button");      
+minusBtn.className = "btn-minus";      
+minusBtn.textContent = "−";      
+minusBtn.addEventListener("click", (e) => {        
+  e.stopPropagation();        
+  const index = cartItems.findIndex(item =>          
+    item.label === pkg.label && item.category === category        
+  );        
+  if (index !== -1) {
+  cartItems.splice(index, 1);
+  updateCartBadge();
+  localStorage.setItem("cart", JSON.stringify(cartItems));
+}
+});
+
+const controlWrap = document.createElement("div");
+controlWrap.className = "btn-control";
+controlWrap.appendChild(minusBtn);
+controlWrap.appendChild(plusBtn);
+card.appendChild(controlWrap);
+grid.appendChild(card);
+      card.appendChild(controlWrap);
+      grid.appendChild(card);
+    });
 
     section.appendChild(grid);
 
@@ -355,6 +359,7 @@ document.addEventListener("visibilitychange", function () {
 function animateFlyToCart(sourceElement) {
   const cartIcon = document.querySelector(".cart-icon img");
   if (!cartIcon) return;
+
   const clone = sourceElement.cloneNode(true);
   const rect = sourceElement.getBoundingClientRect();
   clone.style.position = "fixed";
@@ -378,4 +383,5 @@ function animateFlyToCart(sourceElement) {
   setTimeout(() => {
     clone.remove();
   }, 900);
-}
+  }
+      
