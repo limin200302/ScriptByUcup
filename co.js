@@ -248,7 +248,7 @@ const orderText = document.getElementById("order_items").value;
 
   emailjs.sendForm("service_ucup", "template_1shj4dt", document.getElementById("account-form"))
     .then(() => {
-      alert("✅ Order berhasil dikirim ke email!");
+      alert("Orderanmu sukses ketua🔥✅, Estimasi proses 15-30 menit 🔥!");
       localStorage.removeItem("cart");
       window.location.href = "index.html";
     })
