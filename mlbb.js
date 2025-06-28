@@ -1,22 +1,86 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const produkList = [
-    { label: "86 Diamond", harga: "Rp 19.500" },
-    { label: "172 Diamond", harga: "Rp 39.000" },
-    { label: "257 Diamond", harga: "Rp 58.000" },
-    { label: "344 Diamond", harga: "Rp 77.000" },
-    { label: "429 Diamond", harga: "Rp 96.000" },
-    { label: "514 Diamond", harga: "Rp 114.000" },
-    { label: "706 Diamond", harga: "Rp 153.000" },
-    { label: "878 Diamond", harga: "Rp 189.000" },
-  ];
+let activeTab = null;
+let lastClickTime = 0;
 
+const dataProduk = {
+  diamond: {
+    note: "",
+    list: [
+      ["110 Diamond", "Rp 27.000"],
+      ["165 Diamond", "Rp 40.000"],
+      ["275 Diamond", "Rp 65.000"],
+      ["565 Diamond", "Rp 125.000"],
+      ["1.155 Diamond", "Rp 240.000"],
+      ["1.765 Diamond", "Rp 360.000"],
+      ["2.975 Diamond", "Rp 590.000"],
+      ["6.000 Diamond", "Rp 1.165.000"],
+      ["12.000 Diamond", "Rp 2.320.000"],
+      ["24.000 Diamond", "Rp 4.630.000"]
+    ]
+  },
+  wdp: {
+    note: "*Minimal pembelian 2 WDP",
+    list: [
+      ["1 WDP", "Rp 25.000"],
+      ["2 WDP", "Rp 50.000"],
+      ["3 WDP", "Rp 74.000"],
+      ["4 WDP", "Rp 98.500"],
+      ["5 WDP", "Rp 124.000"],
+      ["6 WDP", "Rp 149.000"],
+      ["7 WDP", "Rp 173.500"],
+      ["8 WDP", "Rp 198.500"],
+      ["9 WDP", "Rp 223.500"],
+      ["10 WDP", "Rp 240.000"]
+    ]
+  },
+  combo: {
+    note: "",
+    list: [
+      ["220 Diamond", "Rp 58.000"],
+      ["440 Diamond", "Rp 100.000"],
+      ["1.720 Diamond", "Rp 355.000"],
+      ["Elite Monthly Bundle", "Rp 14.000"],
+      ["Epic Monthly Bundle", "Rp 65.000"],
+      ["Twlight Pass", "Rp 125.000"]
+    ]
+  }
+};
+
+function toggleTab(tabName) {
+  const now = new Date().getTime();
+
+  if (activeTab === tabName && now - lastClickTime < 500) {
+    // klik kedua: tutup
+    document.getElementById("produk-container").innerHTML = "";
+    document.getElementById("produk-note").style.display = "none";
+    activeTab = null;
+  } else {
+    // klik pertama / ganti tab
+    renderProduk(tabName);
+    activeTab = tabName;
+  }
+
+  lastClickTime = now;
+}
+
+function renderProduk(tabName) {
   const container = document.getElementById("produk-container");
+  const note = document.getElementById("produk-note");
 
-  produkList.forEach(item => {
+  container.innerHTML = "";
+  const produk = dataProduk[tabName];
+
+  produk.list.forEach(([label, harga]) => {
     const div = document.createElement("div");
     div.className = "produk-item";
-    div.innerHTML = `<strong>${item.label}</strong><br><small>${item.harga}</small>`;
-    div.onclick = () => alert(`Kamu memilih ${item.label} - ${item.harga}`);
+    div.innerHTML = `<strong>${label}</strong><br><small>${harga}</small>`;
+    div.onclick = () => alert(`Kamu memilih ${label} - ${harga}`);
     container.appendChild(div);
   });
-});
+
+  if (produk.note) {
+    note.innerText = produk.note;
+    note.style.display = "block";
+  } else {
+    note.style.display = "none";
+  }
+}
