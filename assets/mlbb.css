@@ -91,3 +91,43 @@ body {
 .btn-order:hover {
   background: #ffe066;
 }
+.tab-kategori {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.tab-item {
+  background: #1f1f35;
+  border: 2px solid #facc15;
+  padding: 0.8rem;
+  text-align: center;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.tab-item:hover {
+  transform: scale(1.05);
+  box-shadow: 0 5px 10px #facc1540;
+}
+
+.tab-item img {
+  max-width: 50px;
+  height: auto;
+  display: block;
+  margin: 0 auto 0.5rem;
+}
+
+.tab-item.disabled {
+  opacity: 0.4;
+  pointer-events: none;
+  border-style: dashed;
+}
+
+.note {
+  color: #facc15;
+  margin-top: 1rem;
+  font-style: italic;
+}
