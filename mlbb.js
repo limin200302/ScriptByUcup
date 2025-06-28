@@ -1,5 +1,4 @@
 let activeTab = null;
-let lastClickTime = 0;
 
 const dataProduk = {
   diamond: {
@@ -46,20 +45,15 @@ const dataProduk = {
 };
 
 function toggleTab(tabName) {
-  const now = new Date().getTime();
-
-  if (activeTab === tabName && now - lastClickTime < 500) {
-    // klik kedua: tutup
+  if (activeTab === tabName) {
+    // Jika sama, matikan tab
     document.getElementById("produk-container").innerHTML = "";
     document.getElementById("produk-note").style.display = "none";
     activeTab = null;
   } else {
-    // klik pertama / ganti tab
     renderProduk(tabName);
     activeTab = tabName;
   }
-
-  lastClickTime = now;
 }
 
 function renderProduk(tabName) {
@@ -73,7 +67,7 @@ function renderProduk(tabName) {
     const div = document.createElement("div");
     div.className = "produk-item";
     div.innerHTML = `<strong>${label}</strong><br><small>${harga}</small>`;
-    div.onclick = () => alert(`Kamu memilih ${label} - ${harga}`);
+    // div.onclick = () => alert(`Kamu memilih ${label} - ${harga}`); // Dihilangkan
     container.appendChild(div);
   });
 
