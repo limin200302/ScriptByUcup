@@ -46,11 +46,12 @@ const dataProduk = {
 
 function toggleTab(tabName) {
   if (activeTab === tabName) {
-    // Jika sama, matikan tab
+    // Tutup tab jika diklik 2x
     document.getElementById("produk-container").innerHTML = "";
     document.getElementById("produk-note").style.display = "none";
     activeTab = null;
   } else {
+    // Buka tab baru
     renderProduk(tabName);
     activeTab = tabName;
   }
@@ -67,10 +68,15 @@ function renderProduk(tabName) {
     const div = document.createElement("div");
     div.className = "produk-item";
     div.innerHTML = `<strong>${label}</strong><br><small>${harga}</small>`;
-    // div.onclick = () => alert(`Kamu memilih ${label} - ${harga}`); // Dihilangkan
+
+    div.onclick = () => {
+      div.classList.toggle("selected");
+    };
+
     container.appendChild(div);
   });
 
+  // Tampilkan catatan jika ada
   if (produk.note) {
     note.innerText = produk.note;
     note.style.display = "block";
