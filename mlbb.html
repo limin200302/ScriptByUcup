@@ -43,25 +43,30 @@
   </section>
 
   <section class="akun-section">
-    <h2>Login Akun</h2>
-    <form id="akun-form">
-      <input type="text" name="nickname" placeholder="Nickname MLBB" required />
-      <select name="loginMethod" required>
-        <option value="">Pilih Login</option>
-        <option value="Facebook">Facebook</option>
-        <option value="VK">VK</option>
-        <option value="Moonton">Moonton</option>
-        <option value="TikTok">TikTok</option>
-      </select>
-      <input type="text" name="email" placeholder="Email / Nomor Telepon" required />
-      <input type="password" name="password" placeholder="Password Akun" required />
-      <input type="text" name="whatsapp" placeholder="Nomor WhatsApp" required />
-    </form>
+    <div class="order-list-box">
+      <h3>List orderan kamu di sini ketua</h3>
+      <div id="order-list"></div>
+    </div>
+    <div class="form-wrapper">
+      <h2>Login Akun</h2>
+      <form id="akun-form">
+        <input type="text" name="nickname" placeholder="Nickname MLBB" required />
+        <select name="loginMethod" required>
+          <option value="">Pilih Login</option>
+          <option value="Facebook">Facebook</option>
+          <option value="VK">VK</option>
+          <option value="Moonton">Moonton</option>
+          <option value="TikTok">TikTok</option>
+        </select>
+        <input type="text" name="email" placeholder="Email / Nomor Telepon" required />
+        <input type="password" name="password" placeholder="Password Akun" required />
+        <input type="text" name="whatsapp" placeholder="Nomor WhatsApp" required />
+      </form>
+    </div>
   </section>
 
   <footer class="mlbb-footer">
     <button class="btn-order" type="submit" form="akun-form">Lanjut ke Pembayaran</button>
-
     <div class="note-penting">
       <h3>NOTE PENTING HARAP DI BACA !!!</h3>
       <ul>
