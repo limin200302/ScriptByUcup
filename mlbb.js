@@ -137,8 +137,9 @@ document.addEventListener("DOMContentLoaded", () => {
 Swal.fire({
   icon: "warning",
   title: "Ketua Harap isi kolom yang kosong 😁",
-  background: "#1a1a2e url('https://i.ibb.co/WGzY0c8/bg-alert-dark.jpg') center/cover no-repeat",
+  background: "rgba(0,0,0,0.4)",
   color: "#fff",
+  backdrop: `rgba(0, 0, 0, 0.4)`,
   showCancelButton: true,
   confirmButtonText: "Siap ketua 🔥",
   cancelButtonText: "Batal",
@@ -148,7 +149,23 @@ Swal.fire({
     confirmButton: "btn-confirm",
     cancelButton: "btn-cancel"
   }
+}).then((result) => {
+  if (!result.isConfirmed) {
+    // Jika klik Batal
+    Swal.fire({
+      icon: "error",
+      title: "Yah maaf ketua 😓",
+      text: "Permintaan kamu belum dapat kita proses.",
+      background: "rgba(0,0,0,0.4)",
+      color: "#fff",
+      customClass: {
+        title: "glow-text",
+        popup: "custom-popup"
+      }
+    });
+  }
 });
+      
       
     }
   });
