@@ -228,4 +228,20 @@ ${listItem}
       });
   });
 });
+document.addEventListener("DOMContentLoaded", () => {
+  // EVENT UNTUK TAB KATEGORI DENGAN data-tab
+  document.querySelectorAll(".tab-item[data-tab]").forEach((tab) => {
+    tab.addEventListener("click", () => {
+      const tabName = tab.getAttribute("data-tab");
+      toggleTab(tabName);
+    });
+  });
+
+  // SUDAH ADA: Tombol Order
+  const btnOrder = document.querySelector(".btn-order");
+  const form = document.getElementById("akun-form");
+  btnOrder.addEventListener("click", (e) => {
+    // ... (validasi & fonnte)
+  });
+});
 </script>
