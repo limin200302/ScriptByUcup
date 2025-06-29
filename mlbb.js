@@ -1,5 +1,6 @@
 let activeTab = null;
-let lastClickedItem = null;
+const selectedItems = new Set();
+const orderList = document.getElementById("order-list");
 
 const dataProduk = {
   diamond: {
@@ -62,23 +63,26 @@ function toggleTab(tabName) {
 function renderProduk(tabName) {
   const container = document.getElementById("produk-container");
   const note = document.getElementById("produk-note");
-
   container.innerHTML = "";
-  lastClickedItem = null;
+  selectedItems.clear();
+  updateOrderList();
 
   const produk = dataProduk[tabName];
-
   produk.list.forEach(([label, harga]) => {
     const div = document.createElement("div");
     div.className = "produk-item";
     div.innerHTML = `<strong>${label}</strong><br><small>${harga}</small>`;
-
+    
     div.addEventListener("click", () => {
-      if (div.classList.contains("selected")) {
+      const key = `${label} - ${harga}`;
+      if (selectedItems.has(key)) {
+        selectedItems.delete(key);
         div.classList.remove("selected");
       } else {
+        selectedItems.add(key);
         div.classList.add("selected");
       }
+      updateOrderList();
     });
 
     container.appendChild(div);
@@ -91,18 +95,40 @@ function renderProduk(tabName) {
     note.style.display = "none";
   }
 }
+
+function updateOrderList() {
+  orderList.innerHTML = "";
+  selectedItems.forEach((item) => {
+    const p = document.createElement("p");
+    p.innerHTML = `${item} <button class="cancel-btn" onclick="removeOrder('${item}')">❌</button>`;
+    orderList.appendChild(p);
+  });
+}
+
+function removeOrder(item) {
+  selectedItems.delete(item);
+  updateOrderList();
+
+  // juga update tampilan produk
+  const items = document.querySelectorAll(".produk-item");
+  items.forEach((div) => {
+    if (div.innerText.replace(/\n/g, " ") === item) {
+      div.classList.remove("selected");
+    }
+  });
+}
+
 document.body.addEventListener("click", (e) => {
   const container = document.getElementById("produk-container");
   if (!container.contains(e.target)) {
-    const selected = container.querySelectorAll(".selected");
-    if (selected.length === 1) {
-      selected[0].classList.remove("selected");
+    if (selectedItems.size === 1) {
+      const item = Array.from(selectedItems)[0];
+      removeOrder(item);
     }
   }
 });
-document.addEventListener("DOMContentLoaded", () => {
-  // ... kode produk kamu di atas (jangan hapus)
 
+document.addEventListener("DOMContentLoaded", () => {
   const btnOrder = document.querySelector(".btn-order");
   const form = document.getElementById("akun-form");
 
@@ -117,56 +143,37 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     if (isEmpty) {
-      e.preventDefault(); // Cegah submit form
-
+      e.preventDefault();
       Swal.fire({
-  icon: "warning",
-  title: "Ketua Harap isi kolom yang kosong 😁",
-  background: "#1a1a2e url('https://i.ibb.co/WGzY0c8/bg-alert-dark.jpg') center/cover no-repeat",
-  color: "#fff",
-  showCancelButton: true,
-  confirmButtonText: "Siap ketua 🔥",
-  cancelButtonText: "Batal",
-  customClass: {
-    title: "glow-text",
-    popup: "custom-popup",
-    confirmButton: "btn-confirm",
-    cancelButton: "btn-cancel"
-  }
-});
-Swal.fire({
-  icon: "warning",
-  title: "Ketua Harap isi kolom yang kosong 😁",
-  background: "rgba(0,0,0,0.4)",
-  color: "#fff",
-  backdrop: `rgba(0, 0, 0, 0.4)`,
-  showCancelButton: true,
-  confirmButtonText: "Siap ketua 🔥",
-  cancelButtonText: "Batal",
-  customClass: {
-    title: "glow-text",
-    popup: "custom-popup",
-    confirmButton: "btn-confirm",
-    cancelButton: "btn-cancel"
-  }
-}).then((result) => {
-  if (!result.isConfirmed) {
-    // Jika klik Batal
-    Swal.fire({
-      icon: "error",
-      title: "Yah maaf ketua 😓",
-      text: "Permintaan kamu belum dapat kita proses.",
-      background: "rgba(0,0,0,0.4)",
-      color: "#fff",
-      customClass: {
-        title: "glow-text",
-        popup: "custom-popup"
-      }
-    });
-  }
-});
-      
-      
+        icon: "warning",
+        title: "Ketua Harap isi kolom yang kosong 😁",
+        background: "rgba(0,0,0,0.4)",
+        color: "#fff",
+        backdrop: `rgba(0, 0, 0, 0.4)`,
+        showCancelButton: true,
+        confirmButtonText: "Siap ketua 🔥",
+        cancelButtonText: "Batal",
+        customClass: {
+          title: "glow-text",
+          popup: "custom-popup",
+          confirmButton: "btn-confirm",
+          cancelButton: "btn-cancel"
+        }
+      }).then((result) => {
+        if (!result.isConfirmed) {
+          Swal.fire({
+            icon: "error",
+            title: "Yah maaf ketua 😓",
+            text: "Permintaan kamu belum dapat kita proses.",
+            background: "rgba(0,0,0,0.4)",
+            color: "#fff",
+            customClass: {
+              title: "glow-text",
+              popup: "custom-popup"
+            }
+          });
+        }
+      });
     }
   });
 });
