@@ -204,9 +204,19 @@ function toggleCollapse(element) {
 }
 
 function selectPayment(card, method) {
-  document.querySelectorAll(".payment-inner-card").forEach((el) =>
-    el.classList.remove("selected")
-  );
-  card.classList.add("selected");
-  document.getElementById("metode-terpilih").value = method;
+  const input = document.getElementById("metode-terpilih");
+  const isSelected = card.classList.contains("selected");
+
+  // Jika sudah dipilih, klik 2x untuk batal
+  if (isSelected) {
+    card.classList.remove("selected");
+    input.value = "";
+  } else {
+    // Reset semua dulu
+    document.querySelectorAll(".payment-inner-card").forEach((el) =>
+      el.classList.remove("selected")
+    );
+    card.classList.add("selected");
+    input.value = method;
+  }
 }
