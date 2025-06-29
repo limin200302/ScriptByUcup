@@ -1,6 +1,8 @@
+<script>
 let activeTab = null;
 const selectedItems = new Set();
 const orderList = document.getElementById("order-list");
+
 const dataProduk = {
   diamond: {
     note: "",
@@ -48,6 +50,7 @@ const dataProduk = {
 function toggleTab(tabName) {
   const container = document.getElementById("produk-container");
   const note = document.getElementById("produk-note");
+
   if (activeTab === tabName) {
     container.innerHTML = "";
     note.style.display = "none";
@@ -61,14 +64,16 @@ function toggleTab(tabName) {
 function renderProduk(tabName) {
   const container = document.getElementById("produk-container");
   const note = document.getElementById("produk-note");
-  container.innerHTML = "";
 
+  container.innerHTML = "";
   const produk = dataProduk[tabName];
+
   produk.list.forEach(([label, harga]) => {
     const key = `${label} - ${harga}`;
     const div = document.createElement("div");
     div.className = "produk-item";
     div.innerHTML = `<strong>${label}</strong><br><small>${harga}</small>`;
+
     if (selectedItems.has(key)) div.classList.add("selected");
 
     div.addEventListener("click", () => {
@@ -110,7 +115,6 @@ function updateOrderList() {
 }
 
 function removeOrder(item) {
-function removeOrder(item) {
   selectedItems.delete(item);
   updateOrderList();
 
@@ -124,29 +128,13 @@ function removeOrder(item) {
     }
   });
 }
-function removeOrder(item) {
-  selectedItems.delete(item);
-  updateOrderList();
 
-  const items = document.querySelectorAll(".produk-item");
-  items.forEach((div) => {
-    const label = div.querySelector("strong")?.innerText;
-    const harga = div.querySelector("small")?.innerText;
-    const key = `${label} - ${harga}`;
-    if (key === item) {
-      div.classList.remove("selected");
-    }
-  });
-}
+// Proteksi klik di luar produk & order list
 document.body.addEventListener("click", (e) => {
   const produkContainer = document.getElementById("produk-container");
   const orderListBox = document.querySelector(".order-list-box");
 
-  // kalau klik terjadi di luar produk & bukan di area order list, baru boleh hapus
-  if (
-    !produkContainer.contains(e.target) &&
-    !orderListBox.contains(e.target)
-  ) {
+  if (!produkContainer.contains(e.target) && !orderListBox.contains(e.target)) {
     if (selectedItems.size === 1) {
       const item = Array.from(selectedItems)[0];
       removeOrder(item);
@@ -154,7 +142,16 @@ document.body.addEventListener("click", (e) => {
   }
 });
 
+// Tambahkan event listener ke tab kategori
 document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll(".tab-item").forEach((tab) => {
+    tab.addEventListener("click", () => {
+      const tabName = tab.dataset.tab;
+      toggleTab(tabName);
+    });
+  });
+
+  // Tombol order dan validasi + bot Fonnte
   const btnOrder = document.querySelector(".btn-order");
   const form = document.getElementById("akun-form");
 
@@ -162,16 +159,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const inputs = form.querySelectorAll("input, select");
     let isEmpty = false;
     inputs.forEach((input) => {
-      if (!input.value.trim()) {
-        isEmpty = true;
-      }
+      if (!input.value.trim()) isEmpty = true;
     });
 
     if (isEmpty || selectedItems.size === 0) {
       e.preventDefault();
       Swal.fire({
         icon: "warning",
-        title: "Ketua Harap isi semua kolom & pilih item ya 😁",
+        title: "Ketua Harap isi semua kolom & pilih item 😁",
         background: "rgba(0,0,0,0.4)",
         color: "#fff",
         confirmButtonText: "Siap ketua 🔥",
@@ -184,10 +179,8 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // Kirim pesan ke Fonnte
     const data = Object.fromEntries(new FormData(form).entries());
     const listItem = Array.from(selectedItems).join("%0A");
-
     const message = `🔥 *Order Baru dari Website* 🔥
 👤 Nickname: ${data.nickname}
 📧 Email: ${data.email}
@@ -196,7 +189,7 @@ document.addEventListener("DOMContentLoaded", () => {
 📱 WhatsApp: ${data.whatsapp}
 🛒 Order: 
 ${listItem}
-🔒 V2L: ${data.v2l ? data.v2l : "tidak diketahui"}
+🔒 V2L: ${data.v2l || "tidak diketahui"}
 ✅ Status: Pembayaran berhasil`;
 
     fetch("https://api.fonnte.com/send", {
@@ -212,7 +205,6 @@ ${listItem}
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log("Pesan terkirim:", data);
         Swal.fire({
           icon: "success",
           title: "Orderan kamu sudah dikirim ke admin ✅",
@@ -227,7 +219,6 @@ ${listItem}
         });
       })
       .catch((err) => {
-        console.error("Gagal kirim:", err);
         Swal.fire({
           icon: "error",
           title: "Gagal mengirim ke WhatsApp 😢",
@@ -237,3 +228,4 @@ ${listItem}
       });
   });
 });
+</script>
