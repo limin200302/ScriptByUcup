@@ -202,7 +202,6 @@ function toggleCollapse(element) {
 
   next.classList.toggle("open");
 }
-}
 
 function selectPayment(card, method) {
   const input = document.getElementById("metode-terpilih");
