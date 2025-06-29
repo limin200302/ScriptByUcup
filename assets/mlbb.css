@@ -201,3 +201,31 @@ body {
   border-radius: 8px;
   padding: 8px 16px;
 }
+.note-penting {
+  background: #232344;
+  padding: 1.5rem;
+  margin-top: 1.5rem;
+  border-radius: 12px;
+  color: #ffcc00;
+  font-size: 0.95rem;
+  box-shadow: 0 0 10px rgba(255, 204, 0, 0.2);
+}
+
+.note-penting h3 {
+  margin-top: 0;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #fff;
+  text-shadow: 0 0 5px #ffcc00;
+  margin-bottom: 1rem;
+}
+
+.note-penting ul {
+  padding-left: 1.2rem;
+  margin: 0;
+}
+
+.note-penting li {
+  margin-bottom: 0.75rem;
+  line-height: 1.4;
+}
