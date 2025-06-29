@@ -143,3 +143,30 @@ body {
   border-color: #facc15;
   background-color: #2f2f50;
 }
+.payment-marquee {
+  overflow: hidden;
+  background: #0f0f1c;
+  padding: 10px 0;
+  border-top: 1px solid #333;
+}
+
+.payment-track {
+  display: flex;
+  gap: 2rem;
+  animation: scroll 15s linear infinite;
+  width: max-content;
+}
+
+.payment-track img {
+  height: 30px;
+  object-fit: contain;
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
