@@ -110,21 +110,43 @@ function updateOrderList() {
 }
 
 function removeOrder(item) {
+function removeOrder(item) {
   selectedItems.delete(item);
   updateOrderList();
-  // hilangkan highlight dari daftar harga
+
   const items = document.querySelectorAll(".produk-item");
   items.forEach((div) => {
-    const text = div.innerText.replace(/\n/g, " ");
-    if (text === item) {
+    const label = div.querySelector("strong")?.innerText;
+    const harga = div.querySelector("small")?.innerText;
+    const key = `${label} - ${harga}`;
+    if (key === item) {
       div.classList.remove("selected");
     }
   });
 }
+function removeOrder(item) {
+  selectedItems.delete(item);
+  updateOrderList();
 
+  const items = document.querySelectorAll(".produk-item");
+  items.forEach((div) => {
+    const label = div.querySelector("strong")?.innerText;
+    const harga = div.querySelector("small")?.innerText;
+    const key = `${label} - ${harga}`;
+    if (key === item) {
+      div.classList.remove("selected");
+    }
+  });
+}
 document.body.addEventListener("click", (e) => {
-  const container = document.getElementById("produk-container");
-  if (!container.contains(e.target)) {
+  const produkContainer = document.getElementById("produk-container");
+  const orderListBox = document.querySelector(".order-list-box");
+
+  // kalau klik terjadi di luar produk & bukan di area order list, baru boleh hapus
+  if (
+    !produkContainer.contains(e.target) &&
+    !orderListBox.contains(e.target)
+  ) {
     if (selectedItems.size === 1) {
       const item = Array.from(selectedItems)[0];
       removeOrder(item);
