@@ -196,21 +196,17 @@ ${listItem}
 });
   
 });
-// COLLAPSE KATEGORI PEMBAYARAN
-function toggleCollapse(el) {
-  const next = el.nextElementSibling;
-  if (next.style.display === "none") {
-    next.style.display = "block";
-  } else {
-    next.style.display = "none";
+function toggleCollapse(element) {
+  const next = element.nextElementSibling;
+  if (next && next.classList.contains("form-sub")) {
+    next.style.display = next.style.display === "none" ? "flex" : "none";
   }
 }
 
-// PILIH METODE PEMBAYARAN
-function selectPayment(el, metode) {
-  document.querySelectorAll(".payment-inner-card").forEach((card) => {
-    card.classList.remove("active");
-  });
-  el.classList.add("active");
-  document.getElementById("metode-terpilih").value = metode;
+function selectPayment(card, method) {
+  document.querySelectorAll(".payment-inner-card").forEach((el) =>
+    el.classList.remove("selected")
+  );
+  card.classList.add("selected");
+  document.getElementById("metode-terpilih").value = method;
 }
