@@ -91,3 +91,12 @@ function renderProduk(tabName) {
     note.style.display = "none";
   }
 }
+document.body.addEventListener("click", (e) => {
+  const container = document.getElementById("produk-container");
+  if (!container.contains(e.target)) {
+    const selected = container.querySelectorAll(".selected");
+    if (selected.length === 1) {
+      selected[0].classList.remove("selected");
+    }
+  }
+});
