@@ -100,3 +100,41 @@ document.body.addEventListener("click", (e) => {
     }
   }
 });
+document.addEventListener("DOMContentLoaded", () => {
+  // ... kode produk kamu di atas (jangan hapus)
+
+  const btnOrder = document.querySelector(".btn-order");
+  const form = document.getElementById("akun-form");
+
+  btnOrder.addEventListener("click", (e) => {
+    const inputs = form.querySelectorAll("input, select");
+    let isEmpty = false;
+
+    inputs.forEach((input) => {
+      if (!input.value.trim()) {
+        isEmpty = true;
+      }
+    });
+
+    if (isEmpty) {
+      e.preventDefault(); // Cegah submit form
+
+      Swal.fire({
+        icon: "warning",
+        title: "Ketua Harap isi kolom yang kosong 😁",
+        showCancelButton: true,
+        confirmButtonText: "Siap ketua 🔥",
+        cancelButtonText: "Batal",
+        reverseButtons: true,
+      }).then((result) => {
+        if (!result.isConfirmed) {
+          Swal.fire({
+            icon: "error",
+            title: "Yah maaf ketua 😓",
+            text: "Permintaan kamu belum dapat kita proses.",
+          });
+        }
+      });
+    }
+  });
+});
