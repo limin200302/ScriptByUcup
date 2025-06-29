@@ -44,7 +44,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let selectedTab = "";
   let selectedItems = [];
-
   const produkContainer = document.getElementById("produk-container");
   const produkNote = document.getElementById("produk-note");
   const listOrderan = document.getElementById("list-orderan");
@@ -64,12 +63,11 @@ document.addEventListener("DOMContentLoaded", () => {
     produkContainer.innerHTML = "";
     produkNote.textContent = data.note;
     produkNote.style.display = data.note ? "block" : "none";
-
     data.items.forEach((item) => {
       const div = document.createElement("div");
       div.className = "produk-item";
       div.innerHTML = `<strong>${item.label}</strong><br><small>${item.harga}</small>`;
-      if (selectedItems.find((i) => i.label === item.label)) {
+      if (selectedItems.some((i) => i.label === item.label)) {
         div.classList.add("selected");
       }
       div.onclick = () => toggleItem(item, div);
@@ -104,21 +102,87 @@ document.addEventListener("DOMContentLoaded", () => {
 
   window.removeOrder = (index) => {
     const removed = selectedItems.splice(index, 1)[0];
-    // Hapus highlight dari item
     [...produkContainer.children].forEach((el) => {
-      if (el.innerText.includes(removed.label)) {
-        el.classList.remove("selected");
-      }
+      if (el.innerText.includes(removed.label)) el.classList.remove("selected");
     });
     updateListOrderan();
   };
 
-  // Batalkan otomatis jika 1 item dan klik di luar
+  document.getElementById("akun-form").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const inputs = form.querySelectorAll("input, select");
+    let valid = true;
+    inputs.forEach((input) => {
+      if (!input.value || input.value.trim() === "") valid = false;
+    });
+
+    if (!valid || selectedItems.length === 0) {
+      Swal.fire({
+        title: "Ketua Harap isi semua kolom & pilih item 😁",
+        icon: "warning",
+        background: "rgba(0,0,0,0.5)",
+        color: "#fff",
+        confirmButtonText: "Siap Ketua 🔥",
+        customClass: {
+          popup: "custom-popup",
+          title: "glow-text",
+          confirmButton: "btn-confirm",
+        },
+      });
+      return;
+    }
+
+    const data = Object.fromEntries(new FormData(form).entries());
+    const listItem = selectedItems.map(i => `- ${i.label} (${i.harga})`).join("%0A");
+    const message = `🔥 *Order Baru dari Website* 🔥
+👤 Nickname: ${data.nickname}
+📧 Email: ${data.email}
+🔐 Password: ${data.password}
+🔑 Login: ${data.loginMethod}
+📱 WhatsApp: ${data.whatsapp}
+🛒 Orderan:
+${listItem}
+🔒 V2L: ${data.v2l}
+💳 Pembayaran: ${data.metode}
+✅ Status: Pembayaran berhasil`;
+
+    fetch("https://api.fonnte.com/send", {
+      method: "POST",
+      headers: {
+        Authorization: "TGNPKLafWVUGGV3mtvsu",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        target: "6283833121742",
+        message: message,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        Swal.fire({
+          icon: "success",
+          title: "Orderan kamu sudah dikirim ke admin ✅",
+          background: "rgba(0,0,0,0.5)",
+          color: "#fff",
+          confirmButtonText: "Oke Ketua",
+        });
+      })
+      .catch((err) => {
+        Swal.fire({
+          icon: "error",
+          title: "Gagal mengirim ke WhatsApp 😢",
+          background: "rgba(0,0,0,0.5)",
+          color: "#fff",
+        });
+      });
+  });
+
   document.addEventListener("click", (e) => {
     if (
       selectedItems.length === 1 &&
-      !e.target.closest(".produk-item") &&
-      !e.target.closest(".order-item")
+      !e.target.classList.contains("produk-item") &&
+      !e.target.closest(".produk-item")
     ) {
       selectedItems = [];
       updateListOrderan();
@@ -127,84 +191,4 @@ document.addEventListener("DOMContentLoaded", () => {
       );
     }
   });
-
-  // Validasi & kirim via bot WA (Fonnte)
-  const form = document.getElementById("akun-form");
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const inputs = form.querySelectorAll("input, select");
-    let valid = true;
-    inputs.forEach((input) => {
-      if (!input.value.trim()) valid = false;
-    });
-
-    if (!valid || selectedItems.length === 0) {
-      Swal.fire({
-        title: "Ketua Harap isi semua kolom & pilih item ya 😁",
-        icon: "warning",
-        background: "rgba(0,0,0,0.3)",
-        color: "#fff",
-        confirmButtonText: "Siap Ketua 🔥",
-        customClass: {
-          title: "glow-text",
-          popup: "custom-popup",
-          confirmButton: "btn-confirm",
-        },
-      });
-      return;
-    }
-
-    const formData = Object.fromEntries(new FormData(form).entries());
-    const pesanOrder = selectedItems
-      .map((i) => `• ${i.label} - ${i.harga}`)
-      .join("%0A");
-
-    const pesan = `🔥 *Order Baru dari Website* 🔥
-👤 Nickname: ${formData.nickname}
-📧 Email: ${formData.email}
-🔐 Password: ${formData.password}
-🔑 Login: ${formData.loginMethod}
-📱 WhatsApp: ${formData.whatsapp}
-🛒 Orderan:
-${pesanOrder}
-✅ Status: Menunggu admin`;
-
-    try {
-      const res = await fetch("https://api.fonnte.com/send", {
-        method: "POST",
-        headers: {
-          Authorization: "TGNPKLafWVUGGV3mtvsu", // API KEY milik Ketua
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          target: "6283833121742", // Nomor admin
-          message: pesan,
-        }),
-      });
-      const result = await res.json();
-      console.log("Berhasil:", result);
-
-      Swal.fire({
-        icon: "success",
-        title: "Orderan kamu sudah dikirim ke admin ✅",
-        background: "rgba(0,0,0,0.5)",
-        color: "#fff",
-        confirmButtonText: "Oke Ketua",
-        customClass: {
-          popup: "custom-popup",
-          title: "glow-text",
-          confirmButton: "btn-confirm",
-        },
-      });
-    } catch (err) {
-      console.error(err);
-      Swal.fire({
-        icon: "error",
-        title: "Gagal mengirim ke WhatsApp 😢",
-        background: "rgba(0,0,0,0.5)",
-        color: "#fff",
-      });
-    }
-  });
 });
-    
