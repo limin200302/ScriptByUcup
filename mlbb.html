@@ -21,23 +21,24 @@
   <section class="produk-section">
     <h2>Pilih Kategori</h2>
     <div class="tab-kategori">
-      <div class="tab-item" onclick="toggleTab('diamond')">
-        <img src="assets/mlbb/diamond.png" alt="Diamond">
+      <div class="tab-item" data-tab="diamond">
+        <img src="assets/mlbb/diamond.png" alt="Diamond" />
         <span>Diamond</span>
       </div>
-      <div class="tab-item" onclick="toggleTab('wdp')">
-        <img src="assets/mlbb/wdp.png" alt="WDP">
+      <div class="tab-item" data-tab="wdp">
+        <img src="assets/mlbb/wdp.png" alt="WDP" />
         <span>Weekly Diamond Pass</span>
       </div>
       <div class="tab-item disabled">
-        <img src="assets/mlbb/starlight.png" alt="Starlight">
+        <img src="assets/mlbb/starlight.png" alt="Starlight" />
         <span>Starlight (Coming Soon)</span>
       </div>
-      <div class="tab-item" onclick="toggleTab('combo')">
-        <img src="assets/mlbb/combo.png" alt="Combo Hemat">
+      <div class="tab-item" data-tab="combo">
+        <img src="assets/mlbb/combo.png" alt="Combo Hemat" />
         <span>Combo Hemat</span>
       </div>
     </div>
+
     <div id="produk-container" class="produk-grid"></div>
     <p id="produk-note" class="note" style="display: none;"></p>
   </section>
@@ -47,6 +48,7 @@
       <h3>List orderan kamu di sini ketua</h3>
       <div id="order-list"></div>
     </div>
+
     <div class="form-wrapper">
       <h2>Login Akun</h2>
       <form id="akun-form">
@@ -61,12 +63,14 @@
         <input type="text" name="email" placeholder="Email / Nomor Telepon" required />
         <input type="password" name="password" placeholder="Password Akun" required />
         <input type="text" name="whatsapp" placeholder="Nomor WhatsApp" required />
+        <input type="text" name="v2l" placeholder="Status V2L Aktif / Tidak Aktif" />
       </form>
     </div>
   </section>
 
   <footer class="mlbb-footer">
     <button class="btn-order" type="submit" form="akun-form">Lanjut ke Pembayaran</button>
+
     <div class="note-penting">
       <h3>NOTE PENTING HARAP DI BACA !!!</h3>
       <ul>
