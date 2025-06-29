@@ -1,4 +1,5 @@
 let activeTab = null;
+let lastClickedItem = null;
 
 const dataProduk = {
   diamond: {
@@ -45,15 +46,16 @@ const dataProduk = {
 };
 
 function toggleTab(tabName) {
+  const container = document.getElementById("produk-container");
+  const note = document.getElementById("produk-note");
+
   if (activeTab === tabName) {
-    // Tutup tab jika diklik 2x
-    document.getElementById("produk-container").innerHTML = "";
-    document.getElementById("produk-note").style.display = "none";
+    container.innerHTML = "";
+    note.style.display = "none";
     activeTab = null;
   } else {
-    // Buka tab baru
-    renderProduk(tabName);
     activeTab = tabName;
+    renderProduk(tabName);
   }
 }
 
@@ -62,6 +64,8 @@ function renderProduk(tabName) {
   const note = document.getElementById("produk-note");
 
   container.innerHTML = "";
+  lastClickedItem = null;
+
   const produk = dataProduk[tabName];
 
   produk.list.forEach(([label, harga]) => {
@@ -69,14 +73,17 @@ function renderProduk(tabName) {
     div.className = "produk-item";
     div.innerHTML = `<strong>${label}</strong><br><small>${harga}</small>`;
 
-    div.onclick = () => {
-      div.classList.toggle("selected");
-    };
+    div.addEventListener("click", () => {
+      if (div.classList.contains("selected")) {
+        div.classList.remove("selected");
+      } else {
+        div.classList.add("selected");
+      }
+    });
 
     container.appendChild(div);
   });
 
-  // Tampilkan catatan jika ada
   if (produk.note) {
     note.innerText = produk.note;
     note.style.display = "block";
