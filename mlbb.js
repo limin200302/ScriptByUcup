@@ -120,21 +120,36 @@ document.addEventListener("DOMContentLoaded", () => {
       e.preventDefault(); // Cegah submit form
 
       Swal.fire({
-        icon: "warning",
-        title: "Ketua Harap isi kolom yang kosong 😁",
-        showCancelButton: true,
-        confirmButtonText: "Siap ketua 🔥",
-        cancelButtonText: "Batal",
-        reverseButtons: true,
-      }).then((result) => {
-        if (!result.isConfirmed) {
-          Swal.fire({
-            icon: "error",
-            title: "Yah maaf ketua 😓",
-            text: "Permintaan kamu belum dapat kita proses.",
-          });
-        }
-      });
+  icon: "warning",
+  title: "Ketua Harap isi kolom yang kosong 😁",
+  background: "#1a1a2e url('https://i.ibb.co/WGzY0c8/bg-alert-dark.jpg') center/cover no-repeat",
+  color: "#fff",
+  showCancelButton: true,
+  confirmButtonText: "Siap ketua 🔥",
+  cancelButtonText: "Batal",
+  customClass: {
+    title: "glow-text",
+    popup: "custom-popup",
+    confirmButton: "btn-confirm",
+    cancelButton: "btn-cancel"
+  }
+});
+Swal.fire({
+  icon: "warning",
+  title: "Ketua Harap isi kolom yang kosong 😁",
+  background: "#1a1a2e url('https://i.ibb.co/WGzY0c8/bg-alert-dark.jpg') center/cover no-repeat",
+  color: "#fff",
+  showCancelButton: true,
+  confirmButtonText: "Siap ketua 🔥",
+  cancelButtonText: "Batal",
+  customClass: {
+    title: "glow-text",
+    popup: "custom-popup",
+    confirmButton: "btn-confirm",
+    cancelButton: "btn-cancel"
+  }
+});
+      
     }
   });
 });
