@@ -179,16 +179,20 @@ ${listItem}
   });
 
   document.addEventListener("click", (e) => {
-    if (
-      selectedItems.length === 1 &&
-      !e.target.classList.contains("produk-item") &&
-      !e.target.closest(".produk-item")
-    ) {
-      selectedItems = [];
-      updateListOrderan();
-      [...produkContainer.children].forEach((el) =>
-        el.classList.remove("selected")
-      );
-    }
-  });
+  const isProduk = e.target.classList.contains("produk-item") || e.target.closest(".produk-item");
+  const isCancelBtn = e.target.classList.contains("cancel-btn");
+  const isOrderItem = e.target.closest(".order-item");
+
+  if (
+    selectedItems.length === 1 &&
+    !isProduk &&
+    !isCancelBtn &&
+    !isOrderItem
+  ) {
+    selectedItems = [];
+    updateListOrderan();
+    [...produkContainer.children].forEach((el) => el.classList.remove("selected"));
+  }
+});
+  
 });
