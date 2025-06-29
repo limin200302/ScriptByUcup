@@ -198,9 +198,10 @@ ${listItem}
 });
 function toggleCollapse(element) {
   const next = element.nextElementSibling;
-  if (next && next.classList.contains("form-sub")) {
-    next.style.display = next.style.display === "none" ? "flex" : "none";
-  }
+  if (!next || !next.classList.contains("form-sub")) return;
+
+  next.classList.toggle("open");
+}
 }
 
 function selectPayment(card, method) {
