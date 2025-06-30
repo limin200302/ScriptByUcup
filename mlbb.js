@@ -108,7 +108,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   document.getElementById("akun-form").addEventListener("submit", (e) => {
     e.preventDefault();
-    Swal.fire("Submit Detected!", "Handler submit jalan, Ketua!", "success"); // DEBUG ONLY
     const form = e.target;
     const inputs = form.querySelectorAll("input, select");
     let valid = true;
@@ -116,9 +115,6 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!input.value || input.value.trim() === "") valid = false;
     });
     const metode = document.getElementById("metode-terpilih").value;
-    console.log("SUBMIT FORM TRIGGERED");
-    console.log({ valid, selectedItem, metode });
-
     if (!valid || !selectedItem || !metode) {
       Swal.fire({
         title: "Ketua Harap isi semua kolom & pilih item 😁",
@@ -135,6 +131,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+    // --- Swal Konfirmasi Pembayaran (lanjutkan bagian ini) ---
     const data = Object.fromEntries(new FormData(form).entries());
     const item = selectedItem;
     const total = calculateTotalHarga(metode);
