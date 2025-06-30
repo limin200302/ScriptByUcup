@@ -56,64 +56,65 @@
         <input type="password" name="password" placeholder="Password Akun" required />
         <input type="text" name="whatsapp" placeholder="Nomor WhatsApp" required />
         <select name="v2l" required>
-          <option value="">V2L Aktif?</option>
+          <option value="">V2L Aktif</option>
           <option value="Ya">Ya</option>
           <option value="Tidak">Tidak</option>
         </select>
 
-        <section class="payment-section">
-          <h2>Pilih Metode Pembayaran</h2>
-          <div class="payment-wrapper">
-            <!-- QRIS -->
-            <div class="form-card collapsible" onclick="toggleCollapse(this)">📟 QRIS</div>
-            <div class="form-sub">
-              <div class="payment-inner-card" onclick="selectPayment(this, 'QRIS')">
-                <span class="payment-label">
-                  <img src="assets/payment/qris.png" alt="QRIS"> QRIS (+Rp 1.500)
-                </span>
-              </div>
-            </div>
-            <!-- E-Wallet -->
-            <div class="form-card collapsible" onclick="toggleCollapse(this)">💼 E-Wallet</div>
-            <div class="form-sub">
-              <div class="payment-inner-card" onclick="selectPayment(this, 'Dana')">
-                <span class="payment-label"><img src="assets/payment/dana.png"> Dana</span>
-              </div>
-              <div class="payment-inner-card" onclick="selectPayment(this, 'ShopeePay')">
-                <span class="payment-label"><img src="assets/payment/shopeepay.png"> ShopeePay</span>
-              </div>
-              <div class="payment-inner-card" onclick="selectPayment(this, 'Ovo')">
-                <span class="payment-label"><img src="assets/payment/ovo.png"> Ovo</span>
-              </div>
-              <div class="payment-inner-card" onclick="selectPayment(this, 'GoPay')">
-                <span class="payment-label"><img src="assets/payment/gopay.png"> GoPay</span>
-              </div>
-            </div>
-            <!-- Bank -->
-            <div class="form-card collapsible" onclick="toggleCollapse(this)">🏦 Bank</div>
-            <div class="form-sub">
-              <div class="payment-inner-card" onclick="selectPayment(this, 'BCA')">
-                <span class="payment-label"><img src="assets/payment/bca.png"> BCA</span>
-              </div>
-              <div class="payment-inner-card" onclick="selectPayment(this, 'BRI')">
-                <span class="payment-label"><img src="assets/payment/bri.png"> BRI</span>
-              </div>
-              <div class="payment-inner-card" onclick="selectPayment(this, 'SeaBank')">
-                <span class="payment-label"><img src="assets/payment/sea.png"> SeaBank</span>
-              </div>
-              <div class="payment-inner-card" onclick="selectPayment(this, 'Bank Jago')">
-                <span class="payment-label"><img src="assets/payment/jago.png"> Bank Jago</span>
-              </div>
-            </div>
-          </div>
-          <input type="hidden" name="metode" id="metode-terpilih">
-        </section>
-      </form>
+      
+<section class="payment-section">
+  <h2>Pilih Metode Pembayaran</h2>
+  <div class="payment-wrapper">
+    <!-- QRIS -->
+    <div class="form-card collapsible" onclick="toggleCollapse(this)">📟 QRIS</div>
+    <div class="form-sub">
+      <div class="payment-inner-card" onclick="selectPayment(this, 'QRIS')">
+        <span class="payment-label">
+          <img src="assets/payment/qris.png" alt="QRIS"> QRIS (+Rp 1.500)
+        </span>
+      </div>
     </div>
-  </section>
 
+    <!-- E-Wallet -->
+    <div class="form-card collapsible" onclick="toggleCollapse(this)">💼 E-Wallet</div>
+    <div class="form-sub">
+      <div class="payment-inner-card" onclick="selectPayment(this, 'Dana')">
+        <span class="payment-label"><img src="assets/payment/dana.png"> Dana</span>
+      </div>
+      <div class="payment-inner-card" onclick="selectPayment(this, 'ShopeePay')">
+        <span class="payment-label"><img src="assets/payment/shopeepay.png"> ShopeePay (+Rp 1.500)</span>
+      </div>
+      <div class="payment-inner-card" onclick="selectPayment(this, 'Ovo')">
+        <span class="payment-label"><img src="assets/payment/ovo.png"> Ovo (+Rp 1.500)</span>
+      </div>
+      <div class="payment-inner-card" onclick="selectPayment(this, 'GoPay')">
+        <span class="payment-label"><img src="assets/payment/gopay.png"> GoPay (+Rp 1.500)</span>
+      </div>
+    </div>
+
+    <!-- Bank -->
+    <div class="form-card collapsible" onclick="toggleCollapse(this)">🏦 Bank</div>
+    <div class="form-sub">
+      <div class="payment-inner-card" onclick="selectPayment(this, 'BCA')">
+        <span class="payment-label"><img src="assets/payment/bca.png"> BCA</span>
+      </div>
+      <div class="payment-inner-card" onclick="selectPayment(this, 'BRI')">
+        <span class="payment-label"><img src="assets/payment/bri.png"> BRI</span>
+      </div>
+      <div class="payment-inner-card" onclick="selectPayment(this, 'SeaBank')">
+        <span class="payment-label"><img src="assets/payment/sea.png"> SeaBank</span>
+      </div>
+      <div class="payment-inner-card" onclick="selectPayment(this, 'Bank Jago')">
+        <span class="payment-label"><img src="assets/payment/jago.png"> Bank Jago</span>
+      </div>
+    </div>
+  </div>
+
+
+  <input type="hidden" name="metode" id="metode-terpilih">
+</section>
+<div id="total-harga-display" style="text-align:center; color:white; font-weight:bold; margin-top: 12px;"></div>
   <footer class="mlbb-footer">
-  <div id="total-harga-display" style="text-align:center; color:white; font-weight:bold; margin-top: 12px;"></div>
     <button class="btn-order" type="submit" form="akun-form">Lanjut ke Pembayaran</button>
     <div class="note-penting">
       <h3>NOTE PENTING HARAP DI BACA !!!</h3>
