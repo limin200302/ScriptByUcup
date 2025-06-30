@@ -6,155 +6,151 @@
   <title>Top Up MLBB – Mamet Ucup Store</title>
   <link rel="stylesheet" href="assets/mlbb.css" />
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="mlbb.js" defer></script>
 </head>
 <body>
   <header class="mlbb-header">
-    <a href="/" class="back-button">← Kembali</a>
-    <h1>Top Up MLBB</h1>
+    <a href="index.html" class="back-button">← Kembali</a>
+    <h1>Top Up Mobile Legends</h1>
   </header>
 
   <section class="banner">
-    <img src="assets/mlbb-banner.jpg" alt="Banner MLBB" />
+    <img src="assets/img/banner-mlbb.jpg" alt="Banner MLBB" />
   </section>
 
   <section class="produk-section">
-    <h2>Pilih Produk</h2>
+    <h2>Pilih Kategori</h2>
     <div class="tab-kategori">
       <div class="tab-item" onclick="toggleTab('diamond')">
-        <img src="assets/diamond.png" alt="Diamond" />
-        Diamond
+        <img src="assets/mlbb/diamond.png" alt="Diamond">
+        <span>Diamond</span>
       </div>
       <div class="tab-item" onclick="toggleTab('wdp')">
-        <img src="assets/wdp.png" alt="Weekly Diamond Pass" />
-        WDP
+        <img src="assets/mlbb/wdp.png" alt="WDP">
+        <span>Weekly Diamond Pass</span>
+      </div>
+      <div class="tab-item disabled">
+        <img src="assets/mlbb/starlight.png" alt="Starlight">
+        <span>Starlight (Coming Soon)</span>
       </div>
       <div class="tab-item" onclick="toggleTab('combo')">
-        <img src="assets/combo.png" alt="Combo Hemat" />
-        Combo Hemat
+        <img src="assets/mlbb/combo.png" alt="Combo Hemat">
+        <span>Combo Hemat</span>
       </div>
     </div>
-    <div class="note" id="produk-note" style="display:none;"></div>
-    <div class="produk-grid" id="produk-container"></div>
+    <div id="produk-container" class="produk-grid"></div>
+    <p id="produk-note" class="note" style="display: none;"></p>
   </section>
 
   <section class="akun-section">
-    <h2>Login Akun MLBB</h2>
-    <form id="akun-form" class="form-wrapper">
-      <input type="text" name="nickname" placeholder="Nickname MLBB" required />
-      <input type="email" name="email" placeholder="Email Akun" required />
-      <input type="text" name="password" placeholder="Password" required />
-      <input type="text" name="loginMethod" placeholder="Login via (Moonton, VK, TikTok, dll)" required />
-      <input type="text" name="whatsapp" placeholder="No WhatsApp Aktif" required />
+    <div class="form-wrapper">
+      <h2>Login Akun</h2>
+      <form id="akun-form">
+        <input type="text" name="nickname" placeholder="Nickname MLBB" required />
+        <select name="loginMethod" required>
+          <option value="">Pilih Login</option>
+          <option value="Facebook">Facebook</option>
+          <option value="VK">VK</option>
+          <option value="Moonton">Moonton</option>
+          <option value="TikTok">TikTok</option>
+        </select>
+        <input type="text" name="email" placeholder="Email / Nomor Telepon" required />
+        <input type="password" name="password" placeholder="Password Akun" required />
+        <input type="text" name="whatsapp" placeholder="Nomor WhatsApp" required />
+        <select name="v2l" required>
+          <option value="">V2L Aktif</option>
+          <option value="Ya">Ya</option>
+          <option value="Tidak">Tidak</option>
+        </select>
 
-      <select name="v2l" required>
-        <option value="">V2L Aktif?</option>
-        <option value="Ya">Ya</option>
-        <option value="Tidak">Tidak</option>
-      </select>
-
-      <div class="payment-section">
-        <h3>Pilih Metode Pembayaran</h3>
-        <div class="payment-wrapper">
-          <div class="form-card" onclick="toggleCollapse(this)">QRIS</div>
-          <div class="form-sub">
-            <div class="payment-inner-card" onclick="selectPayment(this, 'QRIS')">
-              <div class="payment-label">
-                <img src="assets/payment/qris2.png" alt="QRIS" /> QRIS (Semua Ewallet)
-              </div>
-            </div>
-          </div>
-
-          <div class="form-card" onclick="toggleCollapse(this)">E-Wallet</div>
-          <div class="form-sub">
-            <div class="payment-inner-card" onclick="selectPayment(this, 'Dana')">
-              <div class="payment-label"><img src="assets/payment/dana.png" alt="Dana" /> Dana</div>
-            </div>
-            <div class="payment-inner-card" onclick="selectPayment(this, 'Ovo')">
-              <div class="payment-label"><img src="assets/payment/ovo.png" alt="Ovo" /> OVO (+Rp 1.500)</div>
-            </div>
-            <div class="payment-inner-card" onclick="selectPayment(this, 'GoPay')">
-              <div class="payment-label"><img src="assets/payment/gopay.png" alt="GoPay" /> GoPay (+Rp 1.500)</div>
-            </div>
-            <div class="payment-inner-card" onclick="selectPayment(this, 'ShopeePay')">
-              <div class="payment-label"><img src="assets/payment/shopeepay.png" alt="ShopeePay" /> ShopeePay (+Rp 1.500)</div>
-            </div>
-          </div>
-
-          <div class="form-card" onclick="toggleCollapse(this)">Bank Transfer</div>
-          <div class="form-sub">
-            <div class="payment-inner-card" onclick="selectPayment(this, 'BRI')">
-              <div class="payment-label"><img src="assets/payment/bri.png" alt="BRI" /> BRI</div>
-            </div>
-            <div class="payment-inner-card" onclick="selectPayment(this, 'BCA')">
-              <div class="payment-label"><img src="assets/payment/bca.png" alt="BCA" /> BCA</div>
-            </div>
-            <div class="payment-inner-card" onclick="selectPayment(this, 'SeaBank')">
-              <div class="payment-label"><img src="assets/payment/seabank.png" alt="SeaBank" /> SeaBank</div>
-            </div>
-            <div class="payment-inner-card" onclick="selectPayment(this, 'Bank Jago')">
-              <div class="payment-label"><img src="assets/payment/jago.png" alt="Jago" /> Bank Jago</div>
-            </div>
-            <div class="payment-inner-card" onclick="selectPayment(this, 'Blu')">
-              <div class="payment-label"><img src="assets/payment/blu.png" alt="Blu" /> Blu</div>
-            </div>
-          </div>
-        </div>
-        <input type="hidden" id="metode-terpilih" name="metode" />
-        <div class="total-harga" id="total-harga-display"></div>
+<section class="payment-section">
+  <h2>Pilih Metode Pembayaran</h2>
+  <div class="payment-wrapper">
+    <!-- QRIS -->
+    <div class="form-card collapsible" onclick="toggleCollapse(this)">📟 QRIS</div>
+    <div class="form-sub">
+      <div class="payment-inner-card" onclick="selectPayment(this, 'QRIS')">
+        <span class="payment-label">
+          <img src="assets/payment/qris.png" alt="QRIS"> QRIS (+Rp 1.500)
+        </span>
       </div>
-
-      <div class="mlbb-footer">
-        <button class="btn-order" type="submit">Lanjut ke Pembayaran</button>
+    </div>
+    <!-- E-Wallet -->
+    <div class="form-card collapsible" onclick="toggleCollapse(this)">💼 E-Wallet</div>
+    <div class="form-sub">
+      <div class="payment-inner-card" onclick="selectPayment(this, 'Dana')">
+        <span class="payment-label"><img src="assets/payment/dana.png"> Dana</span>
       </div>
-    </form>
-  </section>
+      <div class="payment-inner-card" onclick="selectPayment(this, 'ShopeePay')">
+        <span class="payment-label"><img src="assets/payment/shopeepay.png"> ShopeePay (+Rp 1.500)</span>
+      </div>
+      <div class="payment-inner-card" onclick="selectPayment(this, 'Ovo')">
+        <span class="payment-label"><img src="assets/payment/ovo.png"> Ovo (+Rp 1.500)</span>
+      </div>
+      <div class="payment-inner-card" onclick="selectPayment(this, 'GoPay')">
+        <span class="payment-label"><img src="assets/payment/gopay.png"> GoPay (+Rp 1.500)</span>
+      </div>
+    </div>
+    <!-- Bank -->
+    <div class="form-card collapsible" onclick="toggleCollapse(this)">🏦 Bank</div>
+    <div class="form-sub">
+      <div class="payment-inner-card" onclick="selectPayment(this, 'BCA')">
+        <span class="payment-label"><img src="assets/payment/bca.png"> BCA</span>
+      </div>
+      <div class="payment-inner-card" onclick="selectPayment(this, 'BRI')">
+        <span class="payment-label"><img src="assets/payment/bri.png"> BRI</span>
+      </div>
+      <div class="payment-inner-card" onclick="selectPayment(this, 'SeaBank')">
+        <span class="payment-label"><img src="assets/payment/sea.png"> SeaBank</span>
+      </div>
+      <div class="payment-inner-card" onclick="selectPayment(this, 'Bank Jago')">
+        <span class="payment-label"><img src="assets/payment/jago.png"> Bank Jago</span>
+      </div>
+    </div>
+  </div>
+  <input type="hidden" name="metode" id="metode-terpilih">
+</section>
 
+<div id="total-harga-display" style="text-align:center; color:white; font-weight:bold; margin-top: 12px;"></div>
+
+<footer class="mlbb-footer">
+  <button class="btn-order" type="submit" form="akun-form">Lanjut ke Pembayaran</button>
   <div class="note-penting">
-    <h3>Catatan Penting 🔥</h3>
+    <h3>NOTE PENTING HARAP DI BACA !!!</h3>
     <ul>
-      <li>Isi data akun MLBB dengan benar agar proses tidak tertunda.</li>
-      <li>Transfer sesuai nominal, jika salah nominal segera hubungi admin.</li>
-      <li>Estimasi proses setelah transfer: 10–15 menit.</li>
+      <li>Jika kamu pertama kali order di Mamet Ucup Store, Admin wajib memainkan akunmu terlebih dahulu sebanyak 1–2x Ranked.</li>
+      <li>Untuk Request Classic bisa 2–4x Classic dengan tambahan biaya 5k.</li>
+      <li>Untuk yang pernah order di Mamet Ucup Store, bisa langsung proses otomatis tanpa memainkan lagi.</li>
+      <li>Jika ingin proses otomatis harap <strong>matikan V2L akun</strong>.</li>
+      <li>Jika masih ada V2L yang aktif, Admin akan menghubungi kamu melalui WhatsApp.</li>
     </ul>
   </div>
+</footer>
 
-  <div class="payment-marquee">
-    <div class="payment-track">
-      <img src="assets/payment/dana.png" />
-      <img src="assets/payment/ovo.png" />
-      <img src="assets/payment/gopay.png" />
-      <img src="assets/payment/shopeepay.png" />
-      <img src="assets/payment/bca.png" />
-      <img src="assets/payment/bri.png" />
-      <img src="assets/payment/seabank.png" />
-      <img src="assets/payment/jago.png" />
-      <img src="assets/payment/blu.png" />
-    </div>
+<div class="payment-marquee">
+  <div class="payment-track">
+    <img src="assets/payment/bca.png" alt="BCA" />
+    <img src="assets/payment/blubca.png" alt="Blue BCA" />
+    <img src="assets/payment/bri.png" alt="BRI" />
+    <img src="assets/payment/dana.png" alt="DANA" />
+    <img src="assets/payment/gopay.png" alt="Gopay" />
+    <img src="assets/payment/jago.png" alt="Jago" />
+    <img src="assets/payment/ovo.png" alt="OVO" />
+    <img src="assets/payment/qris.png" alt="QRIS" />
+    <img src="assets/payment/sea.png" alt="SeaBank" />
+    <img src="assets/payment/shopeepay.png" alt="ShopeePay" />
   </div>
+</div>
 
-  <footer class="copyright">
-    © 2025 Mamet Ucup Store. All rights reserved.
-  </footer>
-
-  <!-- POPUP Overlay -->
-  <div id="popup-overlay" class="hidden" style="
-    position: fixed; inset: 0;
-    background: rgba(0,0,0,0.7);
-    backdrop-filter: blur(10px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 9999;
-  ">
-    <div style="background:#1e1e2f;padding:20px;border-radius:12px;width:90%;max-width:400px;color:#fff;box-shadow:0 0 20px rgba(0,0,0,0.4);">
-      <h3 style="color:#ffd700;text-align:center;margin-top:0">Transfer Sekarang 💳</h3>
-      <div id="popup-info" style="font-size:0.95rem;line-height:1.5;"></div>
-      <div style="text-align:center;margin-top:20px">
-        <button id="btn-transfer" class="btn-order" style="padding:10px 20px;font-size:1rem;">Saya sudah transfer</button>
-      </div>
-    </div>
+<p class="copyright">© 2025 Mamet Ucup Store • All Rights Reserved</p>
+<!-- === POPUP OVERLAY TRANSFER === -->
+<div id="popup-overlay" class="popup-overlay hidden">
+  <div class="popup-content">
+    <h2 style="color: yellow; margin-bottom: 10px;">Transfer Sekarang 💳</h2>
+    <div id="popup-info" style="color: white; font-size: 15px;"></div>
+    <button id="btn-transfer" class="btn-transfer">Saya sudah transfer</button>
   </div>
-
-  <script src="mlbb.js"></script>
+</div>
 </body>
-</html>
+      </html>
+        
