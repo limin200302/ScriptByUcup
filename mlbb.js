@@ -84,7 +84,6 @@ document.addEventListener("DOMContentLoaded", () => {
       selectedItem = item;
     }
 
-    // update total harga jika metode dipilih
     const selectedCard = document.querySelector(".payment-inner-card.selected");
     if (selectedCard) {
       const method = document.getElementById("metode-terpilih").value;
@@ -97,7 +96,6 @@ document.addEventListener("DOMContentLoaded", () => {
       selectedCard.appendChild(span);
     }
   }
-
   document.getElementById("akun-form").addEventListener("submit", (e) => {
     e.preventDefault();
     const form = e.target;
