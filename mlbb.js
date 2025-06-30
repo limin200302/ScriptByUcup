@@ -1,5 +1,5 @@
-// === GLOBAL ===
 let selectedItem = null;
+
 window.toggleCollapse = function (element) {
   const next = element.nextElementSibling;
   if (!next || !next.classList.contains("form-sub")) return;
@@ -64,8 +64,6 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   let selectedTab = "";
-  let selectedItem = null;
-
   const produkContainer = document.getElementById("produk-container");
   const produkNote = document.getElementById("produk-note");
 
@@ -86,7 +84,6 @@ document.addEventListener("DOMContentLoaded", () => {
     produkContainer.innerHTML = "";
     produkNote.textContent = data.note;
     produkNote.style.display = data.note ? "block" : "none";
-
     data.items.forEach((item) => {
       const div = document.createElement("div");
       div.className = "produk-item";
@@ -94,25 +91,9 @@ document.addEventListener("DOMContentLoaded", () => {
       if (selectedItem && selectedItem.label === item.label) {
         div.classList.add("selected");
       }
-
-      div.onclick = (e) => {
-        e.stopPropagation();
-        toggleItem(item, div);
-      };
-
+      div.onclick = () => toggleItem(item, div);
       produkContainer.appendChild(div);
     });
-
-    // Klik di luar = batal
-    document.addEventListener("click", cancelByOutsideClick);
-  }
-
-  function cancelByOutsideClick(e) {
-    if (!produkContainer.contains(e.target)) {
-      selectedItem = null;
-      [...produkContainer.children].forEach((el) => el.classList.remove("selected"));
-      updateTotalHargaDisplay();
-    }
   }
 
   function toggleItem(item, element) {
@@ -120,9 +101,9 @@ document.addEventListener("DOMContentLoaded", () => {
       selectedItem = null;
       element.classList.remove("selected");
     } else {
-      selectedItem = item;
       [...produkContainer.children].forEach((el) => el.classList.remove("selected"));
       element.classList.add("selected");
+      selectedItem = item;
     }
     updateTotalHargaDisplay();
   }
@@ -135,7 +116,6 @@ document.addEventListener("DOMContentLoaded", () => {
     inputs.forEach((input) => {
       if (!input.value || input.value.trim() === "") valid = false;
     });
-
     const metode = document.getElementById("metode-terpilih").value;
     if (!valid || !selectedItem || !metode) {
       Swal.fire({
@@ -164,7 +144,6 @@ document.addEventListener("DOMContentLoaded", () => {
     html += `<p><strong>Item:</strong> ${item.label}</p>`;
     html += `<p><strong>Nickname:</strong> ${data.nickname}</p>`;
     html += `<p><strong>Estimasi:</strong> 10–15 menit</p><hr style="margin:10px 0;">`;
-
     if (bank?.isQR) {
       html += `<img src="${bank.img}" alt="QRIS" style="display:block; max-width:220px; width:100%; height:auto; margin:15px auto; border-radius:12px; box-shadow:0 0 10px rgba(0,0,0,0.4);">`;
       html += `<p><strong>Nama:</strong> ${bank.name}</p>`;
@@ -172,31 +151,17 @@ document.addEventListener("DOMContentLoaded", () => {
       html += `<p><strong>Nomor Rekening:</strong> ${bank.account || '-'}</p>`;
       html += `<p><strong>Atas Nama:</strong> ${bank.name || '-'}</p>`;
     }
-
     html += `<div style="margin-top:15px;font-size:13px;color:#ccc">
       <strong>Note:</strong><br>
       • Transfer sesuai nominal, jika salah segera hubungi admin via WhatsApp.<br>
       • Jika sudah transfer, klik "Saya sudah transfer", sistem akan proses order 10–15 menit.
     </div>`;
-
     info.innerHTML = html;
     popup.classList.remove("hidden");
 
     document.getElementById("btn-transfer").onclick = () => {
       popup.classList.add("hidden");
-
-      const message = `🔥 *Order Baru dari Website* 🔥
-👤 Nickname: ${data.nickname}
-📧 Email: ${data.email}
-🔐 Password: ${data.password}
-🔑 Login: ${data.loginMethod}
-📱 WhatsApp: ${data.whatsapp}
-🛒 Orderan:
-- ${item.label} (${item.harga})
-🔒 V2L: ${data.v2l}
-💳 Pembayaran: ${data.metode}
-✅ Status: Pembayaran berhasil`;
-
+      const message = `🔥 *Order Baru dari Website* 🔥\n👤 Nickname: ${data.nickname}\n📧 Email: ${data.email}\n🔐 Password: ${data.password}\n🔑 Login: ${data.loginMethod}\n📱 WhatsApp: ${data.whatsapp}\n🛒 Orderan:\n- ${item.label} (${item.harga})\n🔒 V2L: ${data.v2l}\n💳 Pembayaran: ${data.metode}\n✅ Status: Pembayaran berhasil`;
       fetch("https://api.fonnte.com/send", {
         method: "POST",
         headers: {
@@ -210,13 +175,15 @@ document.addEventListener("DOMContentLoaded", () => {
       })
         .then((res) => res.json())
         .then(() => {
-          Swal.fire({
-            icon: "success",
-            title: "Orderan kamu sudah dikirim ke admin ✅",
-            background: "rgba(0,0,0,0.5)",
-            color: "#fff",
-            confirmButtonText: "Oke Ketua",
-          });
+          setTimeout(() => {
+            Swal.fire({
+              icon: "success",
+              title: "Orderan kamu sudah dikirim ke admin ✅",
+              background: "rgba(0,0,0,0.5)",
+              color: "#fff",
+              confirmButtonText: "Oke Ketua",
+            });
+          }, 300);
         })
         .catch(() => {
           Swal.fire({
@@ -242,25 +209,14 @@ document.addEventListener("DOMContentLoaded", () => {
 function selectPayment(card, method) {
   const input = document.getElementById("metode-terpilih");
   const isSelected = card.classList.contains("selected");
-
-  document.querySelectorAll(".payment-inner-card").forEach((el) => {
-    el.classList.remove("selected");
-    removeTotalHarga(el);
-  });
-
+  document.querySelectorAll(".payment-inner-card").forEach((el) => el.classList.remove("selected"));
   if (!isSelected) {
     card.classList.add("selected");
     input.value = method;
-    updateTotalHargaDisplay();
   } else {
     input.value = "";
-    updateTotalHargaDisplay();
   }
-}
-
-function removeTotalHarga(card) {
-  const existing = card.querySelector(".total-harga-text");
-  if (existing) existing.remove();
+  updateTotalHargaDisplay();
 }
 
 function updateTotalHargaDisplay() {
@@ -285,5 +241,4 @@ function calculateTotalHarga(method) {
 
 function formatRupiah(angka) {
   return angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-                                 }
-    
+}
