@@ -1,12 +1,12 @@
 // === GLOBAL ===
-let selectedTab = "";
-let selectedItem = null;
-
 window.toggleCollapse = function (element) {
   const next = element.nextElementSibling;
   if (!next || !next.classList.contains("form-sub")) return;
   next.classList.toggle("open");
 };
+
+let selectedTab = "";
+let selectedItem = null;
 
 document.addEventListener("DOMContentLoaded", () => {
   const produkData = {
@@ -53,16 +53,16 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const paymentData = {
-    QRIS: { img: "assets/payment/qris2.png", name: "Warung Alwi mantap", isQR: true },
-    Dana: { account: "085713056206", name: "ADE ANASIRU MUALIM" },
-    Ovo: { account: "085713056206", name: "ADE ANASIRU MUALIM" },
-    GoPay: { account: "085713056206", name: "ADE ANASIRU MUALIM" },
-    ShopeePay: { account: "085713056206", name: "Mamet Ucup Store" },
-    BRI: { account: "356901013211502", name: "ADE ANASIRU MUALIM" },
-    BCA: { account: "4922069551", name: "ADE ANASIRU MUALIM" },
-    SeaBank: { account: "901433678333", name: "ADE ANASIRU MUALIM" },
-    "Bank Jago": { account: "103923428497", name: "REVITA FEBRIANTI" },
-    Blu: { account: "003406906539", name: "DEWI ANGGRIANI" },
+    QRIS: { img: 'assets/payment/qris2.png', name: 'Warung Alwi mantap', isQR: true },
+    Dana: { account: '085713056206', name: 'ADE ANASIRU MUALIM' },
+    Ovo: { account: '085713056206', name: 'ADE ANASIRU MUALIM' },
+    GoPay: { account: '085713056206', name: 'ADE ANASIRU MUALIM' },
+    ShopeePay: { account: '085713056206', name: 'Mamet Ucup Store' },
+    BRI: { account: '356901013211502', name: 'ADE ANASIRU MUALIM' },
+    BCA: { account: '4922069551', name: 'ADE ANASIRU MUALIM' },
+    SeaBank: { account: '901433678333', name: 'ADE ANASIRU MUALIM' },
+    "Bank Jago": { account: '103923428497', name: 'REVITA FEBRIANTI' },
+    Blu: { account: '003406906539', name: 'DEWI ANGGRIANI' },
   };
 
   const produkContainer = document.getElementById("produk-container");
@@ -73,6 +73,8 @@ document.addEventListener("DOMContentLoaded", () => {
       selectedTab = "";
       produkContainer.innerHTML = "";
       produkNote.style.display = "none";
+      selectedItem = null;
+      updateTotalHargaDisplay();
     } else {
       selectedTab = kategori;
       renderProduk(produkData[kategori]);
@@ -83,14 +85,10 @@ document.addEventListener("DOMContentLoaded", () => {
     produkContainer.innerHTML = "";
     produkNote.textContent = data.note;
     produkNote.style.display = data.note ? "block" : "none";
-
     data.items.forEach((item) => {
       const div = document.createElement("div");
       div.className = "produk-item";
       div.innerHTML = `<strong>${item.label}</strong><br><small>${item.harga}</small>`;
-      if (selectedItem && selectedItem.label === item.label) {
-        div.classList.add("selected");
-      }
       div.onclick = () => toggleItem(item, div);
       produkContainer.appendChild(div);
     });
@@ -116,7 +114,6 @@ document.addEventListener("DOMContentLoaded", () => {
     inputs.forEach((input) => {
       if (!input.value || input.value.trim() === "") valid = false;
     });
-
     const metode = document.getElementById("metode-terpilih").value;
     if (!valid || !selectedItem || !metode) {
       Swal.fire({
@@ -220,35 +217,26 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // === SUPPORT FUNCTIONS ===
-
 function selectPayment(card, method) {
   const input = document.getElementById("metode-terpilih");
   const isSelected = card.classList.contains("selected");
-
   document.querySelectorAll(".payment-inner-card").forEach((el) => {
     el.classList.remove("selected");
-    removeTotalHarga(el);
   });
 
   if (!isSelected) {
     card.classList.add("selected");
     input.value = method;
-    updateTotalHargaDisplay();
   } else {
     input.value = "";
-    updateTotalHargaDisplay();
   }
-}
 
-function removeTotalHarga(card) {
-  const existing = card.querySelector(".total-harga-text");
-  if (existing) existing.remove();
+  updateTotalHargaDisplay();
 }
 
 function updateTotalHargaDisplay() {
   const method = document.getElementById("metode-terpilih").value;
   const display = document.getElementById("total-harga-display");
-
   if (selectedItem && method) {
     const total = calculateTotalHarga(method);
     display.innerHTML = `Total: <span style="color: #ffd700">Rp ${formatRupiah(total)}</span>`;
