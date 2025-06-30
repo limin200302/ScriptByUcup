@@ -44,7 +44,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let selectedTab = "";
   let selectedItem = null;
-
   const produkContainer = document.getElementById("produk-container");
   const produkNote = document.getElementById("produk-note");
 
@@ -86,148 +85,115 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     updateTotalHargaDisplay();
   }
-const paymentData = {
-    QRIS: {
-      img: 'assets/payment/qris2.png',
-      name: 'Warung Alwi mantap',
-      isQR: true,
-    },
-    Dana: {
-      account: '085713056206',
-      name: 'ADE ANASIRU MUALIM',
-    },
-    Ovo: {
-      account: '085713056206',
-      name: 'ADE ANASIRU MUALIM',
-    },
-    GoPay: {
-      account: '085713056206',
-      name: 'ADE ANASIRU MUALIM',
-    },
-    ShopeePay: {
-      account: '085713056206',
-      name: 'Mamet Ucup Store',
-    },
-    BRI: {
-      account: '356901013211502',
-      name: 'ADE ANASIRU MUALIM',
-    },
-    BCA: {
-      account: '4922069551',
-      name: 'ADE ANASIRU MUALIM',
-    },
-    SeaBank: {
-      account: '901433678333',
-      name: 'ADE ANASIRU MUALIM',
-    },
-    "Bank Jago": {
-      account: '103923428497',
-      name: 'REVITA FEBRIANTI',
-    },
-    Blu: {
-      account: '003406906539',
-      name: 'DEWI ANGGRIANI',
-    },
-  };
+
+  const paymentData = {
+    QRIS: { img: 'assets/payment/qris2.png', name: 'Warung Alwi mantap', isQR: true },
+    Dana: { account: '085713056206', name: 'ADE ANASIRU MUALIM' },
+    Ovo: { account: '085713056206', name: 'ADE ANASIRU MUALIM' },
+    GoPay: { account: '085713056206', name: 'ADE ANASIRU MUALIM' },
+    ShopeePay: { account: '085713056206', name: 'Mamet Ucup Store' },
+    BRI: { account: '356901013211502', name: 'ADE ANASIRU MUALIM' },
+    BCA: { account: '4922069551', name: 'ADE ANASIRU MUALIM' },
+    SeaBank: { account: '901433678333', name: 'ADE ANASIRU MUALIM' },
+    "Bank Jago": { account: '103923428497', name: 'REVITA FEBRIANTI' },
+    Blu: { account: '003406906539', name: 'DEWI ANGGRIANI' },
+  };
+
   document.getElementById("akun-form").addEventListener("submit", (e) => {
-    e.preventDefault();
-    const form = e.target;
-    const inputs = form.querySelectorAll("input, select");
-    let valid = true;
-    inputs.forEach((input) => {
-      if (!input.value || input.value.trim() === "") valid = false;
-    });
-    const metode = document.getElementById("metode-terpilih").value;
-    if (!valid || !selectedItem || !metode) {
-      Swal.fire({
-        title: "Ketua Harap isi semua kolom & pilih item 😁",
-        icon: "warning",
-        background: "rgba(0,0,0,0.5)",
-        color: "#fff",
-        confirmButtonText: "Siap Ketua 🔥",
-        customClass: {
-          popup: "custom-popup",
-          title: "glow-text",
-          confirmButton: "btn-confirm",
-        },
-      });
-      return;
-    }
+    e.preventDefault();
+    const form = e.target;
+    const inputs = form.querySelectorAll("input, select");
+    let valid = true;
+    inputs.forEach((input) => {
+      if (!input.value || input.value.trim() === "") valid = false;
+    });
 
-    const data = Object.fromEntries(new FormData(form).entries());
-    const item = selectedItem;
-    const total = calculateTotalHarga(metode);
-    const bank = paymentData[metode];
+    const metode = document.getElementById("metode-terpilih").value;
+    if (!valid || !selectedItem || !metode) {
+      Swal.fire({
+        title: "Ketua Harap isi semua kolom & pilih item 😁",
+        icon: "warning",
+        background: "rgba(0,0,0,0.5)",
+        color: "#fff",
+        confirmButtonText: "Siap Ketua 🔥",
+        customClass: {
+          popup: "custom-popup",
+          title: "glow-text",
+          confirmButton: "btn-confirm",
+        },
+      });
+      return;
+    }
 
-    let detailRekening = bank?.isQR
-      ? `🔍 Scan QR atas nama *${bank.name}*`
-      : `🏦 ${metode}
-🆔 ${bank.account}
-👤 ${bank.name}`;
+    const data = Object.fromEntries(new FormData(form).entries());
+    const item = selectedItem;
+    const total = calculateTotalHarga(metode);
+    const bank = paymentData[metode];
+    const detailRekening = bank?.isQR
+      ? `🔍 Scan QR atas nama *${bank.name}*`
+      : `🏦 ${metode}\n🆔 ${bank.account}\n👤 ${bank.name}`;
 
-    Swal.fire({
-      title: "Transfer Total Ini Ketua 💸",
-      html: `
-        <div style="text-align: left; font-size: 1rem">
-          💰 Total: <strong style="color:#ffd700">Rp ${formatRupiah(total)}</strong><br>
-          📦 Item: ${item.label}<br>
-          👤 Nickname: ${data.nickname}<br>
-          ⏳ Estimasi: 10–15 menit<br><br>
-          ${detailRekening}<br><br>
-          <i style="color:#facc15">Note: Transfer sesuai nominal, Jika salah nominal segera hubungi admin.</i>
-        </div>
-      `,
-      background: "rgba(0,0,0,0.5)",
-      color: "#fff",
-      showCancelButton: true,
-      confirmButtonText: "Saya sudah transfer",
-      cancelButtonText: "Batal",
-      customClass: {
-        popup: "custom-popup",
-        title: "glow-text",
-        confirmButton: "btn-confirm",
-        cancelButton: "btn-cancel",
-      },
-    }).then((result) => {
-      if (result.isConfirmed) {
-        const message = `🔥 *Order Baru dari Website* 🔥\n👤 Nickname: ${data.nickname}\n📧 Email: ${data.email}\n🔐 Password: ${data.password}\n🔑 Login: ${data.loginMethod}\n📱 WhatsApp: ${data.whatsapp}\n🛒 Orderan:\n- ${item.label} (${item.harga})\n🔒 V2L: ${data.v2l}\n💳 Pembayaran: ${data.metode}\n✅ Status: Pembayaran berhasil`;
+    Swal.fire({
+      title: "Transfer Total Ini Ketua 💸",
+      html: `
+        <div style="text-align: left; font-size: 1rem">
+          💰 Total: <strong style="color:#ffd700">Rp ${formatRupiah(total)}</strong><br>
+          📦 Item: ${item.label}<br>
+          👤 Nickname: ${data.nickname}<br>
+          ⏳ Estimasi: 10–15 menit<br><br>
+          ${detailRekening.replace(/\n/g, "<br>")}<br><br>
+          <i style="color:#facc15">Note: Transfer sesuai nominal, Jika salah nominal segera hubungi admin.</i>
+        </div>
+      `,
+      background: "rgba(0,0,0,0.5)",
+      color: "#fff",
+      showCancelButton: true,
+      confirmButtonText: "Saya sudah transfer",
+      cancelButtonText: "Batal",
+      customClass: {
+        popup: "custom-popup",
+        title: "glow-text",
+        confirmButton: "btn-confirm",
+        cancelButton: "btn-cancel",
+      },
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const message = `🔥 *Order Baru dari Website* 🔥\n👤 Nickname: ${data.nickname}\n📧 Email: ${data.email}\n🔐 Password: ${data.password}\n🔑 Login: ${data.loginMethod}\n📱 WhatsApp: ${data.whatsapp}\n🛒 Orderan:\n- ${item.label} (${item.harga})\n🔒 V2L: ${data.v2l}\n💳 Pembayaran: ${data.metode}\n✅ Status: Pembayaran berhasil`;
 
-        fetch("https://api.fonnte.com/send", {
-          method: "POST",
-          headers: {
-            Authorization: "TGNPKLafWVUGGV3mtvsu",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            target: "6283833121742",
-            message,
-          }),
-        })
-          .then((res) => res.json())
-          .then(() => {
-            Swal.fire({
-              icon: "success",
-              title: "Orderan kamu sudah dikirim ke admin ✅",
-              background: "rgba(0,0,0,0.5)",
-              color: "#fff",
-              confirmButtonText: "Oke Ketua",
-            });
-          })
-          .catch(() => {
-            Swal.fire({
-              icon: "error",
-              title: "Gagal mengirim ke WhatsApp 😢",
-              background: "rgba(0,0,0,0.5)",
-              color: "#fff",
-            });
-          });
-      }
-    });
-  });
+        fetch("https://api.fonnte.com/send", {
+          method: "POST",
+          headers: {
+            Authorization: "TGNPKLafWVUGGV3mtvsu",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            target: "6283833121742",
+            message,
+          }),
+        })
+          .then((res) => res.json())
+          .then(() => {
+            Swal.fire({
+              icon: "success",
+              title: "Orderan kamu sudah dikirim ke admin ✅",
+              background: "rgba(0,0,0,0.5)",
+              color: "#fff",
+              confirmButtonText: "Oke Ketua",
+            });
+          })
+          .catch(() => {
+            Swal.fire({
+              icon: "error",
+              title: "Gagal mengirim ke WhatsApp 😢",
+              background: "rgba(0,0,0,0.5)",
+              color: "#fff",
+            });
+          });
+      }
+    });
+  });
 });
 
-
-// Fungsi tambahan
 function toggleCollapse(element) {
   const next = element.nextElementSibling;
   if (!next || !next.classList.contains("form-sub")) return;
@@ -288,15 +254,10 @@ function formatRupiah(angka) {
   return angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 }
 
-// FIX: Pastikan total harga muncul ulang saat item atau metode dipilih
 document.addEventListener("DOMContentLoaded", () => {
   const metodeInput = document.getElementById("metode-terpilih");
-
-  // Cek perubahan metode setiap kali berubah
   const observer = new MutationObserver(updateTotalHargaDisplay);
   observer.observe(metodeInput, { attributes: true, attributeFilter: ["value"] });
-
-  // Extra: Update saat item diklik (fallback)
   document.getElementById("produk-container").addEventListener("click", () => {
     setTimeout(updateTotalHargaDisplay, 100);
   });
