@@ -114,83 +114,94 @@ document.addEventListener("DOMContentLoaded", () => {
     inputs.forEach((input) => {
       if (!input.value || input.value.trim() === "") valid = false;
     });
+
     const metode = document.getElementById("metode-terpilih").value;
     if (!valid || !selectedItem || !metode) {
       Swal.fire({
-      const info = document.getElementById("popup-info");
-const popup = document.getElementById("popup-overlay");
-
-let html = `<p><strong>Total:</strong> Rp ${formatRupiah(total)}</p>`;
-html += `<p><strong>Item:</strong> ${item.label}</p>`;
-html += `<p><strong>Nickname:</strong> ${data.nickname}</p>`;
-html += `<p><strong>Estimasi:</strong> 10–15 menit</p><hr style="margin:10px 0;">`;
-
-if (bank?.isQR) {
-  html += `<img src="${bank.img}" alt="QRIS" style="
-    display:block;
-    max-width:220px;
-    width:100%;
-    height:auto;
-    margin:15px auto;
-    border-radius:12px;
-    box-shadow:0 0 10px rgba(0,0,0,0.4);
-  ">`;
-  html += `<p><strong>Nama:</strong> ${bank.name}</p>`;
-} else {
-  html += `<p><strong>Nomor Rekening:</strong> ${bank.account || '-'}</p>`;
-  html += `<p><strong>Atas Nama:</strong> ${bank.name || '-'}</p>`;
-}
-
-html += `<div style="margin-top:15px;font-size:13px;color:#ccc">
-  <strong>Note:</strong><br>
-  • Transfer sesuai nominal, jika salah segera hubungi admin via WhatsApp.<br>
-  • Jika sudah transfer, klik "Saya sudah transfer", sistem akan proses order 10-15 menit.
-</div>`;
-
-info.innerHTML = html;
-popup.classList.remove("hidden");
-
-// Event kirim ke WhatsApp setelah klik transfer
-document.getElementById("btn-transfer").onclick = () => {
-  popup.classList.add("hidden");
-
-  const message = `🔥 *Order Baru dari Website* 🔥\n👤 Nickname: ${data.nickname}\n📧 Email: ${data.email}\n🔐 Password: ${data.password}\n🔑 Login: ${data.loginMethod}\n📱 WhatsApp: ${data.whatsapp}\n🛒 Orderan:\n- ${item.label} (${item.harga})\n🔒 V2L: ${data.v2l}\n💳 Pembayaran: ${data.metode}\n✅ Status: Pembayaran berhasil`;
-
-  fetch("https://api.fonnte.com/send", {
-    method: "POST",
-    headers: {
-      Authorization: "TGNPKLafWVUGGV3mtvsu",
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      target: "6283833121742",
-      message,
-    }),
-  })
-    .then((res) => res.json())
-    .then(() => {
-      Swal.fire({
-        icon: "success",
-        title: "Orderan kamu sudah dikirim ke admin ✅",
+        title: "Ketua Harap isi semua kolom & pilih item 😁",
+        icon: "warning",
         background: "rgba(0,0,0,0.5)",
         color: "#fff",
-        confirmButtonText: "Oke Ketua",
+        confirmButtonText: "Siap Ketua 🔥",
+        customClass: {
+          popup: "custom-popup",
+          title: "glow-text",
+          confirmButton: "btn-confirm",
+        },
       });
-    })
-    .catch(() => {
-      Swal.fire({
-        icon: "error",
-        title: "Gagal mengirim ke WhatsApp 😢",
-        background: "rgba(0,0,0,0.5)",
-        color: "#fff",
-      });
-    });
-};
+      return;
+    }
 
-  // Update saat item atau metode dipilih
+    const data = Object.fromEntries(new FormData(form).entries());
+    const item = selectedItem;
+    const total = calculateTotalHarga(metode);
+    const bank = paymentData[metode];
+
+    const info = document.getElementById("popup-info");
+    const popup = document.getElementById("popup-overlay");
+
+    let html = `<p><strong>Total:</strong> Rp ${formatRupiah(total)}</p>`;
+    html += `<p><strong>Item:</strong> ${item.label}</p>`;
+    html += `<p><strong>Nickname:</strong> ${data.nickname}</p>`;
+    html += `<p><strong>Estimasi:</strong> 10–15 menit</p><hr style="margin:10px 0;">`;
+
+    if (bank?.isQR) {
+      html += `<img src="${bank.img}" alt="QRIS" style="display:block; max-width:220px; width:100%; height:auto; margin:15px auto; border-radius:12px; box-shadow:0 0 10px rgba(0,0,0,0.4);">`;
+      html += `<p><strong>Nama:</strong> ${bank.name}</p>`;
+    } else {
+      html += `<p><strong>Nomor Rekening:</strong> ${bank.account || '-'}</p>`;
+      html += `<p><strong>Atas Nama:</strong> ${bank.name || '-'}</p>`;
+    }
+
+    html += `<div style="margin-top:15px;font-size:13px;color:#ccc">
+      <strong>Note:</strong><br>
+      • Transfer sesuai nominal, jika salah segera hubungi admin via WhatsApp.<br>
+      • Jika sudah transfer, klik "Saya sudah transfer", sistem akan proses order 10–15 menit.
+    </div>`;
+
+    info.innerHTML = html;
+    popup.classList.remove("hidden");
+
+    document.getElementById("btn-transfer").onclick = () => {
+      popup.classList.add("hidden");
+      const message = `🔥 *Order Baru dari Website* 🔥\n👤 Nickname: ${data.nickname}\n📧 Email: ${data.email}\n🔐 Password: ${data.password}\n🔑 Login: ${data.loginMethod}\n📱 WhatsApp: ${data.whatsapp}\n🛒 Orderan:\n- ${item.label} (${item.harga})\n🔒 V2L: ${data.v2l}\n💳 Pembayaran: ${data.metode}\n✅ Status: Pembayaran berhasil`;
+
+      fetch("https://api.fonnte.com/send", {
+        method: "POST",
+        headers: {
+          Authorization: "TGNPKLafWVUGGV3mtvsu",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          target: "6283833121742",
+          message,
+        }),
+      })
+        .then((res) => res.json())
+        .then(() => {
+          Swal.fire({
+            icon: "success",
+            title: "Orderan kamu sudah dikirim ke admin ✅",
+            background: "rgba(0,0,0,0.5)",
+            color: "#fff",
+            confirmButtonText: "Oke Ketua",
+          });
+        })
+        .catch(() => {
+          Swal.fire({
+            icon: "error",
+            title: "Gagal mengirim ke WhatsApp 😢",
+            background: "rgba(0,0,0,0.5)",
+            color: "#fff",
+          });
+        });
+    };
+  });
+
   const metodeInput = document.getElementById("metode-terpilih");
   const observer = new MutationObserver(updateTotalHargaDisplay);
   observer.observe(metodeInput, { attributes: true, attributeFilter: ["value"] });
+
   document.getElementById("produk-container").addEventListener("click", () => {
     setTimeout(updateTotalHargaDisplay, 100);
   });
