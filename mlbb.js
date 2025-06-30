@@ -173,12 +173,12 @@ function selectPayment(card, method) {
       span.textContent = `Total: Rp ${formatRupiah(total)}`;
       card.appendChild(span);
     }
+
+    updateTotalHargaDisplay();
   } else {
     input.value = "";
+    updateTotalHargaDisplay();
   }
-}
-
-  updateTotalHargaDisplay();
 }
 
 function updateTotalHargaDisplay() {
