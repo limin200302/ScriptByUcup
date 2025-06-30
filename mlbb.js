@@ -64,7 +64,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let selectedTab = "";
   let selectedItem = null;
-
   const produkContainer = document.getElementById("produk-container");
   const produkNote = document.getElementById("produk-note");
 
@@ -73,7 +72,6 @@ document.addEventListener("DOMContentLoaded", () => {
       selectedTab = "";
       produkContainer.innerHTML = "";
       produkNote.style.display = "none";
-      selectedItem = null;
     } else {
       selectedTab = kategori;
       renderProduk(produkData[kategori]);
@@ -91,15 +89,19 @@ document.addEventListener("DOMContentLoaded", () => {
       if (selectedItem && selectedItem.label === item.label) {
         div.classList.add("selected");
       }
-      div.onclick = () => toggleItem(item, div);
+      div.onclick = (e) => {
+        e.stopPropagation();
+        toggleItem(item, div);
+      };
       produkContainer.appendChild(div);
     });
   }
 
+  // === ITEM SELEKSI ===
   function toggleItem(item, element) {
     if (selectedItem && selectedItem.label === item.label) {
-      element.classList.remove("selected");
       selectedItem = null;
+      element.classList.remove("selected");
     } else {
       selectedItem = item;
       [...produkContainer.children].forEach((el) => el.classList.remove("selected"));
@@ -108,17 +110,16 @@ document.addEventListener("DOMContentLoaded", () => {
     updateTotalHargaDisplay();
   }
 
-  // Batalkan pilihan jika klik di luar item
+  // === KLIK SEMBARANGAN UNTUK BATALKAN ===
   document.addEventListener("click", (e) => {
-    const isItem = e.target.closest(".produk-item");
-    const isInside = e.target.closest("#produk-container");
-    if (!isItem && isInside) {
-      [...produkContainer.children].forEach((el) => el.classList.remove("selected"));
+    if (!produkContainer.contains(e.target)) {
       selectedItem = null;
+      [...produkContainer.children].forEach((el) => el.classList.remove("selected"));
       updateTotalHargaDisplay();
     }
   });
 
+  // === HANDLE SUBMIT FORM ===
   document.getElementById("akun-form").addEventListener("submit", (e) => {
     e.preventDefault();
     const form = e.target;
@@ -149,7 +150,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const item = selectedItem;
     const total = calculateTotalHarga(metode);
     const bank = paymentData[metode];
-
     const info = document.getElementById("popup-info");
     const popup = document.getElementById("popup-overlay");
 
@@ -157,7 +157,6 @@ document.addEventListener("DOMContentLoaded", () => {
     html += `<p><strong>Item:</strong> ${item.label}</p>`;
     html += `<p><strong>Nickname:</strong> ${data.nickname}</p>`;
     html += `<p><strong>Estimasi:</strong> 10–15 menit</p><hr style="margin:10px 0;">`;
-
     if (bank?.isQR) {
       html += `<img src="${bank.img}" alt="QRIS" style="display:block; max-width:220px; width:100%; height:auto; margin:15px auto; border-radius:12px; box-shadow:0 0 10px rgba(0,0,0,0.4);">`;
       html += `<p><strong>Nama:</strong> ${bank.name}</p>`;
@@ -165,25 +164,26 @@ document.addEventListener("DOMContentLoaded", () => {
       html += `<p><strong>Nomor Rekening:</strong> ${bank.account || '-'}</p>`;
       html += `<p><strong>Atas Nama:</strong> ${bank.name || '-'}</p>`;
     }
-
     html += `<div style="margin-top:15px;font-size:13px;color:#ccc">
       <strong>Note:</strong><br>
       • Transfer sesuai nominal, jika salah segera hubungi admin via WhatsApp.<br>
       • Jika sudah transfer, klik "Saya sudah transfer", sistem akan proses order 10–15 menit.
     </div>`;
-
     info.innerHTML = html;
     popup.classList.remove("hidden");
 
+    // === TOMBOL TRANSFER ===
     document.getElementById("btn-transfer").onclick = () => {
       popup.classList.add("hidden");
+
       const message = `🔥 *Order Baru dari Website* 🔥
 👤 Nickname: ${data.nickname}
 📧 Email: ${data.email}
 🔐 Password: ${data.password}
 🔑 Login: ${data.loginMethod}
 📱 WhatsApp: ${data.whatsapp}
-🛒 Orderan:\n- ${item.label} (${item.harga})
+🛒 Orderan:
+- ${item.label} (${item.harga})
 🔒 V2L: ${data.v2l}
 💳 Pembayaran: ${data.metode}
 ✅ Status: Pembayaran berhasil`;
@@ -199,7 +199,6 @@ document.addEventListener("DOMContentLoaded", () => {
           message,
         }),
       })
-        .then((res) => res.json())
         .then(() => {
           Swal.fire({
             icon: "success",
@@ -227,46 +226,42 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("produk-container").addEventListener("click", () => {
     setTimeout(updateTotalHargaDisplay, 100);
   });
+
+  function updateTotalHargaDisplay() {
+    const method = document.getElementById("metode-terpilih").value;
+    const display = document.getElementById("total-harga-display");
+    if (selectedItem && method) {
+      const total = calculateTotalHarga(method);
+      display.innerHTML = `Total: <span style="color: #ffd700">Rp ${formatRupiah(total)}</span>`;
+    } else {
+      display.innerHTML = "";
+    }
+  }
+
+  function calculateTotalHarga(method) {
+    let total = 0;
+    if (selectedItem) {
+      total += parseInt(selectedItem.harga.replace(/[^\d]/g, ""));
+    }
+    const adminFee = ["Ovo", "GoPay", "ShopeePay", "QRIS"].includes(method) ? 1500 : 0;
+    return total + adminFee;
+  }
+
+  function formatRupiah(angka) {
+    return angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  }
+
+  // === METODE PEMBAYARAN ===
+  window.selectPayment = function (card, method) {
+    const input = document.getElementById("metode-terpilih");
+    const isSelected = card.classList.contains("selected");
+    document.querySelectorAll(".payment-inner-card").forEach((el) => el.classList.remove("selected"));
+    if (!isSelected) {
+      card.classList.add("selected");
+      input.value = method;
+    } else {
+      input.value = "";
+    }
+    updateTotalHargaDisplay();
+  };
 });
-
-// === SUPPORT FUNCTIONS ===
-function selectPayment(card, method) {
-  const input = document.getElementById("metode-terpilih");
-  const isSelected = card.classList.contains("selected");
-  document.querySelectorAll(".payment-inner-card").forEach((el) => {
-    el.classList.remove("selected");
-  });
-
-  if (!isSelected) {
-    card.classList.add("selected");
-    input.value = method;
-    updateTotalHargaDisplay();
-  } else {
-    input.value = "";
-    updateTotalHargaDisplay();
-  }
-}
-
-function updateTotalHargaDisplay() {
-  const method = document.getElementById("metode-terpilih").value;
-  const display = document.getElementById("total-harga-display");
-  if (window.selectedItem && method) {
-    const total = calculateTotalHarga(method);
-    display.innerHTML = `Total: <span style="color: #ffd700">Rp ${formatRupiah(total)}</span>`;
-  } else {
-    display.innerHTML = "";
-  }
-}
-
-function calculateTotalHarga(method) {
-  let total = 0;
-  if (window.selectedItem) {
-    total += parseInt(window.selectedItem.harga.replace(/[^\d]/g, ""));
-  }
-  const adminFee = ["Ovo", "GoPay", "ShopeePay", "QRIS"].includes(method) ? 1500 : 0;
-  return total + adminFee;
-}
-
-function formatRupiah(angka) {
-  return angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-}
