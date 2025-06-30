@@ -1,3 +1,4 @@
+
 document.addEventListener("DOMContentLoaded", () => {
   const produkData = {
     diamond: {
@@ -83,17 +84,7 @@ document.addEventListener("DOMContentLoaded", () => {
       element.classList.add("selected");
       selectedItem = item;
     }
-    const selectedCard = document.querySelector(".payment-inner-card.selected");
-    if (selectedCard) {
-      const method = document.getElementById("metode-terpilih").value;
-      removeTotalHarga(selectedCard);
-      const total = calculateTotalHarga(method);
-      const span = document.createElement("div");
-      span.className = "total-harga-text";
-      span.style.marginTop = "8px";
-      span.textContent = `Total: Rp ${formatRupiah(total)}`;
-      selectedCard.appendChild(span);
-    }
+    updateTotalHargaDisplay();
   }
 
   document.getElementById("akun-form").addEventListener("submit", (e) => {
@@ -164,23 +155,29 @@ function toggleCollapse(element) {
 function selectPayment(card, method) {
   const input = document.getElementById("metode-terpilih");
   const isSelected = card.classList.contains("selected");
+
+  document.querySelectorAll(".payment-inner-card").forEach((el) => {
+    el.classList.remove("selected");
+  });
+
   if (isSelected) {
-    card.classList.remove("selected");
     input.value = "";
-    removeTotalHarga(card);
   } else {
-    document.querySelectorAll(".payment-inner-card").forEach((el) => {
-      el.classList.remove("selected");
-      removeTotalHarga(el);
-    });
     card.classList.add("selected");
     input.value = method;
+  }
+
+  updateTotalHargaDisplay();
+}
+
+function updateTotalHargaDisplay() {
+  const method = document.getElementById("metode-terpilih").value;
+  const display = document.getElementById("total-harga-display");
+  if (selectedItem && method) {
     const total = calculateTotalHarga(method);
-    const span = document.createElement("div");
-    span.className = "total-harga-text";
-    span.style.marginTop = "8px";
-    span.textContent = `Total: Rp ${formatRupiah(total)}`;
-    card.appendChild(span);
+    display.innerHTML = `Total: <span style="color: #ffd700">Rp ${formatRupiah(total)}</span>`;
+  } else {
+    display.innerHTML = "";
   }
 }
 
