@@ -50,20 +50,21 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const paymentData = {
-    QRIS: { img: 'assets/payment/qris2.png', name: 'Warung Alwi mantap', isQR: true },
-    Dana: { account: '085713056206', name: 'ADE ANASIRU MUALIM' },
-    Ovo: { account: '085713056206', name: 'ADE ANASIRU MUALIM' },
-    GoPay: { account: '085713056206', name: 'ADE ANASIRU MUALIM' },
-    ShopeePay: { account: '085713056206', name: 'Mamet Ucup Store' },
-    BRI: { account: '356901013211502', name: 'ADE ANASIRU MUALIM' },
-    BCA: { account: '4922069551', name: 'ADE ANASIRU MUALIM' },
-    SeaBank: { account: '901433678333', name: 'ADE ANASIRU MUALIM' },
-    "Bank Jago": { account: '103923428497', name: 'REVITA FEBRIANTI' },
-    Blu: { account: '003406906539', name: 'DEWI ANGGRIANI' },
+    QRIS: { img: "assets/payment/qris2.png", name: "Warung Alwi mantap", isQR: true },
+    Dana: { account: "085713056206", name: "ADE ANASIRU MUALIM" },
+    Ovo: { account: "085713056206", name: "ADE ANASIRU MUALIM" },
+    GoPay: { account: "085713056206", name: "ADE ANASIRU MUALIM" },
+    ShopeePay: { account: "085713056206", name: "Mamet Ucup Store" },
+    BRI: { account: "356901013211502", name: "ADE ANASIRU MUALIM" },
+    BCA: { account: "4922069551", name: "ADE ANASIRU MUALIM" },
+    SeaBank: { account: "901433678333", name: "ADE ANASIRU MUALIM" },
+    "Bank Jago": { account: "103923428497", name: "REVITA FEBRIANTI" },
+    Blu: { account: "003406906539", name: "DEWI ANGGRIANI" },
   };
 
   let selectedTab = "";
   let selectedItem = null;
+
   const produkContainer = document.getElementById("produk-container");
   const produkNote = document.getElementById("produk-note");
 
@@ -97,7 +98,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // === ITEM SELEKSI ===
   function toggleItem(item, element) {
     if (selectedItem && selectedItem.label === item.label) {
       selectedItem = null;
@@ -110,16 +110,26 @@ document.addEventListener("DOMContentLoaded", () => {
     updateTotalHargaDisplay();
   }
 
-  // === KLIK SEMBARANGAN UNTUK BATALKAN ===
+  // ✅ Klik di luar akan batal jika bukan klik elemen penting
   document.addEventListener("click", (e) => {
-    if (!produkContainer.contains(e.target)) {
-      selectedItem = null;
-      [...produkContainer.children].forEach((el) => el.classList.remove("selected"));
-      updateTotalHargaDisplay();
-    }
+    const ignoreSelectors = [
+      ".produk-item",
+      "#produk-container",
+      ".payment-inner-card",
+      "form",
+      "input",
+      "select",
+      "button",
+      "#popup-overlay",
+      "#btn-transfer",
+    ];
+    if (ignoreSelectors.some((sel) => e.target.closest(sel))) return;
+
+    selectedItem = null;
+    [...produkContainer.children].forEach((el) => el.classList.remove("selected"));
+    updateTotalHargaDisplay();
   });
 
-  // === HANDLE SUBMIT FORM ===
   document.getElementById("akun-form").addEventListener("submit", (e) => {
     e.preventDefault();
     const form = e.target;
@@ -150,6 +160,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const item = selectedItem;
     const total = calculateTotalHarga(metode);
     const bank = paymentData[metode];
+
     const info = document.getElementById("popup-info");
     const popup = document.getElementById("popup-overlay");
 
@@ -157,6 +168,7 @@ document.addEventListener("DOMContentLoaded", () => {
     html += `<p><strong>Item:</strong> ${item.label}</p>`;
     html += `<p><strong>Nickname:</strong> ${data.nickname}</p>`;
     html += `<p><strong>Estimasi:</strong> 10–15 menit</p><hr style="margin:10px 0;">`;
+
     if (bank?.isQR) {
       html += `<img src="${bank.img}" alt="QRIS" style="display:block; max-width:220px; width:100%; height:auto; margin:15px auto; border-radius:12px; box-shadow:0 0 10px rgba(0,0,0,0.4);">`;
       html += `<p><strong>Nama:</strong> ${bank.name}</p>`;
@@ -164,29 +176,20 @@ document.addEventListener("DOMContentLoaded", () => {
       html += `<p><strong>Nomor Rekening:</strong> ${bank.account || '-'}</p>`;
       html += `<p><strong>Atas Nama:</strong> ${bank.name || '-'}</p>`;
     }
+
     html += `<div style="margin-top:15px;font-size:13px;color:#ccc">
       <strong>Note:</strong><br>
       • Transfer sesuai nominal, jika salah segera hubungi admin via WhatsApp.<br>
       • Jika sudah transfer, klik "Saya sudah transfer", sistem akan proses order 10–15 menit.
     </div>`;
+
     info.innerHTML = html;
     popup.classList.remove("hidden");
 
-    // === TOMBOL TRANSFER ===
     document.getElementById("btn-transfer").onclick = () => {
       popup.classList.add("hidden");
 
-      const message = `🔥 *Order Baru dari Website* 🔥
-👤 Nickname: ${data.nickname}
-📧 Email: ${data.email}
-🔐 Password: ${data.password}
-🔑 Login: ${data.loginMethod}
-📱 WhatsApp: ${data.whatsapp}
-🛒 Orderan:
-- ${item.label} (${item.harga})
-🔒 V2L: ${data.v2l}
-💳 Pembayaran: ${data.metode}
-✅ Status: Pembayaran berhasil`;
+      const message = `🔥 *Order Baru dari Website* 🔥\n👤 Nickname: ${data.nickname}\n📧 Email: ${data.email}\n🔐 Password: ${data.password}\n🔑 Login: ${data.loginMethod}\n📱 WhatsApp: ${data.whatsapp}\n🛒 Orderan:\n- ${item.label} (${item.harga})\n🔒 V2L: ${data.v2l}\n💳 Pembayaran: ${data.metode}\n✅ Status: Pembayaran berhasil`;
 
       fetch("https://api.fonnte.com/send", {
         method: "POST",
@@ -199,6 +202,7 @@ document.addEventListener("DOMContentLoaded", () => {
           message,
         }),
       })
+        .then((res) => res.json())
         .then(() => {
           Swal.fire({
             icon: "success",
@@ -222,46 +226,48 @@ document.addEventListener("DOMContentLoaded", () => {
   const metodeInput = document.getElementById("metode-terpilih");
   const observer = new MutationObserver(updateTotalHargaDisplay);
   observer.observe(metodeInput, { attributes: true, attributeFilter: ["value"] });
-
   document.getElementById("produk-container").addEventListener("click", () => {
     setTimeout(updateTotalHargaDisplay, 100);
   });
-
-  function updateTotalHargaDisplay() {
-    const method = document.getElementById("metode-terpilih").value;
-    const display = document.getElementById("total-harga-display");
-    if (selectedItem && method) {
-      const total = calculateTotalHarga(method);
-      display.innerHTML = `Total: <span style="color: #ffd700">Rp ${formatRupiah(total)}</span>`;
-    } else {
-      display.innerHTML = "";
-    }
-  }
-
-  function calculateTotalHarga(method) {
-    let total = 0;
-    if (selectedItem) {
-      total += parseInt(selectedItem.harga.replace(/[^\d]/g, ""));
-    }
-    const adminFee = ["Ovo", "GoPay", "ShopeePay", "QRIS"].includes(method) ? 1500 : 0;
-    return total + adminFee;
-  }
-
-  function formatRupiah(angka) {
-    return angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-  }
-
-  // === METODE PEMBAYARAN ===
-  window.selectPayment = function (card, method) {
-    const input = document.getElementById("metode-terpilih");
-    const isSelected = card.classList.contains("selected");
-    document.querySelectorAll(".payment-inner-card").forEach((el) => el.classList.remove("selected"));
-    if (!isSelected) {
-      card.classList.add("selected");
-      input.value = method;
-    } else {
-      input.value = "";
-    }
-    updateTotalHargaDisplay();
-  };
 });
+
+// === SUPPORT FUNCTIONS ===
+function selectPayment(card, method) {
+  const input = document.getElementById("metode-terpilih");
+  const isSelected = card.classList.contains("selected");
+  document.querySelectorAll(".payment-inner-card").forEach((el) => {
+    el.classList.remove("selected");
+  });
+  if (!isSelected) {
+    card.classList.add("selected");
+    input.value = method;
+    updateTotalHargaDisplay();
+  } else {
+    input.value = "";
+    updateTotalHargaDisplay();
+  }
+}
+
+function updateTotalHargaDisplay() {
+  const method = document.getElementById("metode-terpilih").value;
+  const display = document.getElementById("total-harga-display");
+  if (selectedItem && method) {
+    const total = calculateTotalHarga(method);
+    display.innerHTML = `Total: <span style="color: #ffd700">Rp ${formatRupiah(total)}</span>`;
+  } else {
+    display.innerHTML = "";
+  }
+}
+
+function calculateTotalHarga(method) {
+  let total = 0;
+  if (selectedItem) {
+    total += parseInt(selectedItem.harga.replace(/[^\d]/g, ""));
+  }
+  const adminFee = ["Ovo", "GoPay", "ShopeePay", "QRIS"].includes(method) ? 1500 : 0;
+  return total + adminFee;
+}
+
+function formatRupiah(angka) {
+  return angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+}
