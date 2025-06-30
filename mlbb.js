@@ -155,9 +155,14 @@ document.addEventListener("DOMContentLoaded", () => {
     </div>`;
 
     info.innerHTML = html;
-    popup.classList.remove("hidden");
+popup.classList.remove("hidden");
 
-    document.getElementById("popup-close").onclick = () => popup.classList.add("hidden");
+setTimeout(() => {
+  const closeBtn = document.getElementById("popup-close");
+  if (closeBtn) {
+    closeBtn.onclick = () => popup.classList.add("hidden");
+  }
+}, 100);
 
     document.getElementById("btn-transfer").onclick = () => {
       popup.classList.add("hidden");
