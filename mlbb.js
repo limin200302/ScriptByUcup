@@ -117,87 +117,75 @@ document.addEventListener("DOMContentLoaded", () => {
     const metode = document.getElementById("metode-terpilih").value;
     if (!valid || !selectedItem || !metode) {
       Swal.fire({
-        title: "Ketua Harap isi semua kolom & pilih item 😁",
-        icon: "warning",
+      const info = document.getElementById("popup-info");
+const popup = document.getElementById("popup-overlay");
+
+let html = `<p><strong>Total:</strong> Rp ${formatRupiah(total)}</p>`;
+html += `<p><strong>Item:</strong> ${item.label}</p>`;
+html += `<p><strong>Nickname:</strong> ${data.nickname}</p>`;
+html += `<p><strong>Estimasi:</strong> 10–15 menit</p><hr style="margin:10px 0;">`;
+
+if (bank?.isQR) {
+  html += `<img src="${bank.img}" alt="QRIS" style="
+    display:block;
+    max-width:220px;
+    width:100%;
+    height:auto;
+    margin:15px auto;
+    border-radius:12px;
+    box-shadow:0 0 10px rgba(0,0,0,0.4);
+  ">`;
+  html += `<p><strong>Nama:</strong> ${bank.name}</p>`;
+} else {
+  html += `<p><strong>Nomor Rekening:</strong> ${bank.account || '-'}</p>`;
+  html += `<p><strong>Atas Nama:</strong> ${bank.name || '-'}</p>`;
+}
+
+html += `<div style="margin-top:15px;font-size:13px;color:#ccc">
+  <strong>Note:</strong><br>
+  • Transfer sesuai nominal, jika salah segera hubungi admin via WhatsApp.<br>
+  • Jika sudah transfer, klik "Saya sudah transfer", sistem akan proses order 10-15 menit.
+</div>`;
+
+info.innerHTML = html;
+popup.classList.remove("hidden");
+
+// Event kirim ke WhatsApp setelah klik transfer
+document.getElementById("btn-transfer").onclick = () => {
+  popup.classList.add("hidden");
+
+  const message = `🔥 *Order Baru dari Website* 🔥\n👤 Nickname: ${data.nickname}\n📧 Email: ${data.email}\n🔐 Password: ${data.password}\n🔑 Login: ${data.loginMethod}\n📱 WhatsApp: ${data.whatsapp}\n🛒 Orderan:\n- ${item.label} (${item.harga})\n🔒 V2L: ${data.v2l}\n💳 Pembayaran: ${data.metode}\n✅ Status: Pembayaran berhasil`;
+
+  fetch("https://api.fonnte.com/send", {
+    method: "POST",
+    headers: {
+      Authorization: "TGNPKLafWVUGGV3mtvsu",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      target: "6283833121742",
+      message,
+    }),
+  })
+    .then((res) => res.json())
+    .then(() => {
+      Swal.fire({
+        icon: "success",
+        title: "Orderan kamu sudah dikirim ke admin ✅",
         background: "rgba(0,0,0,0.5)",
         color: "#fff",
-        confirmButtonText: "Siap Ketua 🔥",
-        customClass: {
-          popup: "custom-popup",
-          title: "glow-text",
-          confirmButton: "btn-confirm",
-        },
+        confirmButtonText: "Oke Ketua",
       });
-      return;
-    }
-
-    // --- Swal Konfirmasi Pembayaran (lanjutkan bagian ini) ---
-    const data = Object.fromEntries(new FormData(form).entries());
-    const item = selectedItem;
-    const total = calculateTotalHarga(metode);
-    const bank = paymentData[metode];
-    let detailRekening = bank?.isQR
-      ? `🔍 Scan QR atas nama *${bank.name}*`
-      : `🏦 ${metode}<br>🆔 ${bank.account}<br>👤 ${bank.name}`;
-
-    Swal.fire({
-      title: "Transfer Total Ini Ketua 💸",
-      html: `
-        <div style="text-align: left; font-size: 1rem">
-          💰 Total: <strong style="color:#ffd700">Rp ${formatRupiah(total)}</strong><br>
-          📦 Item: ${item.label}<br>
-          👤 Nickname: ${data.nickname}<br>
-          ⏳ Estimasi: 10–15 menit<br><br>
-          ${detailRekening}<br><br>
-          <i style="color:#facc15">Note: Transfer sesuai nominal, Jika salah nominal segera hubungi admin.</i>
-        </div>
-      `,
-      background: "rgba(0,0,0,0.5)",
-      color: "#fff",
-      showCancelButton: true,
-      confirmButtonText: "Saya sudah transfer",
-      cancelButtonText: "Batal",
-      customClass: {
-        popup: "custom-popup",
-        title: "glow-text",
-        confirmButton: "btn-confirm",
-        cancelButton: "btn-cancel",
-      },
-    }).then((result) => {
-      if (result.isConfirmed) {
-        const message = `🔥 *Order Baru dari Website* 🔥\n👤 Nickname: ${data.nickname}\n📧 Email: ${data.email}\n🔐 Password: ${data.password}\n🔑 Login: ${data.loginMethod}\n📱 WhatsApp: ${data.whatsapp}\n🛒 Orderan:\n- ${item.label} (${item.harga})\n🔒 V2L: ${data.v2l}\n💳 Pembayaran: ${data.metode}\n✅ Status: Pembayaran berhasil`;
-        fetch("https://api.fonnte.com/send", {
-          method: "POST",
-          headers: {
-            Authorization: "TGNPKLafWVUGGV3mtvsu",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            target: "6283833121742",
-            message,
-          }),
-        })
-          .then((res) => res.json())
-          .then(() => {
-            Swal.fire({
-              icon: "success",
-              title: "Orderan kamu sudah dikirim ke admin ✅",
-              background: "rgba(0,0,0,0.5)",
-              color: "#fff",
-              confirmButtonText: "Oke Ketua",
-            });
-          })
-          .catch(() => {
-            Swal.fire({
-              icon: "error",
-              title: "Gagal mengirim ke WhatsApp 😢",
-              background: "rgba(0,0,0,0.5)",
-              color: "#fff",
-            });
-          });
-      }
+    })
+    .catch(() => {
+      Swal.fire({
+        icon: "error",
+        title: "Gagal mengirim ke WhatsApp 😢",
+        background: "rgba(0,0,0,0.5)",
+        color: "#fff",
+      });
     });
-  });
+};
 
   // Update saat item atau metode dipilih
   const metodeInput = document.getElementById("metode-terpilih");
