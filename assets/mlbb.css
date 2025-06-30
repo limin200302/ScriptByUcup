@@ -395,3 +395,6 @@ body {
   border-radius: 8px;
   cursor: pointer;
 }
+.swal2-container {
+  z-index: 9999 !important;
+}
