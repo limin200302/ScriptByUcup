@@ -110,54 +110,14 @@ body {
   font-style: italic;
 }
 
-/* === DAFTAR ORDERAN === */
-.order-list-box {
-  background: #1c1c2e;
-  border: 1px solid #444;
-  padding: 1rem;
-  border-radius: 12px;
-  margin-bottom: 1.5rem;
-}
-
-.order-list-box h3 {
-  margin-top: 0;
-  font-size: 1.1rem;
-  color: #ffcc00;
-  margin-bottom: 1rem;
-  text-align: center;
-}
-
-.order-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #2a2a44;
-  padding: 0.6rem 1rem;
-  border-radius: 8px;
-  margin-bottom: 0.6rem;
-  font-size: 0.95rem;
-}
-
-.order-item button {
-  background: #ff4444;
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  padding: 4px 8px;
-  cursor: pointer;
-  font-size: 0.8rem;
-}
-
-.order-item button:hover {
-  background: #ff2222;
-}
-
-/* === FORM AKUN === */
+/* === FORM AKUN (dengan glow dan gradasi) === */
 .akun-section .form-wrapper {
-  background: #1e1e2f;
+  background: linear-gradient(135deg, #1e1e2f, #2a2a44);
   padding: 1.5rem;
   border-radius: 12px;
   border: 1px solid #333;
+  box-shadow: 0 0 15px rgba(255, 204, 0, 0.4);
+  margin-bottom: 2rem;
 }
 
 .akun-section input,
@@ -272,9 +232,11 @@ body {
     font-size: 0.85rem;
     padding: 1rem;
   }
+
   .note-penting h3 {
     font-size: 1rem;
   }
+
   .copyright {
     font-size: 0.8rem;
     padding-bottom: 1.5rem;
@@ -313,26 +275,8 @@ body {
   border-radius: 8px;
   padding: 8px 16px;
 }
-/* Pembayaran */
-.form-card {
-  background: #1a1a1a;
-  padding: 10px 16px;
-  font-weight: bold;
-  color: #fff;
-  cursor: pointer;
-  border: 1px solid #333;
-  margin-top: 10px;
-  border-radius: 5px;
-}
 
-.form-sub {
-  background: #111;
-  border: 1px solid #222;
-  border-top: none;
-  padding: 10px;
-  display: none;
-}
-
+/* === PEMBAYARAN === */
 .payment-section {
   padding: 20px;
   background: #101010;
@@ -340,23 +284,28 @@ body {
   margin: 30px 15px;
   color: white;
 }
+
 .payment-wrapper {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
+
 .form-card {
+  background: #1a1a1a;
   padding: 12px;
-  background: #222;
-  color: white;
-  border-radius: 6px;
-  cursor: pointer;
   font-weight: bold;
+  color: #fff;
+  cursor: pointer;
+  border: 1px solid #333;
+  border-radius: 6px;
   transition: background 0.2s;
 }
+
 .form-card:hover {
   background: #333;
 }
+
 .form-sub {
   max-height: 0;
   overflow: hidden;
@@ -365,7 +314,7 @@ body {
 }
 
 .form-sub.open {
-  max-height: 500px; /* cukup besar agar semua daftar muat */
+  max-height: 500px;
   opacity: 1;
   display: flex;
   flex-wrap: wrap;
@@ -382,17 +331,28 @@ body {
   cursor: pointer;
   transition: all 0.2s;
 }
+
 .payment-inner-card.selected {
   background-color: #008cff;
 }
+
 .payment-label {
   display: flex;
   align-items: center;
   gap: 10px;
   color: white;
 }
+
 .payment-label img {
   width: 32px;
   height: 32px;
   object-fit: contain;
+}
+
+.total-harga {
+  margin-top: 10px;
+  font-size: 1rem;
+  color: #facc15;
+  font-weight: bold;
+  text-align: right;
 }
