@@ -1,6 +1,5 @@
-// === GLOBAL ===
-let selectedItem = null; // ✅ Dipindah ke global agar bisa diakses di semua fungsi
 
+// === GLOBAL ===
 window.toggleCollapse = function (element) {
   const next = element.nextElementSibling;
   if (!next || !next.classList.contains("form-sub")) return;
@@ -65,6 +64,8 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   let selectedTab = "";
+  let selectedItem = null;
+
   const produkContainer = document.getElementById("produk-container");
   const produkNote = document.getElementById("produk-note");
 
@@ -117,7 +118,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     const metode = document.getElementById("metode-terpilih").value;
-
     if (!valid || !selectedItem || !metode) {
       Swal.fire({
         title: "Ketua Harap isi semua kolom & pilih item 😁",
@@ -138,7 +138,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const item = selectedItem;
     const total = calculateTotalHarga(metode);
     const bank = paymentData[metode];
-
     const info = document.getElementById("popup-info");
     const popup = document.getElementById("popup-overlay");
 
@@ -146,7 +145,6 @@ document.addEventListener("DOMContentLoaded", () => {
     html += `<p><strong>Item:</strong> ${item.label}</p>`;
     html += `<p><strong>Nickname:</strong> ${data.nickname}</p>`;
     html += `<p><strong>Estimasi:</strong> 10–15 menit</p><hr style="margin:10px 0;">`;
-
     if (bank?.isQR) {
       html += `<img src="${bank.img}" alt="QRIS" style="display:block; max-width:220px; width:100%; height:auto; margin:15px auto; border-radius:12px; box-shadow:0 0 10px rgba(0,0,0,0.4);">`;
       html += `<p><strong>Nama:</strong> ${bank.name}</p>`;
@@ -154,19 +152,16 @@ document.addEventListener("DOMContentLoaded", () => {
       html += `<p><strong>Nomor Rekening:</strong> ${bank.account || '-'}</p>`;
       html += `<p><strong>Atas Nama:</strong> ${bank.name || '-'}</p>`;
     }
-
     html += `<div style="margin-top:15px;font-size:13px;color:#ccc">
       <strong>Note:</strong><br>
       • Transfer sesuai nominal, jika salah segera hubungi admin via WhatsApp.<br>
       • Jika sudah transfer, klik "Saya sudah transfer", sistem akan proses order 10–15 menit.
     </div>`;
-
     info.innerHTML = html;
     popup.classList.remove("hidden");
 
     document.getElementById("btn-transfer").onclick = () => {
       popup.classList.add("hidden");
-
       const message = `🔥 *Order Baru dari Website* 🔥
 👤 Nickname: ${data.nickname}
 📧 Email: ${data.email}
@@ -178,7 +173,6 @@ document.addEventListener("DOMContentLoaded", () => {
 🔒 V2L: ${data.v2l}
 💳 Pembayaran: ${data.metode}
 ✅ Status: Pembayaran berhasil`;
-
       fetch("https://api.fonnte.com/send", {
         method: "POST",
         headers: {
@@ -190,15 +184,19 @@ document.addEventListener("DOMContentLoaded", () => {
           message,
         }),
       })
-        .then((res) => res.json())
-        .then(() => {
-          Swal.fire({
-            icon: "success",
-            title: "Orderan kamu sudah dikirim ke admin ✅",
-            background: "rgba(0,0,0,0.5)",
-            color: "#fff",
-            confirmButtonText: "Oke Ketua",
-          });
+        .then(res => res.json())
+        .then(res => {
+          if (res.status === true || res.success) {
+            Swal.fire({
+              icon: "success",
+              title: "Orderan kamu sudah dikirim ke admin ✅",
+              background: "rgba(0,0,0,0.5)",
+              color: "#fff",
+              confirmButtonText: "Oke Ketua",
+            });
+          } else {
+            throw new Error("Gagal kirim");
+          }
         })
         .catch(() => {
           Swal.fire({
@@ -214,6 +212,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const metodeInput = document.getElementById("metode-terpilih");
   const observer = new MutationObserver(updateTotalHargaDisplay);
   observer.observe(metodeInput, { attributes: true, attributeFilter: ["value"] });
+
   document.getElementById("produk-container").addEventListener("click", () => {
     setTimeout(updateTotalHargaDisplay, 100);
   });
@@ -232,16 +231,6 @@ function selectPayment(card, method) {
   if (!isSelected) {
     card.classList.add("selected");
     input.value = method;
-
-    if (selectedItem) {
-      const total = calculateTotalHarga(method);
-      const span = document.createElement("div");
-      span.className = "total-harga-text";
-      span.style.marginTop = "8px";
-      span.textContent = `Total: Rp ${formatRupiah(total)}`;
-      card.appendChild(span);
-    }
-
     updateTotalHargaDisplay();
   } else {
     input.value = "";
@@ -257,7 +246,6 @@ function removeTotalHarga(card) {
 function updateTotalHargaDisplay() {
   const method = document.getElementById("metode-terpilih").value;
   const display = document.getElementById("total-harga-display");
-
   if (selectedItem && method) {
     const total = calculateTotalHarga(method);
     display.innerHTML = `Total: <span style="color: #ffd700">Rp ${formatRupiah(total)}</span>`;
