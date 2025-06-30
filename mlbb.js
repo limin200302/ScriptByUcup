@@ -1,4 +1,6 @@
 // === GLOBAL ===
+let selectedItem = null;
+
 window.toggleCollapse = function (element) {
   const next = element.nextElementSibling;
   if (!next || !next.classList.contains("form-sub")) return;
@@ -6,6 +8,7 @@ window.toggleCollapse = function (element) {
 };
 
 document.addEventListener("DOMContentLoaded", () => {
+
   const produkData = {
     diamond: {
       note: "",
