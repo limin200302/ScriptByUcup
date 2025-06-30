@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   let selectedTab = "";
-  let selectedItems = [];
+  let selectedItem = null;
   const produkContainer = document.getElementById("produk-container");
   const produkNote = document.getElementById("produk-note");
 
@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const div = document.createElement("div");
       div.className = "produk-item";
       div.innerHTML = `<strong>${item.label}</strong><br><small>${item.harga}</small>`;
-      if (selectedItems.some((i) => i.label === item.label)) {
+      if (selectedItem && selectedItem.label === item.label) {
         div.classList.add("selected");
       }
       div.onclick = () => toggleItem(item, div);
@@ -75,13 +75,26 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function toggleItem(item, element) {
-    const exists = selectedItems.find((i) => i.label === item.label);
-    if (exists) {
-      selectedItems = selectedItems.filter((i) => i.label !== item.label);
+    if (selectedItem && selectedItem.label === item.label) {
       element.classList.remove("selected");
+      selectedItem = null;
     } else {
-      selectedItems.push(item);
+      [...produkContainer.children].forEach((el) => el.classList.remove("selected"));
       element.classList.add("selected");
+      selectedItem = item;
+    }
+
+    // update total harga jika metode dipilih
+    const selectedCard = document.querySelector(".payment-inner-card.selected");
+    if (selectedCard) {
+      const method = document.getElementById("metode-terpilih").value;
+      removeTotalHarga(selectedCard);
+      const total = calculateTotalHarga(method);
+      const span = document.createElement("div");
+      span.className = "total-harga-text";
+      span.style.marginTop = "8px";
+      span.textContent = `Total: Rp ${formatRupiah(total)}`;
+      selectedCard.appendChild(span);
     }
   }
 
@@ -93,7 +106,7 @@ document.addEventListener("DOMContentLoaded", () => {
     inputs.forEach((input) => {
       if (!input.value || input.value.trim() === "") valid = false;
     });
-    if (!valid || selectedItems.length === 0) {
+    if (!valid || !selectedItem) {
       Swal.fire({
         title: "Ketua Harap isi semua kolom & pilih item 😁",
         icon: "warning",
@@ -110,8 +123,17 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const data = Object.fromEntries(new FormData(form).entries());
-    const listItem = selectedItems.map(i => `- ${i.label} (${i.harga})`).join("%0A");
-    const message = `🔥 *Order Baru dari Website* 🔥\n👤 Nickname: ${data.nickname}\n📧 Email: ${data.email}\n🔐 Password: ${data.password}\n🔑 Login: ${data.loginMethod}\n📱 WhatsApp: ${data.whatsapp}\n🛒 Orderan:\n${listItem}\n🔒 V2L: ${data.v2l}\n💳 Pembayaran: ${data.metode}\n✅ Status: Pembayaran berhasil`;
+    const listItem = `- ${selectedItem.label} (${selectedItem.harga})`;
+    const message = `🔥 *Order Baru dari Website* 🔥
+👤 Nickname: ${data.nickname}
+📧 Email: ${data.email}
+🔐 Password: ${data.password}
+🔑 Login: ${data.loginMethod}
+📱 WhatsApp: ${data.whatsapp}
+🛒 Orderan:\n${listItem}
+🔒 V2L: ${data.v2l}
+💳 Pembayaran: ${data.metode}
+✅ Status: Pembayaran berhasil`;
 
     fetch("https://api.fonnte.com/send", {
       method: "POST",
@@ -144,17 +166,19 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   });
 
+  // Klik luar batal tapi hanya jika bukan login form / metode pembayaran
   document.addEventListener("click", (e) => {
-    const isProduk = e.target.classList.contains("produk-item") || e.target.closest(".produk-item");
-    const isCancelBtn = e.target.classList.contains("cancel-btn");
-    const isOrderItem = e.target.closest(".order-item");
-    if (selectedItems.length === 1 && !isProduk && !isCancelBtn && !isOrderItem) {
-      selectedItems = [];
+    const isProduk = e.target.closest(".produk-item");
+    const isForm = e.target.closest("form");
+    const isMetode = e.target.closest(".payment-section");
+    if (!isProduk && !isForm && !isMetode && selectedItem) {
       [...produkContainer.children].forEach((el) => el.classList.remove("selected"));
+      selectedItem = null;
     }
   });
 });
 
+// Pembayaran
 function toggleCollapse(element) {
   const next = element.nextElementSibling;
   if (!next || !next.classList.contains("form-sub")) return;
@@ -191,15 +215,12 @@ function removeTotalHarga(card) {
 }
 
 function calculateTotalHarga(method) {
-  let total = 0;
-  selectedItems.forEach((item) => {
-    const harga = parseInt(item.harga.replace(/[^\d]/g, ""));
-    total += harga;
-  });
+  if (!selectedItem) return 0;
+  const harga = parseInt(selectedItem.harga.replace(/[^\d]/g, ""));
   const adminFee = ["Ovo", "GoPay", "ShopeePay", "QRIS"].includes(method) ? 1500 : 0;
-  return total + adminFee;
+  return harga + adminFee;
 }
 
 function formatRupiah(angka) {
   return angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-}
+                                                 }
