@@ -158,14 +158,25 @@ function selectPayment(card, method) {
 
   document.querySelectorAll(".payment-inner-card").forEach((el) => {
     el.classList.remove("selected");
+    removeTotalHarga(el);
   });
 
-  if (isSelected) {
-    input.value = "";
-  } else {
+  if (!isSelected) {
     card.classList.add("selected");
     input.value = method;
+
+    if (selectedItem) {
+      const total = calculateTotalHarga(method);
+      const span = document.createElement("div");
+      span.className = "total-harga-text";
+      span.style.marginTop = "8px";
+      span.textContent = `Total: Rp ${formatRupiah(total)}`;
+      card.appendChild(span);
+    }
+  } else {
+    input.value = "";
   }
+}
 
   updateTotalHargaDisplay();
 }
