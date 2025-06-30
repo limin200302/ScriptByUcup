@@ -5,9 +5,6 @@ window.toggleCollapse = function (element) {
   next.classList.toggle("open");
 };
 
-let selectedTab = "";
-let selectedItem = null;
-
 document.addEventListener("DOMContentLoaded", () => {
   const produkData = {
     diamond: {
@@ -65,6 +62,9 @@ document.addEventListener("DOMContentLoaded", () => {
     Blu: { account: '003406906539', name: 'DEWI ANGGRIANI' },
   };
 
+  let selectedTab = "";
+  let selectedItem = null;
+
   const produkContainer = document.getElementById("produk-container");
   const produkNote = document.getElementById("produk-note");
 
@@ -74,7 +74,6 @@ document.addEventListener("DOMContentLoaded", () => {
       produkContainer.innerHTML = "";
       produkNote.style.display = "none";
       selectedItem = null;
-      updateTotalHargaDisplay();
     } else {
       selectedTab = kategori;
       renderProduk(produkData[kategori]);
@@ -89,6 +88,9 @@ document.addEventListener("DOMContentLoaded", () => {
       const div = document.createElement("div");
       div.className = "produk-item";
       div.innerHTML = `<strong>${item.label}</strong><br><small>${item.harga}</small>`;
+      if (selectedItem && selectedItem.label === item.label) {
+        div.classList.add("selected");
+      }
       div.onclick = () => toggleItem(item, div);
       produkContainer.appendChild(div);
     });
@@ -99,12 +101,23 @@ document.addEventListener("DOMContentLoaded", () => {
       element.classList.remove("selected");
       selectedItem = null;
     } else {
+      selectedItem = item;
       [...produkContainer.children].forEach((el) => el.classList.remove("selected"));
       element.classList.add("selected");
-      selectedItem = item;
     }
     updateTotalHargaDisplay();
   }
+
+  // Batalkan pilihan jika klik di luar item
+  document.addEventListener("click", (e) => {
+    const isItem = e.target.closest(".produk-item");
+    const isInside = e.target.closest("#produk-container");
+    if (!isItem && isInside) {
+      [...produkContainer.children].forEach((el) => el.classList.remove("selected"));
+      selectedItem = null;
+      updateTotalHargaDisplay();
+    }
+  });
 
   document.getElementById("akun-form").addEventListener("submit", (e) => {
     e.preventDefault();
@@ -114,6 +127,7 @@ document.addEventListener("DOMContentLoaded", () => {
     inputs.forEach((input) => {
       if (!input.value || input.value.trim() === "") valid = false;
     });
+
     const metode = document.getElementById("metode-terpilih").value;
     if (!valid || !selectedItem || !metode) {
       Swal.fire({
@@ -135,6 +149,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const item = selectedItem;
     const total = calculateTotalHarga(metode);
     const bank = paymentData[metode];
+
     const info = document.getElementById("popup-info");
     const popup = document.getElementById("popup-overlay");
 
@@ -162,15 +177,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.getElementById("btn-transfer").onclick = () => {
       popup.classList.add("hidden");
-
       const message = `🔥 *Order Baru dari Website* 🔥
 👤 Nickname: ${data.nickname}
 📧 Email: ${data.email}
 🔐 Password: ${data.password}
 🔑 Login: ${data.loginMethod}
 📱 WhatsApp: ${data.whatsapp}
-🛒 Orderan:
-- ${item.label} (${item.harga})
+🛒 Orderan:\n- ${item.label} (${item.harga})
 🔒 V2L: ${data.v2l}
 💳 Pembayaran: ${data.metode}
 ✅ Status: Pembayaran berhasil`;
@@ -227,17 +240,17 @@ function selectPayment(card, method) {
   if (!isSelected) {
     card.classList.add("selected");
     input.value = method;
+    updateTotalHargaDisplay();
   } else {
     input.value = "";
+    updateTotalHargaDisplay();
   }
-
-  updateTotalHargaDisplay();
 }
 
 function updateTotalHargaDisplay() {
   const method = document.getElementById("metode-terpilih").value;
   const display = document.getElementById("total-harga-display");
-  if (selectedItem && method) {
+  if (window.selectedItem && method) {
     const total = calculateTotalHarga(method);
     display.innerHTML = `Total: <span style="color: #ffd700">Rp ${formatRupiah(total)}</span>`;
   } else {
@@ -247,8 +260,8 @@ function updateTotalHargaDisplay() {
 
 function calculateTotalHarga(method) {
   let total = 0;
-  if (selectedItem) {
-    total += parseInt(selectedItem.harga.replace(/[^\d]/g, ""));
+  if (window.selectedItem) {
+    total += parseInt(window.selectedItem.harga.replace(/[^\d]/g, ""));
   }
   const adminFee = ["Ovo", "GoPay", "ShopeePay", "QRIS"].includes(method) ? 1500 : 0;
   return total + adminFee;
